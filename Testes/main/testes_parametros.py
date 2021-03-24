@@ -372,6 +372,8 @@ def testes_colormap_entropia():
     pesos_a = np.arange(0.1, 1.52, 0.02)
     pesos_b = np.arange(0.1, 1.52, 0.02)
 
+    pesos_contaminacao = (1, 0.1)
+
     grid_entropia_agentes = []
     grid_entropia_lugares = []
     grid_entropia_geral = []
@@ -385,7 +387,7 @@ def testes_colormap_entropia():
 
             peso_escolha_lugar = (a, b)
 
-            resultados = simulacao1D(grid, pesosContaminacao=(1, 1, 1), pesosEscolhaLugar=peso_escolha_lugar,
+            resultados = simulacao1D(grid, pesosContaminacao=pesos_contaminacao, pesosEscolhaLugar=peso_escolha_lugar,
                                      qntTimeSteps=2000,
                                      modelo_fabiano=True)
 
