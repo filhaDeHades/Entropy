@@ -440,7 +440,7 @@ def testes_colormap_entropia_v2():
 
             peso_escolha_lugar = (a, b)
 
-            resultados = simulacao1D(grid, pesosContaminacao=pesos_contaminacao, pesosEscolhaLugar=peso_escolha_lugar,
+            resultados = simulacao1D(grid, pesosContaminacaoAgente=pesos_contaminacao, pesosEscolhaLugar=peso_escolha_lugar,
                                      qntTimeSteps=2000,
                                      modelo_fabiano=True)
 
