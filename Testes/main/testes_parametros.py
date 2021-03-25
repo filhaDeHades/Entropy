@@ -250,7 +250,7 @@ def teste_pesos_escolha_lugar():
     plt.show()
 
 
-def teste_pesos_escolha_lugar_media():
+def teste_pesos_escolha_lugar_media(pesos_contaminacao_agente, pesos_contaminacao_lugar, path_relativo_folder):
 
     salvar_resultados = True
 
@@ -261,13 +261,15 @@ def teste_pesos_escolha_lugar_media():
     grid = Grid1D(tam_grid_1D, qnt_agentes, qnt_lugares, agentes_aleatorios=False, lugares_aleatorios=False,
                   rangePossiveisOrientacoes=range_orientacoes)
 
-    lista_pesos_esolha_lugar = [(0.1, 0.1),
-                                (0.1, 1.0),
-                                (0.4, 0.6),
-                                (0.6, 0.4),
-                                (1.0, 0.1),
-                                (1.0, 1.0)
-                                ]
+    lista_pesos_a = np.linspace(0.1, 1.0, 5)
+    lista_pesos_b = np.linspace(0.1, 1.0, 5)
+
+    lista_pesos_esolha_lugar = []
+
+    for a in lista_pesos_a:
+        for b in lista_pesos_b:
+            peso = (a, b)
+            lista_pesos_esolha_lugar.append(peso)
 
     # pesos_a = [round(i / 10, 1) for i in range(1, 16)]
     # pesos_b = [round(i / 10, 1) for i in range(1, 16)]
@@ -280,7 +282,6 @@ def teste_pesos_escolha_lugar_media():
 
     rodagens_por_peso = 10
     qnt_time_steps = 2000
-    pesos_contaminacao = (1, 0.1)
 
     for peso in lista_pesos_esolha_lugar:
 
@@ -291,8 +292,8 @@ def teste_pesos_escolha_lugar_media():
 
         for i in range(rodagens_por_peso):
 
-            resultados = simulacao1D(grid, pesosContaminacao=pesos_contaminacao, pesosEscolhaLugar=peso,
-                                     qntTimeSteps=qnt_time_steps, modelo_fabiano=True)
+            resultados = simulacao1D(grid, pesosContaminacaoAgente=pesos_contaminacao_agente, pesosContaminacaoLugar=pesos_contaminacao_lugar, 
+                                    pesosEscolhaLugar=peso, qntTimeSteps=qnt_time_steps, modelo_fabiano=True)
 
             # *** OBS IMPORTANTE ***
             # o Pandas oferece uma funcionalidade muito boa de somar Data Frames
@@ -340,9 +341,9 @@ def teste_pesos_escolha_lugar_media():
         info_entropia /= rodagens_por_peso
 
         if salvar_resultados is True:
-            path_resultados = os.path.abspath("resultados4")
-            nome_folder = "contamincao_{}_pesos_{}_ts_{}_media_{}".format(pesos_contaminacao, peso, qnt_time_steps,
-                                                                          rodagens_por_peso)
+            path_resultados = os.path.abspath(path_relativo_folder)
+            nome_folder = "contAgentes_{}_contLugares{}_pesos_{}_ts_{}_media_{}".format(pesos_contaminacao_agente, pesos_contaminacao_lugar,
+                                                                                         peso, qnt_time_steps, rodagens_por_peso)
             nome_folder_completo = os.path.join(path_resultados, nome_folder)
             os.mkdir(nome_folder_completo)
 
@@ -420,6 +421,35 @@ def testes_colormap_entropia():
     ax2.set_title("entropia lugares X pesos")
 
     plt.show()
+
+
+def testes_colormap_entropia_v2():
+    tam_grid_1D = 100
+    qnt_agentes = 100
+    qnt_lugares = 100
+    grid = Grid1D(tam_grid_1D, qnt_agentes, qnt_lugares, agentes_aleatorios=False, lugares_aleatorios=False)
+
+    pesos_a = np.arange(0.1, 1.52, 0.02)
+    pesos_b = np.arange(0.1, 1.52, 0.02)
+
+    pesos_contaminacao = (1, 0.1)
+
+    for a in pesos_a:
+
+        for b in pesos_b:
+
+            peso_escolha_lugar = (a, b)
+
+            resultados = simulacao1D(grid, pesosContaminacao=pesos_contaminacao, pesosEscolhaLugar=peso_escolha_lugar,
+                                     qntTimeSteps=2000,
+                                     modelo_fabiano=True)
+
+            df_entropia = resultados["resultados_entropia"]
+            path = os.path.abspath("Testes\\main\\resultados_entropia")
+            nome_arquivo = "resultados_entropia_{}".format(peso_escolha_lugar)
+            nome_arquivo_completo = os.path.join(path, nome_arquivo)
+            df_entropia.to_csv(nome_arquivo_completo, index=False)
+            print("arquivo: {} salvo com sucesso".format(nome_arquivo_completo))
 
 
 def ver_graficos_resultados():
@@ -703,6 +733,4 @@ def ver_graficos_resultados():
 def testes():
 
     a = np.linspace(0.1, 1.0, 5)
-    a = [round(i, 3) for i in a]
     print(a)
-

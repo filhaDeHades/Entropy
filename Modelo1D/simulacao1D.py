@@ -2,16 +2,17 @@ import Testes.src.funcoes_geracao_nomes as fgn
 import pandas as pd
 
 
-def simulacao1D(grid, pesosContaminacao=(1, 0.1), pesosEscolhaLugar=(0.1, 0.1), qntTimeSteps=30,
-                modelo_fabiano=False):
+def simulacao1D(grid, pesosContaminacaoAgente=(1, 0.1), pesosContaminacaoLugar=(1, 0.1), 
+                pesosEscolhaLugar=(0.1, 0.1), qntTimeSteps=30, modelo_fabiano=False):
 
     # data frame da simulacao com info que n muda ao longo do tempo
-    resultadosStaticos = {  "tamGrid" :             [grid.tamGrid],
-                            "pesosContaminacao" :   [pesosContaminacao],
-                            "pesosEscolhaLugar" :   [pesosEscolhaLugar],
-                            "qntAgentes" :          [grid.qntAgentes],
-                            "qntLugares" :          [grid.qntLugares],
-                            "qntTimeSteps" :        [qntTimeSteps]
+    resultadosStaticos = {  "tamGrid" :                     [grid.tamGrid],
+                            "pesosContaminacaoAgente" :     [pesosContaminacaoAgente],
+                            "pesosContaminacaoLugar" :      [pesosContaminacaoLugar],
+                            "pesosEscolhaLugar" :           [pesosEscolhaLugar],
+                            "qntAgentes" :                  [grid.qntAgentes],
+                            "qntLugares" :                  [grid.qntLugares],
+                            "qntTimeSteps" :                [qntTimeSteps]
                         }
 
     # data frame com info que muda conforme os time steps
@@ -55,11 +56,11 @@ def simulacao1D(grid, pesosContaminacao=(1, 0.1), pesosEscolhaLugar=(0.1, 0.1), 
             lugarEscolhido.listaAgentesPresentes.append(agente)
 
             if modelo_fabiano is False:
-                agente.contaminacaoAgente(lugarEscolhido, pesosContaminacao)
+                agente.contaminacaoAgente(lugarEscolhido, pesosContaminacaoAgente)
                 agente.sortearNovaOrientacao(grid.listaDeOrientacoes)
                 agente.sortear_nova_posicao(grid.tamGrid)
             else:
-                agente.contaminacao_agente_v2(lugarEscolhido, pesosContaminacao)
+                agente.contaminacao_agente_v2(lugarEscolhido, pesosContaminacaoAgente)
                 # print("orientacao pos contaminacao: ", agente.orientacaoLatente)
 
             dict_agentes["agente_{}".format(agente.id)] = round(agente.orientacaoLatente)
@@ -78,7 +79,7 @@ def simulacao1D(grid, pesosContaminacao=(1, 0.1), pesosEscolhaLugar=(0.1, 0.1), 
 
             if len(lugar.listaAgentesPresentes) > 0:
                 # print("qnt agentes no lugar: ", len(lugar.listaAgentesPresentes))
-                lugar.contaminacaoLugar(pesos=pesosContaminacao)
+                lugar.contaminacaoLugar(pesos=pesosContaminacaoLugar)
                 # print("orientacao pos contaminacao: ", lugar.orientacao)
                 lugar.listaAgentesPresentes.clear()
 
