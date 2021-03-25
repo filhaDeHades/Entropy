@@ -1,5 +1,3 @@
 import Testes.main.testes_parametros as tp
 
-tp.teste_pesos_escolha_lugar()
-
-# oi
+tp.testes_colormap_entropia_v2()

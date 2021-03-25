@@ -35,7 +35,7 @@ def simulacao1D(grid, pesosContaminacao=(1, 0.1), pesosEscolhaLugar=(0.1, 0.1), 
     for timeStep in range(qntTimeSteps):
 
         # print("-------------------------------------------------------")
-        print("TIME STEP ", timeStep)
+        # print("TIME STEP ", timeStep)
         # print("-------------------------------------------------------")
 
         dict_agentes = {}
