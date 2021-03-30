@@ -429,27 +429,61 @@ def testes_colormap_entropia_v2():
     qnt_lugares = 100
     grid = Grid1D(tam_grid_1D, qnt_agentes, qnt_lugares, agentes_aleatorios=False, lugares_aleatorios=False)
 
+    pesos_contaminacao = (1, 0.1)
+
     pesos_a = np.arange(0.1, 1.52, 0.02)
     pesos_b = np.arange(0.1, 1.52, 0.02)
 
-    pesos_contaminacao = (1, 0.1)
+    lista_pesos = [(a, b) for a in pesos_a for b in pesos_b]
 
-    for a in pesos_a:
+    nome_arquivo_temp = "TempFile_contador.txt"
+    path = "Testes\\main"
+    nome_arquivo_temp_completo = os.path.join(path, nome_arquivo_temp)
 
-        for b in pesos_b:
+    if (os.path.exists(nome_arquivo_temp_completo)):
+        arquivo = open(nome_arquivo_temp_completo, "r")
+        n = arquivo.readline()
+        n = int(n)
+        lista_pesos = lista_pesos[n:]
+        arquivo.close()
+    else:
+        lista_arquivos = os.listdir("Testes\\main\\resultados_entropia")
+        ultimo_arquivo = lista_arquivos[-1]
+        ultimo_peso = obter_peso_pelo_nome_arq(ultimo_arquivo)
+        ultimo_index = lista_pesos.index(ultimo_peso)
 
-            peso_escolha_lugar = (a, b)
+        arquivo = open(nome_arquivo_temp_completo, "w")
+        arquivo.write(str(ultimo_index+1))
+        lista_pesos = lista_pesos[n:]
+        arquivo.close()
 
-            resultados = simulacao1D(grid, pesosContaminacaoAgente=pesos_contaminacao, pesosEscolhaLugar=peso_escolha_lugar,
-                                     qntTimeSteps=2000,
-                                     modelo_fabiano=True)
+    for i in range(len(lista_pesos)):
 
-            df_entropia = resultados["resultados_entropia"]
-            path = os.path.abspath("Testes\\main\\resultados_entropia")
-            nome_arquivo = "resultados_entropia_{}".format(peso_escolha_lugar)
-            nome_arquivo_completo = os.path.join(path, nome_arquivo)
-            df_entropia.to_csv(nome_arquivo_completo, index=False)
-            print("arquivo: {} salvo com sucesso".format(nome_arquivo_completo))
+        peso = lista_pesos[i]
+        print("peso atual: ", peso)
+
+        resultados = simulacao1D(grid, pesosContaminacaoAgente=pesos_contaminacao, pesosEscolhaLugar=peso,
+                                    qntTimeSteps=2000,
+                                    modelo_fabiano=True)
+
+        df_entropia = resultados["resultados_entropia"]
+        path = os.path.abspath("Testes\\main\\resultados_entropia")
+        nome_arquivo = "resultados_entropia_{}".format(peso)
+        nome_arquivo_completo = os.path.join(path, nome_arquivo)
+        df_entropia.to_csv(nome_arquivo_completo, index=False)
+
+        arquivo_temp = open(nome_arquivo_temp_completo, "w")
+        arquivo_temp.write(str(i+1))
+        arquivo_temp.close()
+
+        print("arquivo: {} salvo com sucesso".format(nome_arquivo_completo))
+
+
+def obter_peso_pelo_nome_arq(nome_arquivo):
+    indice_inicial = nome_arquivo.index("(")
+    indice_final = nome_arquivo.index(")") + 1
+    peso = eval(nome_arquivo[indice_inicial : indice_final])
+    return peso
 
 
 def ver_graficos_resultados():
@@ -732,5 +766,78 @@ def ver_graficos_resultados():
 
 def testes():
 
-    a = np.linspace(0.1, 1.0, 5)
-    print(a)
+    path = "Testes\\main\\resultados_entropia"
+    lista_arquivos = os.listdir(path)
+    ultimo_arquivo = lista_arquivos[-1]
+    print(os.path.join(path, ultimo_arquivo))
+
+    # nome = "resultados_entropia_(0.5, 0.4)"
+    # obter_peso_pelo_nome_arq(nome)
+
+    # ultimo_peso = (3, 3)
+    
+    # pesos_a = list(range(4))
+    # pesos_b = list(range(4))
+
+    # lista_pesos = [(a, b) for a in pesos_a for b in pesos_b]
+
+    # print("lista pesos antes: ", lista_pesos)
+
+    # nome_arquivo = "TempFile_contador.txt"
+    # path = "Testes\\main"
+    # nome_arquivo_completo = os.path.join(path, nome_arquivo)
+
+    # if (os.path.exists(nome_arquivo_completo)):
+    #     arquivo = open(nome_arquivo_completo, "r")
+    #     n = arquivo.readline()
+    #     n = int(n)
+    #     lista_pesos = lista_pesos[n:]
+    #     arquivo.close()
+    #     print("indice: ", n)
+    # else:
+    #     print("nao achou arquivo")
+    
+    # print("lista pesos final: ", lista_pesos)
+
+    # pesos_a = np.arange(0.1, 0.4, 0.1)
+    # pesos_b = np.arange(0.1, 0.4, 0.1)
+
+    # pesos_a = [round(a, 3) for a in pesos_a]
+    # pesos_b = [round(b, 3) for b in pesos_b]
+
+    # qnt_pesos_a = len(pesos_a)
+    # qnt_pesos_b = len(pesos_b)
+
+    # for a in range(qnt_pesos_a):
+
+    #     if a + 1 == qnt_pesos_a:
+    #         proximo_peso_a = 0.1
+    #     else:
+    #         proximo_peso_a = pesos_a[a+1]
+
+    #     for b in range(qnt_pesos_b):
+            
+    #         peso_a = pesos_a[a]
+    #         peso_b = pesos_b[b]
+
+    #         peso_atual = (peso_a, peso_b)
+    #         print("peso atual: ", peso_atual)
+
+            
+    #         proximo_peso_a = peso_a
+    #         proximo_peso_b = 0
+
+    #         if b + 1 == qnt_pesos_b:
+    #             proximo_peso_b = pesos_b[0]
+                
+    #             if a + 1 == qnt_pesos_a:
+    #                 proximo_peso_a = 0
+    #             else:
+    #                 proximo_peso_a = pesos_a[a+1]
+            
+    #         else:
+    #             proximo_peso_b = pesos_b[b+1]
+            
+    #         proximo_peso = (proximo_peso_a, proximo_peso_b)
+    #         print("proximo_peso: ", proximo_peso)
+    #         print("--------------------")
