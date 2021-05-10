@@ -1,7 +1,12 @@
 import Testes.main.testes_parametros as tp
+import Testes.src.funcoes_geracao_nomes as fgn
+import Testes.main.testes_modelo2D as t2d
+import numpy as np
+import shutil
+import os
 
 # so pra rodar esse teste Caio, vou deixar os testes q eu to rodando comentados pra vc
-tp.testes_colormap_entropia_v2()
+# tp.testes_colormap_entropia_v2()
 
 # teste 1
 # pesos_contaminacao_agente1 = (1, 0.1)
@@ -16,5 +21,176 @@ tp.testes_colormap_entropia_v2()
 # tp.teste_pesos_escolha_lugar_media(pesos_contaminacao_agente2, pesos_contaminacao_lugar2, path_relativo_folder2)
 
 # tp.testes()
+# tp.salvar_graficos_resultados("resultados6", "graficos_resultados6")
+# tp.salvar_graficos_resultados("resultados7", "graficos_resultados7")
+
+# nome_arquivo_testes = "teste_(1.0, 1.00000567).txt"
+# peso = fgn.obter_peso_por_nome(nome_arquivo_testes)
+# peso = eval(peso)
+# peso = tuple([round(i, 2) for i in peso])
+# peso = "({:.2f}, {:.2f})".format(peso[0], peso[1])
+# print("peso = ", peso)
+# print("tipo: ", type(peso))
+
+# nome_novo_arq_testes = "teste_" + peso + ".txt"
+# print("nome: ", nome_novo_arq_testes)
+
+# os.rename(nome_arquivo_testes, nome_novo_arq_testes)
 
 
+# ----------------------------------------------------------------------------------------------
+#  funcao para renomear os arquivos que Caio mandou
+# lista_arquivos = os.listdir("resultados_entropia_renomeados")
+
+# for arquivo in lista_arquivos:
+#     peso = fgn.obter_peso_por_nome(arquivo)
+#     peso = eval(peso)
+#     peso = tuple([round(i, 2) for i in peso])
+#     peso = "({:.2f}, {:.2f})".format(peso[0], peso[1])
+#     novo_nome = "resultados_entropia_" + peso + ".csv"
+
+#     nome_antigo_completo = os.path.join("resultados_entropia", arquivo)
+#     nome_novo_completo = os.path.join("resultados_entropia_renomeados", novo_nome)
+
+#     shutil.copyfile(nome_antigo_completo, nome_novo_completo)
+
+# print("-- arquivos renomeados --")
+# ----------------------------------------------------------------------------------------------
+
+# com 71 pesos utilizados nos parametros 'a' e 'b', teriamos:
+# 71 x 71 = 5041 arquivos diferentes, mas ha 5034, faltam 7 simualcoes a serem feitas
+# tenho que criar o codigo para varrer o dir e achar os pesos que nao foram usados em simulacoes
+
+# pesos_a = np.arange(0.1, 1.52, 0.02)
+# pesos_b = np.arange(0.1, 1.52, 0.02)
+
+# pesos_a = [round(a, 2) for a in pesos_a]
+# pesos_b = [round(b, 2) for b in pesos_b]
+
+# lista_pesos = [(a, b) for a in pesos_a for b in pesos_b]
+
+# lista_arquivos = os.listdir("resultados_entropia_renomeados")
+# print("qnt arquivos: ", len(lista_arquivos))
+
+# lista_arquivos_extras = []
+
+# arquivos_normais = 0
+# arquivos_extras = 0
+
+# for arquivo in lista_arquivos:
+#     i0 = arquivo.index("(")
+#     i1 = arquivo.index(")")
+#     peso = arquivo[i0:i1+1]
+#     peso = eval(peso)
+    # print(peso)
+    # peso_string = "({:.2f}, {:.2f})".format(peso[0], peso[1])
+    # nome_arquivo = "resultados_entropia_" + peso_string + ".csv"
+
+    # arquivos que vao ser copiados para o novo dir
+#     if peso in lista_pesos:
+#         arquivos_normais += 1
+
+#         nome_antigo = os.path.join("resultados_entropia_renomeados", arquivo)
+#         nome_novo = os.path.join("resultados_entropia_renomeados2", arquivo)
+
+#         shutil.copyfile(nome_antigo, nome_novo)
+
+#     else:
+#         arquivos_extras += 1
+#         lista_arquivos_extras.append(peso)
+
+# print("arquivos copiados: ", arquivos_normais)
+# print("arquivos extras: ", arquivos_extras, "\n")
+
+# print("arquivos nao copiados:")
+# for arquivo in lista_arquivos_extras:
+#     print(arquivo)
+
+
+# tp.ver_colormap_entropia("resultados_entropia_renomeados2")
+
+# ---------------------------------------------------------------------------
+# testes no modelo 2D
+
+# -- fazendo as simulacoes 2d (demorou quase um dia) --
+# pesos_contaminacao_agentes = (1, 0.1)
+# pesos_contaminacao_lugares = (1, 0.1)
+# path_relativo_folder_reusltados = "Testes\\2d_resultados1"
+# t2d.testes_pesos_escolha_lugar_media(pesos_contaminacao_agentes, pesos_contaminacao_lugares, path_relativo_folder_reusltados)
+
+# -- plotando os graficos dos resultados das simulacoes 2D--
+# nome_dir_origem = "2d_resultados1"
+# nome_dir_destino = "2d_resultados1_graficos"
+# tp.salvar_graficos_resultados(nome_dir_origem, nome_dir_destino)
+
+# ---------------------------------------------------------------------------
+# testes no modelo 1D - analisando os padroes gerados pela mudancas nos pesos de contaminacao
+
+# faznendo as simulacoes
+# path_folder = "Testes\\main\\resultados_contaminacao"
+# tp.teste_pesos_contaminacao_medio(path_folder)
+
+# print("\n---------------------------------\n")
+
+# fazendo os graficos
+# nome_folder_origem = "resultados_contaminacao"
+# nome_folder_destino = "resultados_contaminacao_graficos"
+# tp.salvar_graficos_resultados(nome_folder_origem, nome_folder_destino)
+
+# ---------------------------------------------------------------------------
+# testes para crair heatmap com entropia 
+
+# nome_dir_origem = "Testes\\main\\resultados_contaminacao"
+# nome_dir_destino = "Testes\\main\\resultados_contaminacao_graficos"
+# tp.heatmap_entropia_agentes(nome_dir_origem, 5, 5, nome_dir_destino)
+
+# ---------------------------------------------------------------------------
+# testes do modelo com variacoes nos pesos de contaminação 28/04
+
+# **** Teste 1 - peso escolha lugar = (0, 0) ****
+
+# path_relativo_folder_origem = "Testes\\main\\resultados_contaminacao_PeL(0, 0)"
+# qnt_time_steps = 4000
+# peso_escolha_lugar = (0, 0)
+# tp.teste_pesos_contaminacao_medio(path_relativo_folder_origem, qnt_time_steps=qnt_time_steps, peso_escolha_lugar=peso_escolha_lugar)
+
+# path_relativo_folder_destino = "Testes\\main\\resultados_contaminacao_PeL(0, 0)_graficos"
+# tp.salvar_graficos_resultados(path_relativo_folder_origem, path_relativo_folder_destino)
+
+
+# **** Teste 2 - peso escolha lugar = (0.5, 0.5) ****
+
+# path_relativo_folder_origem = "Testes\\main\\resultados_contaminacao_PeL(0.5, 0.5)"
+# qnt_time_steps = 4000
+# peso_escolha_lugar = (0.5, 0.5)
+# tp.teste_pesos_contaminacao_medio(path_relativo_folder_origem, qnt_time_steps=qnt_time_steps, peso_escolha_lugar=peso_escolha_lugar)
+
+# path_relativo_folder_destino = "Testes\\main\\resultados_contaminacao_PeL(0.5, 0.5)_graficos"
+# tp.salvar_graficos_resultados(path_relativo_folder_origem, path_relativo_folder_destino)
+
+
+
+# **** Teste 3 - peso escolha lugar = (0.1, 1.0) ****
+
+# path_relativo_folder_origem = "Testes\\main\\resultados_contaminacao_PeL(0.1, 1.0)"
+# qnt_time_steps = 4000
+# peso_escolha_lugar = (0.1, 1.0)
+# tp.teste_pesos_contaminacao_medio(path_relativo_folder_origem, qnt_time_steps=qnt_time_steps, peso_escolha_lugar=peso_escolha_lugar)
+
+# path_relativo_folder_destino = "Testes\\main\\resultados_contaminacao_PeL(0.1, 1.0)_graficos"
+# tp.salvar_graficos_resultados(path_relativo_folder_origem, path_relativo_folder_destino)
+
+
+
+# **** Teste 4 - peso escolha lugar = (1.0, 0.1) ****
+
+path_relativo_folder_origem = "Testes\\main\\resultados_contaminacao_PeL(1.0, 0.1)"
+qnt_time_steps = 4000
+peso_escolha_lugar = (1.0, 0.1)
+tp.teste_pesos_contaminacao_medio(path_relativo_folder_origem, qnt_time_steps=qnt_time_steps, peso_escolha_lugar=peso_escolha_lugar)
+
+path_relativo_folder_destino = "Testes\\main\\resultados_contaminacao_PeL(1.0, 0.1)_graficos"
+tp.salvar_graficos_resultados(path_relativo_folder_origem, path_relativo_folder_destino)
+
+# ----------------------------------------------------------------
+# so rodei o(s) de cima, o(s) de baixo tem q deixar pra rodar ainda
