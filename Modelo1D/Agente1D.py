@@ -65,7 +65,7 @@ class Agente1D:
         pesoDistancia = pesos[1]        # Peso B
 
         # é a lista que contém o peso de cada lugar ser sorteado
-        # a ordem importa, peso da pos[0] é o peso do lugar na pos[0] na lista lugares
+        # a ordem importa: peso da pos[0] é o peso do lugar na pos[0] na lista lugares
         listaPesos = []
 
         for lugar in listaLugares:
@@ -128,4 +128,3 @@ class Agente1D:
     def resgatarEstadoInicial(self):
         self.orientacaoLatente = self.orientcaoLatenteInicial
         self.orientacaoAtual = self.orientacaoAtualInicial
-

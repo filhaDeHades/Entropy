@@ -11,9 +11,13 @@ import cores
 
 class GridV2Fast:
 
-    def __init__(self, qnt_linhas, qnt_colunas, matriz_layout=None, qnt_orientacoes=11):
+    def __init__(self, qnt_linhas, qnt_colunas, qnt_agentes, qnt_lugares, matriz_layout=None, 
+                qnt_orientacoes=11, range_possiveis_orientacoes=(0, 1100, 100)):
         self.qnt_linhas = qnt_linhas
         self.qnt_colunas = qnt_colunas
+        self.qnt_agentes = qnt_agentes
+        self.qnt_lugares = qnt_lugares
+        self.range_possiveis_orientacoes = range_possiveis_orientacoes
 
         self.array_celulas_grid = []
 
@@ -22,8 +26,12 @@ class GridV2Fast:
         else:
             self.obter_array_celulas_grid_definido(matriz_layout)
 
-        self.array_agentes = []
+        self.array_agentes = [] 
+        self.gerar_agentes_aleatorios_v3(self.qnt_agentes)
         self.array_lugares = []
+        self.gerar_lugares_aleatorios_v3()
+        # self.gerar_lugares_aleatorios_v4(self.qnt_lugares)
+
         self.lista_caminhos = []
 
         self.qnt_orientacoes = qnt_orientacoes
@@ -83,8 +91,9 @@ class GridV2Fast:
             x_inicial = celula_inicial.grid_x
             y_inicial = celula_inicial.grid_y
 
-            possiveis_orientacoes = list(range(0, 1100, 100))
-            orientacao_escolhida = random.choice(possiveis_orientacoes)
+            orientacao_incial = self.range_possiveis_orientacoes[0]
+            orientacao_final = self.range_possiveis_orientacoes[1]
+            orientacao_escolhida = random.randint(orientacao_incial, orientacao_final)
 
             novo_agente = AgenteV2Fast(self, x_inicial, y_inicial, orientacao_latente=orientacao_escolhida,
                                        orientacao_atual=orientacao_escolhida)
@@ -94,11 +103,19 @@ class GridV2Fast:
         array_agentes = np.array(lista_agentes)
         self.array_agentes = array_agentes
 
-    def gerar_lugares_aleatorios_v2(self, qnt_lugares, tamanho_max_lugar, sem_cor_repetida=False, sem_orientacao_repetida=False):
+    def gerar_lugares_aleatorios_v2(self, qnt_lugares, ajustar_tam_lugar=True, fracao_espaco_vazio=0.5, tamanho_max_lugar=5, sem_cor_repetida=False, sem_orientacao_repetida=False):
+
+        tamanho_maximo_lugar = tamanho_max_lugar
+
+        if ajustar_tam_lugar == True:
+            tam_total_grid = self.qnt_linhas * self.qnt_colunas * fracao_espaco_vazio
+            tamanho_maximo_lugar = tam_total_grid // self.qnt_lugares
+        
+        print("tamanho maximo do lugar: ", tamanho_maximo_lugar)
 
         lista_lugares = []
         lista_cores = cores.lista_cores_coloridas[:]
-        lista_orientacoes = list(range(0, 1100, 100))
+        lista_orientacoes = list(self.range_possiveis_orientacoes)
 
         for lugar in range(qnt_lugares):
             celula_aceitavel = False
@@ -116,7 +133,7 @@ class GridV2Fast:
             lista_celulas_escolhidas = []
             tamanho_lugar_temp = 0
 
-            while tamanho_lugar_temp < tamanho_max_lugar:           # sorteando as celulas vizinhas para forar o lugar
+            while tamanho_lugar_temp < tamanho_maximo_lugar:           # sorteando as celulas vizinhas para formar o lugar
                 lista_celulas_escolhidas.append(celula_escolhida)
                 lista_vizinhos = self.obter_nodulos_vizinhos(celula_escolhida)
                 set_vizinhos = None
@@ -149,9 +166,121 @@ class GridV2Fast:
                                      cor=cor_escolhida, orientacao=orientacao_escolhida)
 
             lista_lugares.append(lugar_novo)
+            print("lugar {} criado".format(lugar_novo.id))
 
         self.array_lugares = np.array(lista_lugares)
 
+    def gerar_lugares_aleatorios_v3(self):
+
+        # nessa funcao cada lugar tem exatamente 1 quadrado
+        
+        lista_lugares = []
+
+        orientacao_inicial = self.range_possiveis_orientacoes[0]
+        orientacao_final = self.range_possiveis_orientacoes[1]
+        
+        for celula in self.array_celulas_grid:
+            lista_coordenadas = [celula.pos_grid]
+            orientacao = random.randint(orientacao_inicial, orientacao_final)
+            novo_lugar = LugarV2Fast(self, lista_coordenadas=lista_coordenadas, orientacao=orientacao)
+            lista_lugares.append(novo_lugar)
+
+        self.array_lugares = np.array(lista_lugares)
+
+    def gerar_lugares_aleatorios_v4(self, qnt_lugares, ajustar_tam_lugar=True, fracao_espaco_vazio=0.5, tamanho_max_lugar=5, sem_cor_repetida=False, sem_orientacao_repetida=False):
+        tamanho_maximo_lugar = tamanho_max_lugar
+
+        if ajustar_tam_lugar == True:
+            tam_total_grid = self.qnt_linhas * self.qnt_colunas * fracao_espaco_vazio
+            tamanho_maximo_lugar = tam_total_grid // self.qnt_lugares
+        
+        # print("tamanho maximo do lugar: ", tamanho_maximo_lugar)
+
+        lista_lugares = []
+        lista_cores = cores.lista_cores_coloridas[:]
+        lista_orientacoes = list(self.range_possiveis_orientacoes)
+        lista_celulas_livres = [celula for celula in self.array_celulas_grid if celula.andavel is True]
+        # print("qnt celulas livres: ", len(lista_celulas_livres))
+
+        for lugar in range(qnt_lugares):
+
+            pos_aleatoria = random.randint(0, len(lista_celulas_livres))
+            celula_inicial = lista_celulas_livres.pop(pos_aleatoria)
+
+            lista_celulas_escolhidas = [celula_inicial]
+            tamanho_lugar_atual = 1
+
+            indice_celula_referencia = 0
+            
+            # fazendo o loop e obtendo a lista de coordenas para o lugar 
+            while (tamanho_lugar_atual < tamanho_maximo_lugar) and (indice_celula_referencia < len(lista_celulas_escolhidas)):
+                
+                celula_referencial = lista_celulas_escolhidas[indice_celula_referencia]
+                lista_vizinhos = self.obter_nodulos_vizinhos(celula_referencial)
+                
+                # retirando da lista de vizinhos as celulas q ja foram adicionadas
+                # na lista de celulas para lista de coordendas do lugar
+                lista_vizinhos = list(set(lista_vizinhos) - set(lista_celulas_escolhidas))
+
+                if len(lista_vizinhos) != 0:
+                    vizinho = random.choice(lista_vizinhos)
+                    lista_celulas_escolhidas.append(vizinho)
+                    
+                    # buscando o vizinho para retirar da lista das celulas livres
+                    for i in range(len(lista_celulas_livres)):
+                        if (vizinho.pos_grid == lista_celulas_livres[i].pos_grid):
+                            lista_celulas_livres.pop(i)
+                            break
+                    
+                    tamanho_lugar_atual += 1
+                else:
+                    indice_celula_referencia += 1
+
+
+            # obtendo a lista de coordenadas
+            lista_coordenadas = [celula.pos_grid for celula in lista_celulas_escolhidas]
+
+            # obtendo orientacao do lugar
+            orientacao_inicial = self.range_possiveis_orientacoes[0]
+            orientacao_final = self.range_possiveis_orientacoes[1]
+            orientacao = random.randint(orientacao_inicial, orientacao_final)
+
+            novo_lugar = LugarV2Fast(self, lista_coordenadas=lista_coordenadas, orientacao=orientacao)
+            lista_lugares.append(novo_lugar)
+            print("lugar {} criado!".format(novo_lugar.id))
+            print("o lugar feito tem tamanho: ", len(lista_celulas_escolhidas))
+            # print("qnt de celulas livres: ", len(lista_celulas_livres))
+            print("-------------\n\n")
+
+        self.array_lugares = np.array(lista_lugares)
+
+
+# testando se os lugares tem todos coordenadas diferentes
+# delete me
+    def teste_lugares_certo(self):
+        
+        lista_lugares = list(self.array_lugares)
+
+        while len(lista_lugares) > 0:
+
+            lugar_analisado = lista_lugares.pop(0)
+            lista_coordenadas1 = list(lugar_analisado.array_coordenadas)
+
+            for lugar in lista_lugares:
+                lista_coordenadas2 = list(lugar.array_coordenadas)
+                
+                for c1 in lista_coordenadas1:
+                    for c2 in lista_coordenadas2:
+                        if c1[0] == c2[0] and c1[1] == c2[1]:
+                            print("erro")
+                            print("coordenada igual: ", c1)
+                            print("lugar: ", lugar_analisado.id)
+                            print("lugar: ", lugar.id)
+                            return
+            
+            print("lugar {}: ok".format(lugar_analisado.id))
+        
+    
     def atualizar_status_andavel_celula(self, x, y, status):
         pos_array = y * self.qnt_colunas + x
         self.array_celulas_grid[pos_array].andavel = status
@@ -245,7 +374,7 @@ class GridV2Fast:
                                                                                         lista_orientacoes_possiveis)
         return dict_ocorrencia_orientacoes
 
-    def calcular_entropia(self):
+    def calcular_entropia_agentes(self):
 
         lista_orientacoes_agentes = [math.ceil(agente.orientacao_latente / 100) * 100 for agente in self.array_agentes]
         dict_orientacoes_e_ocorrencias = fst.obter_dict_contagem_elementos_repetidos_v2(lista_orientacoes_agentes)

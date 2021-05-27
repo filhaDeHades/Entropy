@@ -72,9 +72,12 @@ class LugarV2Fast:
 
         return coordenada_escolhida
 
-    def contaminacao_lugar(self, peso_lugar=9, peso_agentes=1, mudar_cor=True, grid=None):
+    def contaminacao_lugar(self, pesos_contaminacao=(1, 1), mudar_cor=False, grid=None):
 
-        soma_pesos = peso_lugar + peso_agentes
+        peso_lugar = pesos_contaminacao[0]
+        peso_agentes = pesos_contaminacao[1]
+
+        soma_pesos = sum(pesos_contaminacao)
         lista_orientacao_agentes = [i.orientacao_latente for i in self.lista_agentes_presentes]
 
         soma_orientacoes_agentes = sum(lista_orientacao_agentes)

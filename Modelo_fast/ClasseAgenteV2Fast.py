@@ -45,20 +45,12 @@ class AgenteV2Fast:
         self.pos_grid = pos_nova_grid
         self.atualizar_celula_grid(grid, self.grid_x, self.grid_y)
 
-    def contaminacao_agente(self, orientacao_do_lugar, pesos, modelo_fabiano=False):
+    def contaminacao_agente(self, orientacao_do_lugar, pesos):
+        a, b = pesos[0], pesos[1]
+        soma_pesos = a + b
 
-        if modelo_fabiano is False:
-            a, b, c = pesos[0], pesos[1], pesos[2]
-            soma_pesos = sum(pesos)
-
-            contaminacao = int((a*self.orientacao_latente + b*self.orientacao_atual + c*orientacao_do_lugar)/soma_pesos)
-            self.orientacao_latente = contaminacao
-        else:
-            a, b = pesos[0], pesos[1]
-            soma_pesos = a + b
-
-            contaminacao = int((a*self.orientacao_latente + b*orientacao_do_lugar) / soma_pesos)
-            self.orientacao_latente = contaminacao
+        contaminacao = int((a*self.orientacao_latente + b*orientacao_do_lugar) / soma_pesos)
+        self.orientacao_latente = contaminacao
 
     def sortear_nova_orientacao(self):
         possiveis_orientacoes = list(range(0, 1100, 100))
@@ -178,6 +170,40 @@ class AgenteV2Fast:
         lista_pesos_final = lista_pesos / norma
         lugar_escolhido = fst.sorteio_com_pesos(lista_lugares, lista_pesos_final)[0]
         return lugar_escolhido
+
+    @staticmethod
+    def sorteioComPesos(listaPossibilidades, listaPesos, qntElementosSorteados=1):
+        listaElementosSorteados = random.choices(listaPossibilidades, weights=listaPesos, k=qntElementosSorteados)
+        return listaElementosSorteados
+
+    # funcao importada do modelo 1D, so esta sendo adaptada para o model 2D
+    def escolher_lugar(self, listaLugares, pesos):
+        pesoDifOrientacao = pesos[0]
+        pesoDistancia = pesos[1]
+
+        # é a lista que contém o peso de cada lugar ser sorteado
+        # a ordem importa, peso da pos[0] é o peso do lugar na pos[0] na lista lugares
+        listaPesos = []
+
+        for lugar in listaLugares:
+            difOrientacao = abs(self.orientacao_latente - lugar.orientacao)
+            coordenada_principal = lugar.achar_coordenada_principal(self.pos_grid)
+            distancia = fst.obter_distancia_manhattan(self.pos_grid, coordenada_principal)
+            
+            fatorDifOrientacao = pesoDifOrientacao * difOrientacao
+            fatorDistancia = pesoDistancia * distancia
+
+            expoente = fatorDifOrientacao + fatorDistancia
+            peso = math.exp(-expoente)
+            listaPesos.append(peso)
+        
+        somaListaPesos = sum(listaPesos)
+        # normalização
+        listaPesosFinal = [i/somaListaPesos for i in listaPesos]
+        # print("lista pesos final: ", sum(listaPesosFinal))
+
+        lugarEscolhido = self.sorteioComPesos(listaLugares, listaPesosFinal)[0]
+        return lugarEscolhido
 
     def resgatar_estado_inicial(self):
         self.grid_x = self.grid_x_inicial

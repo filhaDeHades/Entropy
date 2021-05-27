@@ -4,6 +4,8 @@ import Testes.main.testes_modelo2D as t2d
 import numpy as np
 import shutil
 import os
+import Modelo_5.apresentacoes as m5ap
+import Testes.main.visualizacao as v5
 
 # so pra rodar esse teste Caio, vou deixar os testes q eu to rodando comentados pra vc
 # tp.testes_colormap_entropia_v2()
@@ -183,14 +185,23 @@ import os
 
 
 # **** Teste 4 - peso escolha lugar = (1.0, 0.1) ****
+# - esse teste foi rodado por Caio, ele mandou os resultados para a minha maquina junto com os graficos
 
-path_relativo_folder_origem = "Testes\\main\\resultados_contaminacao_PeL(1.0, 0.1)"
-qnt_time_steps = 4000
-peso_escolha_lugar = (1.0, 0.1)
-tp.teste_pesos_contaminacao_medio(path_relativo_folder_origem, qnt_time_steps=qnt_time_steps, peso_escolha_lugar=peso_escolha_lugar)
+# path_relativo_folder_origem = "Testes\\main\\resultados_contaminacao_PeL(1.0, 0.1)"
+# qnt_time_steps = 4000
+# peso_escolha_lugar = (1.0, 0.1)
+# tp.teste_pesos_contaminacao_medio(path_relativo_folder_origem, qnt_time_steps=qnt_time_steps, peso_escolha_lugar=peso_escolha_lugar)
 
-path_relativo_folder_destino = "Testes\\main\\resultados_contaminacao_PeL(1.0, 0.1)_graficos"
-tp.salvar_graficos_resultados(path_relativo_folder_origem, path_relativo_folder_destino)
+# path_relativo_folder_destino = "Testes\\main\\resultados_contaminacao_PeL(1.0, 0.1)_graficos"
+# tp.salvar_graficos_resultados(path_relativo_folder_origem, path_relativo_folder_destino)
 
 # ----------------------------------------------------------------
-# so rodei o(s) de cima, o(s) de baixo tem q deixar pra rodar ainda
+# 18/05: fazendo testes com o modelo 2d para ver se esta tudo certo
+
+# t2d.teste_modelo_2d()
+
+# ----------------------------------------------------------------
+# 27/05/2021: testando Modelo 5 para apresentacoes
+
+# m5ap.simulacao_3()
+v5.visualizacao()
