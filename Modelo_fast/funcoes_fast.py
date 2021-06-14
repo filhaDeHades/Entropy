@@ -264,11 +264,12 @@ def obter_path_completo_arquivo_v2(nome_arquivo, tipo_arquivo):
     return nome_arquivo_completo
 
 
+#Observar o caminho que está sendo utilizado
 def obter_path_arquivos_base():
     path_arquivos_base = "C:\\Users\\lucas\\PycharmProjects\\Pratica_IC\\Arquivos_base"
     return path_arquivos_base
 
-
+#Observar o caminho que está sendo utilizado
 def obter_path_arquivos_lugares():
     path_arquivos_lugares = "C:\\Users\\lucas\\PycharmProjects\\Pratica_IC\\Arquivos_lugares"
     return path_arquivos_lugares
