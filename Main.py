@@ -7,6 +7,8 @@ import os
 import Modelo_5.apresentacoes as m5ap
 import Testes.main.visualizacao as v5
 
+#t2d.teste_modelo_2d()
+
 # so pra rodar esse teste Caio, vou deixar os testes q eu to rodando comentados pra vc
 # tp.testes_colormap_entropia_v2()
 
@@ -204,4 +206,4 @@ import Testes.main.visualizacao as v5
 # 27/05/2021: testando Modelo 5 para apresentacoes
 
 # m5ap.simulacao_3()
-v5.visualizacao()
+# v5.visualizacao()
