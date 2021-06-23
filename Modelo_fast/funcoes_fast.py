@@ -163,7 +163,7 @@ def escolher_lugar_mais_parecido_v2(agente, lista_lugares):
                 lista_lugares_menor_dif_ort.append(lugar)
 
     # caso a lista de lugares possiveis seja composta por um lugar, este lugar eh escolhido
-    if len(lista_lugares_menor_dif_ort) == 0:
+    if len(lista_lugares_menor_dif_ort) == 0: # ????? ZERO FAZ ALGUM SENTIDO ?????
         return lista_lugares_menor_dif_ort[0]
 
     # caso contrario, sortendo igualmente os lugares que tem a mesma orientação

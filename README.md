@@ -35,4 +35,4 @@ Para conseguir utilizar o programa no seu computador será necessário fazer alg
 3. **...**
 
 ## **Documentação**
-Para ver a documentação do projeto basta clicar [nesse link](https://github.com/LucasMartelloNogueira/Entropy/blob/main/Documentation.md)
+Para ver a documentação do projeto basta clicar [nesse link](Documentation.md).
