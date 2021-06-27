@@ -65,6 +65,7 @@ Modelo de simulação 2D com resultados rápidos, sem representação gráfica.
     - [Classe Celula Grid Modelo Fast](#classe-celula-grid-modelo-fast)
     - [Classe Grid Modelo Fast](#classe-grid-modelo-fast)
     - [Classe Lugar Modelo Fast](#classe-lugar-modelo-fast)
+* [Funções](#funções-do-modelo-fast)
 * [Gráficos](#trabalhando-com-gráficos)
     - [Gerar Gráficos](#gerar-gráficos)
     - [Gráficos do Matplotlib](#gráficos-do-matplotlib)
@@ -545,7 +546,7 @@ Modelo de simulação 2D com resultados rápidos, sem representação gráfica.
 
         **caminho**: Valor padrão: None.
 
-#### Funções do Modelo Fast
+### Funções do Modelo Fast
 -> `funcoes_fast.py`
 
 1. Funções Fast
@@ -600,11 +601,15 @@ Modelo de simulação 2D com resultados rápidos, sem representação gráfica.
         **coordenada2**: Lista contendo as segundas coordenadas. - _list_.
 
     - `obter_grid_manual(linhas, colunas):`
-        **linhas**:
+        Cria um grid com o número de linhas e colunas informados. **Retorna o grid**.
 
-        **colunas**:
+        **linhas**: Número de linhas do grid. - _int_.
+
+        **colunas**: Número de colunas do grid. - _int_.
 
     - `escolher_lugar_menor_e(agente, lista_lugares):`
+        Escolhe o lugar a partir da menor distância euclidiana. **Retorna o lugar com a menor distância euclidiana**.
+
         **agente**: Instância da Classe AgenteV2Fast. - _AgenteV2Fast_.
 
 
@@ -748,39 +753,51 @@ Modelo de simulação 2D com resultados rápidos, sem representação gráfica.
     - `transformar_resultado_em_linha_csv(dict_resultado, nome_arquivo_destino):`
         Pega os resultados que estão em um dicionário, os formata e adiciona a um arquivo .csv.
 
-        **dict_resultado**: Dicionário contendo as informações a serem transferidas.
+        **dict_resultado**: Dicionário contendo as informações a serem transferidas. - _dict_.
 
-        **nome_arquivo_destino**:
+        **nome_arquivo_destino**: Nome do arquivo .csv cujas informações serão colocadas. Caso o arquivo não exista será criado um arquivo com o nome informado. - _string_.
 
     - `criar_ou_atualizar_arquivo_resultados(path, nome_arquivo_resultados, dict_resultado):`
-        **path**:
+        Verifica se existe um arquivo para os resultados, caso exista, atualiza os dados do arquivo, caso contrário, cria um arquivo e insere as informações.
 
-        **nome_arquivo_resultados**:
+        **path**: Caminho para encontrar o arquivo. - _string_.
 
-        **dict_resultado**:
+        **nome_arquivo_resultados**: Nome do arquivo que contém os resultados. - _string_.
+
+        **dict_resultado**: Dicionário contendo o resultado da simulação. - _dict_.
 
     - `sorteio_com_pesos(lista_possibilidades, lista_pesos, qnt_elementos_sorteados=1):`
-        **lista_possibilidades**:
+        Sorteia elementos levando em consideração o peso de cada elemento para o sorteio. **Retorna uma lista com os elementos sorteados**.
 
-        **lista_pesos**:
+        **lista_possibilidades**: Lista contendo os elementos a serem sorteados. - _list_.
 
-        **qnt_elementos_sorteados**: Valor padrão: 1. - _int_.
+        **lista_pesos**: Lista contendo o peso de cada elemento. - _list_.
+
+        **qnt_elementos_sorteados**: A quantidade de elementos que devem ser sorteados. Valor padrão: 1. - _int_.
 
     - `obter_lista_media(lista_original):`
-        **lista_original**:
+        **Retorna uma lista contendo a media dos valores obtidos através de recortes da lista original**.
+
+        **lista_original**: Lista contendo os valores dos quais a média deve ser retirada. - _list_.
 
     - `update_orientacao_cor(dict_orientacoes_cores, orientacao_analisada, qnt_orientacoes=11):`
-        **dict_orientacoes_cores**:
+        Atualiza a cor do elemento de acordo com a sua orientação. **Retorna a cor atualizada**.
 
-        **orientacao_analisada**:
+        **dict_orientacoes_cores**: Dicionário contendo as cores atribuidas a cada orientação. - _dict_.
 
-        **qnt_orientacoes**: Valor padrão: 11. - _int_.
+        **orientacao_analisada**: A orientação cuja cor deve ser atualizada. - _int_.
+
+        **qnt_orientacoes**: A quantidade de orientações que estão sendo utilizadas na simulação. Valor padrão: 11. - _int_.
 
     - `descobir_dif_media(lista):`
-        **lista**:
+        Descobre a média entre as diferenças. **Retorna a lista contendo as diferenças**.
+
+        **lista**: Lista contendo os valores dos quais deve ser verificada a diferença. - _list_.
 
     - `descobrir_num_casa_decimais(n):`
-        **n**:
+        Descobre o numero de casas decimais de que um float tem. **Retorna o número de casas decimais de um float**.
+
+        **n**: Float do qual se quer saber o número de casas decimais. - _float_.
 
 
 ### Trabalhando com Gráficos
