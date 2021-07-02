@@ -51,7 +51,7 @@ Para ver a documentação do projeto basta clicar [nesse link](Documentation.md)
     **Nomenclatura das variáveis (Em andamento):**
     - Separação das palavras por "_".
     - Utilização apenas de letras minúsculas.
-    - Caso a variável seja uma tupla, lista, dicionário ou set a primeira palavra do nome deve ser respectivamente, tupl, list, dict ou set.
+    - Caso a variável seja uma tupla, lista, matriz, dicionário ou set a primeira palavra do nome deve ser respectivamente, tupl, list, mtrx, dict ou set.
     - Exemplo:
         - nome_da_variavel
         - variavel_2

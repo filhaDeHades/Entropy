@@ -44,6 +44,192 @@ Modelo de simulação 2D com representação gráfica.
 ### **Funções Modelo 5**
 
 #### -> `funcoes_arquivos.py`
+1. **Funções para Arquivos:**
+    Contém as funções importantes para que a simulação ocorra.
+        Importa:
+
+        - GridV2Fast from Modelo_fast.ClasseGridV2Fast
+        - LugarV2Fast from Modelo_fast.ClasseLugarV2Fast
+        - Modelo_fast.funcoes_fast as fst
+        - numpy as np
+        - random
+        - cores
+        - os
+    
+    - `gerar_nome_arquivo_lugares(nome_arquivo_base):`
+        Atualiza o nome de arquivos contendo lugares que serão usados na simulação para que fiquem de acordo com o padrão estipulado. **Retorna o arquivo renomeado**.
+
+        **nome_arquivo_base**: Nome do arquivo que deve ser renomeado. - _string_.
+
+    - `obter_path_completo_arquivo_lugares(nome_arquivo_lugares):`
+        Sabendo o nome do arquivo contendo os lugares que serão usados na simulação, **retorna o caminho completo até o arquivo**.
+
+        **nome_arquivo_lugares**: Nome do arquivo que contém os lugares. - _string_.
+
+    - `gerar_nome_arquivo_caminhos(nome_arquivo_base):`
+        Atualiza o nome de arquivos contendo os caminhos entre os lugares usados na simulação para que fiquem de acordo com o padrão estipulado. **Retorna o arquivo renomeado**.
+
+        **nome_arquivo_base**: Nome do arquico que deve ser renomeado. - _string_.
+
+    - `obter_path_completo_arquivo_caminhos(nome_arquivo_caminhos):`
+        Sabendo o nome do arquivo contendo os caminhos enre os lugares usados na simulação, **retorna o caminho completo até o arquivo**.
+
+        **nome_arquivo_caminhos**: Nome do arquivo contendo os caminhos entre os lugares. - _string_.
+
+    - `gerar_nome_arquivo_resultados(nome_arquivo_base):`
+        Atualiza o nome de arquivos contendo os resultados da simulação para que fiquem de acordo com o padrão estipulado. **Retorna o arquivo renomeado**.
+
+        **nome_arquivo_base**: Nome do arquivo que deve ser renomeado. - _string_.
+
+    - `obter_path_completo_arquivo_resultados(nome_arquivo_resultados):`
+        Sabendo o nome do arquivo contendo resultados da simulação, **retorna o caminho completo até o arquivo**.
+
+        **nome_arquivo_resultados**: Nome do arquivo contendo os resultados. - _string_.
+
+    - `gerar_nome_arquivo_resultados_ts(nome_arquivo_base, num_sim):`
+
+        **nome_arquivo_base**:. - _string_.
+
+        **num_sim**:
+
+    - `gerar_nome_arquivos_agentes_ts(nome_arquivo_agentes, time_step_atual):`
+
+        **nome_arquivo_agentes**:. - _string_.
+
+        **time_step_atual**:
+
+    - `atualizar_nome_arquivo_lugares_ts(nome_arquivo_lugares, time_step_atual):`
+        Função sem conteúdo.
+
+        **nome_arquivo_lugares**:. - _string_.
+
+        **time_step_atual**:
+
+    - `atualizar_nome_arquivo_agentes_ts(nome_arquivo_agentes, time_step_atual):`
+        Função sem conteúdo.
+
+        **nome_arquivo_agentes**:. - _string_.
+
+        **time_step_atual**:
+
+    - `criar_arquivo_lugares_tipo_1(nome_arquivo_base, qnt_linhas, qnt_colunas, path_arquivos_base=None, path_arquivos_lugares=None):`
+        Cria um arquivo de lugares do tipo 1 (contem somente matriz binaria (0 ou 1)).
+
+        **nome_arquivo_base**: Nome do arquivo do qual as informações devem ser retiradas. - _string_.
+
+        **qnt_linhas**: Quantidade de linhas que a matriz dos lugares deve ter. - _int_.
+
+        **qnt_colunas**: Quantidade de colunas que a matriz dos lugares deve ter. - _int_.
+
+        **path_arquivos_base**: Caminho para os arquivos base. Valor Padrão: None. - _string_.
+
+        **path_arquivos_lugares**: Caminho para os arquivos de lugares. Valor Padrão: None. - _string_.
+
+    - `criar_arquivo_lugares_tipo_1_v2(nome_arquivo_base, qnt_linhas, qnt_colunas):`
+        Função obsoleta.
+
+        **nome_arquivo_base**:
+
+        **qnt_linhas**:
+
+        **qnt_colunas**:
+
+    - `criar_arquivo_lugares_tipo_2(nome_arquivo_base, path_arquivos_base=None, path_arquivos_lugares=None):`
+        Cria um arquivo de lugares do tipo 2 (contem info sobre o id dos lugares (podem ser quantos ids forem necessarios)).
+
+        **nome_arquivo_base**: Nome do arquivo do qual as informações devem ser retiradas. - _string_.
+
+        **path_arquivos_base**: Caminho para os arquivos base. Valor Padrão: None. - _string_.
+
+        **path_arquivos_lugares**: Caminho para os arquivos de lugares. Valor Padrão: None. - _string_.
+
+    - `obter_tam_grid_pelo_nome_arquivo(nome_arquivo_base):`
+        Sabendo que o nome do arquivo contém o tamanho do grid, obtém e **retorna uma lista contendo a quantidade de linhas e colunas**.
+
+        **nome_arquivo_base**: Nome do arquivo do qual as informações devem ser retiradas. - _string_.
+
+    - `gerar_nome_arquivo_com_info_tamanho(nome_arquivo_original, qnt_linhas, qnt_colunas):`
+        Gera um arquivo cujo nome contém a o tamanho do grid. **Retorna o nome atualizado do arquivo**.
+
+        **nome_arquivo_original**: Nome do arquivo que deve ser renomeado. - _string_.
+
+        **qnt_linhas**: Quantidade de linhas do grid. - _int_.
+
+        **qnt_colunas**: Quantidade de colunas do grid. - _int_.
+
+    - `obter_tipo_grid_pelo_nome_arquivo(nome_arquivo_base):`
+        Obter o tipo (1, 2, ou 3) do arquivo a partir do nome. **Retorna o tipo do arquivo**.
+
+        **nome_arquivo_base**:  Nome do arquivo do qual as informações devem ser retiradas. - _string_.
+
+    - `gerar_nome_arquivo_com_info_tipo(nome_arquivo_original, numero_tipo):`
+        Gera um arquivo cujo nome contém a o tipo de informação encontrada. **Retorna o nome atualizado do arquivo**.
+
+        **nome_arquivo_original**: Nome do arquivo que deve ser renomeado. - _string_.
+
+        **numero_tipo**: O número correspondente ao tipo do arquivo. - _int_.
+
+    - `copiar_e_renomear_arquivo(nome_arquivo_original, nome_arquivo_final):`
+        Copia um arquivo para um arquivo de nome diferente.
+
+        **nome_arquivo_original**: Nome do arquivo que deve ser copiado. - _string_.
+
+        **nome_arquivo_final**: Nome do arquivo que receberá os dados copiados. - _string_.
+
+    - `gerar_nome_arquivo_base(nome_arquivo_original, qnt_linhas, qnt_colunas, numero_tipo):`
+        Gera um arquivo cujo nome contém a o tamanho do grid e o tipo de informações encontradas no arquivo. **Retorna o nome atualizado do arquivo**.
+
+        **nome_arquivo_original**: Nome do arquivo que deve ser renomeado. - _string_.
+
+        **qnt_linhas**: Quantidade de linhas do grid. - _int_.
+
+        **qnt_colunas**: Quantidade de colnas do grid. - _int_.
+
+        **numero_tipo**: O número correspondente ao tipo do arquivo. - _int_.
+
+    - `obter_path_completo_arquivo_base(nome_arquivo_base):`
+        Sabendo o nome do arquivo base, **retorna o caminho completo até o arquivo**.
+
+        **nome_arquivo_base**:  Nome do arquivo base. - _string_.
+
+    - `criar_arquivo_base(nome_arquivo_original, nome_arquivo_base):`
+        Tendo como base um arquivo e definindo um nome, a função cria um arquivo base.
+
+        **nome_arquivo_original**: Nome do arquivo original. - _string_.
+
+        **nome_arquivo_base**: Nome do arquivo base. - _string_.
+
+    - `criar_arquivo_lugares(nome_arquivo_base, path_arquivos_base=None, path_arquivos_lugares=None):`
+        Cria um arquivo de lugares a partir de um arquivo base.
+
+        **nome_arquivo_base**: Nome do arquivo base para a criação de um arquivo de lugares. - _string_.
+
+        **path_arquivos_base**: Caminho a ser percorrido até o arquivo base. Valor padrão: None. - _string_.
+
+        **path_arquivos_lugares**: Caminho a ser percorrido até o arquivo de lugares. Valor padrão: None. - _string_.
+
+    - `corrigir_arquivo_invertido(nome_arquivo_invertido, nome_arquivo_certo):`
+        Corrige um arquivo com valores invertidos.
+
+        **nome_arquivo_invertido**: Nome do arquivo cujos valores estão invertidos. - _string_.
+
+        **nome_arquivo_certo**: Nome do arquivo que receberá os valores corretos. - _string_.
+
+    - `contar_qnt_linhas_arq(nome_arq):`
+        Conta quantas linhas um arquivo tem.
+
+        **nome_arq**: Nome do arquivo cujas linhas sweão contadas. - _string_.
+
+    - `recebimento_arquivo_original(nome_arquivo_original, qnt_linhas, qnt_colunas, numero_tipo):`
+        Ao receber o arquivo original, cria um arquivo de lugares.
+
+        **nome_arquivo_original**: Nome do arquivo original. - _string_.
+
+        **qnt_linhas**: Quantidade de linhas que devem ser criadas. - _int_.
+
+        **qnt_colunas**: Quantidade de colunas que devem ser criadas. - _int_.
+
+        **numero_tipo**: Número correspondente ao tipo do arquivo que será criado. - _int_.
 
 #### -> `funcoes2.py`
 
@@ -234,9 +420,9 @@ Modelo de simulação 2D com resultados rápidos, sem representação gráfica.
     Representa o grid onde ocorre a simulação.
     Importa:
 
-        -  Modelo_fast.ClasseCelulaGridV2Fast import CelulaGridV2Fast
-        - Modelo_fast.ClasseAgenteV2Fast import AgenteV2Fast
-        - Modelo_fast.ClasseLugarV2Fast import LugarV2Fast
+        - CelulaGridV2Fast from Modelo_fast.ClasseCelulaGridV2Fast
+        - AgenteV2Fast from Modelo_fast.ClasseAgenteV2Fast
+        - LugarV2Fast from Modelo_fast.ClasseLugarV2Fast
         - Modelo_fast.funcoes_fast as fst
         - pandas as pd
         - numpy as np
@@ -549,7 +735,7 @@ Modelo de simulação 2D com resultados rápidos, sem representação gráfica.
 ### Funções do Modelo Fast
 -> `funcoes_fast.py`
 
-1. Funções Fast
+1. **Funções Fast:**
     Contém as funções importantes para que a simulação ocorra.
         Importa:
 
@@ -1086,4 +1272,5 @@ Modelo de simulação 1D.
 
 ### -> `testesPesos.py`
 
+## Fim
 Voltar para o [início](#documentação-do-projeto).
