@@ -39,6 +39,8 @@ Para conseguir utilizar o programa no seu computador será necessário fazer alg
 ## **Documentação**
 Para ver a documentação do projeto basta clicar [nesse link](Documentation.md).
 
+## **Automatizando Simulações**
+Para ver como preparar arquivos para automatizar as simulações basta clicar [nesse link](DescricaoArquivoInput.md).
 ## **Organização dos Arquivos**
 
 1. **Nomeando Elementos**

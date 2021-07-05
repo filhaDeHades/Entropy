@@ -1,0 +1,4 @@
+IMPORT
+2 Modelo_fast.simulacao_fast4 simulacao_fast4
+2 Modelo_fast.ClasseGridV2Fast GridV2Fast
+IMPORTEND
