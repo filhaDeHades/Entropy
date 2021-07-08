@@ -48,7 +48,7 @@ Para ver como preparar arquivos para automatizar as simulações basta clicar [n
     * Utilizar nomes que indiquem facilmente a finalidade da variável, função, classe ou arquivo.
     * O uso de números (como enumeração) deve ser feito ao final do nome.
     * Não utilizar caracteres especiais ou acentos ortográficos.
-    * Nenhum nome deve conter espaços em as palavras.
+    * Nenhum nome deve conter espaços entre as palavras.
 
     **Nomenclatura das variáveis (Em andamento):**
     - Separação das palavras por "_".
@@ -61,10 +61,10 @@ Para ver como preparar arquivos para automatizar as simulações basta clicar [n
 
     **Nomenclatura das funções (Em andamento):**
     - Separação das palavras por "_".
-    - Capitalização das palavras. (A primeira letra de cada palavra deve ser maiúscula e todas as outras minúsculas).
+    - Capitalização das palavras, exceto pela primeira palavra. (A primeira letra de cada palavra deve ser maiúscula e todas as outras minúsculas).
     - Exemplo:
-        - Nome_Da_Funcao
-        - Funcao_1
+        - nome_Da_Funcao
+        - funcao_1
 
     **Nomenclatura das Classes (Em andamento):**
     - Separação das palavras por **Camelcase**.
