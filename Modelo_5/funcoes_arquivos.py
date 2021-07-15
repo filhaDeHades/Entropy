@@ -24,6 +24,10 @@ Ao receber um arquivo novo (arquivo original) deve-se mudar seu nome para transf
 Um arquivo base contem infos eu seu nome que sao necessarias para iniciar a simulacao
 """
 
+path_base_projeto = "Arquivos\\"   #"C:\\Users\\lucas\\PycharmProjects\\Pratica_IC\\"
+
+qnt_padrao_agentes = 100
+qnt_padrao_lugares = 100
 
 def gerar_nome_arquivo_lugares(nome_arquivo_base):
     nome_temp = nome_arquivo_base.strip(".txt")
@@ -32,7 +36,7 @@ def gerar_nome_arquivo_lugares(nome_arquivo_base):
 
 
 def obter_path_completo_arquivo_lugares(nome_arquivo_lugares):
-    path_arquivo_lugares = "C:\\Users\\lucas\\PycharmProjects\\Pratica_IC\\Arquivos_lugares"
+    path_arquivo_lugares = path_base_projeto + "Arquivos_lugares"
     path_final = os.path.join(path_arquivo_lugares, nome_arquivo_lugares)
     return path_final
 
@@ -44,7 +48,7 @@ def gerar_nome_arquivo_caminhos(nome_arquivo_base):
 
 
 def obter_path_completo_arquivo_caminhos(nome_arquivo_caminhos):
-    path_arquivo_caminhos = "C:\\Users\\lucas\\PycharmProjects\\Pratica_IC\\Arquivos_caminhos"
+    path_arquivo_caminhos = path_base_projeto + "Arquivos_caminhos"
     path_final = os.path.join(path_arquivo_caminhos, nome_arquivo_caminhos)
     return path_final
 
@@ -56,7 +60,7 @@ def gerar_nome_arquivo_resultados(nome_arquivo_base):
 
 
 def obter_path_completo_arquivo_resultados(nome_arquivo_resultados):
-    path_arquivos_resultados = "C:\\Users\\lucas\\PycharmProjects\\Pratica_IC\\Arquivos_resultados"
+    path_arquivos_resultados = path_base_projeto + "Arquivos_resultados"
     path_final = os.path.join(path_arquivos_resultados, nome_arquivo_resultados)
     return path_final
 
@@ -99,7 +103,7 @@ def criar_arquivo_lugares_tipo_1(nome_arquivo_base, qnt_linhas, qnt_colunas, pat
     lista_layout_temp = fst.arquivo_csv_para_lista(nome_arquivo_base_com_path)
     lista_layout = [i[2] for i in lista_layout_temp]
     matriz_layout = fst.transformar_lista_em_matriz(lista_layout, qnt_linhas, qnt_colunas)
-    grid = GridV2Fast(qnt_linhas, qnt_colunas, matriz_layout=matriz_layout)
+    grid = GridV2Fast(qnt_linhas, qnt_colunas,qnt_padrao_agentes, qnt_padrao_lugares, matriz_layout=matriz_layout)
 
     lista_lugares_temp = []
 
@@ -280,6 +284,7 @@ def gerar_nome_arquivo_com_info_tamanho(nome_arquivo_original, qnt_linhas, qnt_c
 
 
 def obter_tipo_grid_pelo_nome_arquivo(nome_arquivo_base):
+    print(f'\n\nTIPO DO ARQUIVO: {type(nome_arquivo_base)} ARQUIVO: {nome_arquivo_base}\n\n')
     index_1 = nome_arquivo_base.index("[")
     index_2 = nome_arquivo_base.index("]")
     tipo_grid = nome_arquivo_base[index_1 + 1:index_2]
@@ -294,7 +299,12 @@ def gerar_nome_arquivo_com_info_tipo(nome_arquivo_original, numero_tipo):
 
 
 def copiar_e_renomear_arquivo(nome_arquivo_original, nome_arquivo_final):
-    arquivo_original = open(nome_arquivo_original, "r")
+    cwd = os.getcwd()  # Get the current working directory (cwd)
+    files = os.listdir(cwd)  # Get all the files in that directory
+
+    path_arquivo_original = 'Arquivos\\Arquivos_originais\\' + nome_arquivo_original
+
+    arquivo_original = open(path_arquivo_original, "r")
     lista_linhas = arquivo_original.readlines()
     arquivo_original.close()
 
@@ -313,7 +323,7 @@ def gerar_nome_arquivo_base(nome_arquivo_original, qnt_linhas, qnt_colunas, nume
 
 
 def obter_path_completo_arquivo_base(nome_arquivo_base):
-    path_arquivo_base = "C:\\Users\\lucas\\PycharmProjects\\Pratica_IC\\Arquivos_base"
+    path_arquivo_base = path_base_projeto + "Arquivos_base"
     path_final = os.path.join(path_arquivo_base, nome_arquivo_base)
     return path_final
 
@@ -324,6 +334,8 @@ def criar_arquivo_base(nome_arquivo_original, nome_arquivo_base):
 
 
 def criar_arquivo_lugares(nome_arquivo_base, path_arquivos_base=None, path_arquivos_lugares=None):
+
+    print(f'\n\nTIPO DO ARQUIVO2: {type(nome_arquivo_base)} ARQUIVO: {nome_arquivo_base}\n\n')
 
     tipo_arquivo = obter_tipo_grid_pelo_nome_arquivo(nome_arquivo_base)
 
@@ -368,9 +380,7 @@ def recebimento_arquivo_original(nome_arquivo_original, qnt_linhas, qnt_colunas,
 
     # criando o arquivo base
     criar_arquivo_base(nome_arquivo_original, nome_arquivo_base)
-
-    # criando o arquivo lugares
-    criar_arquivo_lugares(nome_arquivo_base)
+    return nome_arquivo_base
 
 
 if __name__ == '__main__':

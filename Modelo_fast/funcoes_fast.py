@@ -3,6 +3,8 @@ import random
 import math
 import os
 
+path_base_projeto = "C:\\Users\\tamid\\OneDrive\\Área/ de/ Trabalho\\Repositórios\\entropia\\Entropy\\Arquivos\\"   #"C:\\Users\\lucas\\PycharmProjects\\Pratica_IC\\"
+
 
 def obter_distancia(pos_grid_inicial, pos_grid_final, custo_menor_mov=10, custo_maior_mov=14):
 
@@ -266,27 +268,27 @@ def obter_path_completo_arquivo_v2(nome_arquivo, tipo_arquivo):
 
 #Observar o caminho que está sendo utilizado
 def obter_path_arquivos_base():
-    path_arquivos_base = "C:\\Users\\lucas\\PycharmProjects\\Pratica_IC\\Arquivos_base"
+    path_arquivos_base = path_base_projeto + "Arquivos_base"
     return path_arquivos_base
 
 #Observar o caminho que está sendo utilizado
 def obter_path_arquivos_lugares():
-    path_arquivos_lugares = "C:\\Users\\lucas\\PycharmProjects\\Pratica_IC\\Arquivos_lugares"
+    path_arquivos_lugares = path_base_projeto + "Arquivos_lugares"
     return path_arquivos_lugares
 
 
 def obter_path_arquivos_caminhos():
-    path_arquivos_caminhos = "C:\\Users\\lucas\\PycharmProjects\\Pratica_IC\\Arquivos_caminhos"
+    path_arquivos_caminhos = path_base_projeto + "Arquivos_caminhos"
     return path_arquivos_caminhos
 
 
 def obter_path_arquivos_resultados():
-    path_arquivos_resultados = "C:\\Users\\lucas\\PycharmProjects\\Pratica_IC\\Arquivos_resultados"
+    path_arquivos_resultados = path_base_projeto + "Arquivos_resultados"
     return path_arquivos_resultados
 
 
 def obter_path_arquivos_resultados_ts():
-    path_arquivos_resultados_ts = "C:\\Users\\lucas\\PycharmProjects\\Pratica_IC\\Arquivos_resultados_ts"
+    path_arquivos_resultados_ts = path_base_projeto + "Arquivos_resultados_ts"
     return path_arquivos_resultados_ts
 
 
