@@ -941,6 +941,8 @@ def arquivo_csv_para_lista(nome_arquivo):
     arquivo.close()
 
     lista_temp = [item.strip("\n").split("\t") for item in lista_arquivo]
+    #lista_temp = lista_temp[0] ------ talvez continue, se for retornar só a lista
+    print(f'\nLISTA_TEMP: {lista_temp}\n')
     lista_final = [list(map(eval, i)) for i in lista_temp]
 
     return lista_final

@@ -7,10 +7,12 @@ import shutil
 import os
 import Modelo_5.apresentacoes as m5ap
 import Testes.main.visualizacao as v5
-import Testes.main.recebe_arquivo_original as rao
+#import Testes.main.recebe_arquivo_original as rao
+import Scripts.inverte_e_cria_arquivo as ica
 
+#ica.cria_Invertido()
 
-
+m5ap.simulacao_com_arquivo_2()
 #t2d.teste_modelo_2d()
 
 # so pra rodar esse teste Caio, vou deixar os testes q eu to rodando comentados pra vc

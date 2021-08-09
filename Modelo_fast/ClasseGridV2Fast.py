@@ -1,3 +1,4 @@
+from numpy.core.fromnumeric import size
 from Modelo_fast.ClasseCelulaGridV2Fast import CelulaGridV2Fast
 from Modelo_fast.ClasseAgenteV2Fast import AgenteV2Fast
 from Modelo_fast.ClasseLugarV2Fast import LugarV2Fast
@@ -61,14 +62,15 @@ class GridV2Fast:
         for y in range(self.qnt_linhas):
             for x in range(self.qnt_colunas):
 
-                if matriz_layout[y][x] == 1:
+                if matriz_layout[y][x] == 1: # É LUGAR
                     nova_celula = CelulaGridV2Fast(x, y, andavel=False)
                     lista_celulas_temp.append(nova_celula)
-                else:
-                    nova_celula = CelulaGridV2Fast(x, y)
+                else: # É ESPAÇO VAZIO
+                    nova_celula = CelulaGridV2Fast(x, y, andavel=True)
                     lista_celulas_temp.append(nova_celula)
 
         array_final = np.array(lista_celulas_temp)
+
         self.array_celulas_grid = array_final
 
     def obter_celula_array_grid(self, x, y):
@@ -175,15 +177,22 @@ class GridV2Fast:
         # nessa funcao cada lugar tem exatamente 1 quadrado
         
         lista_lugares = []
+        lista_celulas_ocupadas = [celula for celula in self.array_celulas_grid if celula.andavel is False]
 
         orientacao_inicial = self.range_possiveis_orientacoes[0]
         orientacao_final = self.range_possiveis_orientacoes[1]
-        
-        for celula in self.array_celulas_grid:
+
+        for celula in lista_celulas_ocupadas:
             lista_coordenadas = [celula.pos_grid]
             orientacao = random.randint(orientacao_inicial, orientacao_final)
             novo_lugar = LugarV2Fast(self, lista_coordenadas=lista_coordenadas, orientacao=orientacao)
             lista_lugares.append(novo_lugar)
+        
+        # for celula in self.array_celulas_grid:  #No momento esse FOR transforma todas as células em lugares
+        #     lista_coordenadas = [celula.pos_grid]
+        #     orientacao = random.randint(orientacao_inicial, orientacao_final)
+        #     novo_lugar = LugarV2Fast(self, lista_coordenadas=lista_coordenadas, orientacao=orientacao)
+        #     lista_lugares.append(novo_lugar)
 
         self.array_lugares = np.array(lista_lugares)
 
@@ -247,8 +256,8 @@ class GridV2Fast:
 
             novo_lugar = LugarV2Fast(self, lista_coordenadas=lista_coordenadas, orientacao=orientacao)
             lista_lugares.append(novo_lugar)
-            print("lugar {} criado!".format(novo_lugar.id))
-            print("o lugar feito tem tamanho: ", len(lista_celulas_escolhidas))
+            #print("lugar {} criado!".format(novo_lugar.id))
+            #print("o lugar feito tem tamanho: ", len(lista_celulas_escolhidas))
             # print("qnt de celulas livres: ", len(lista_celulas_livres))
             print("-------------\n\n")
 

@@ -1,4 +1,5 @@
 from Modelo_fast.ClasseGridV2Fast import GridV2Fast
+from Modelo_fast.ClasseCelulaGridV2Fast import CelulaGridV2Fast
 from Modelo_fast.ClasseLugarV2Fast import LugarV2Fast
 import Modelo_fast.funcoes_fast as fst
 import numpy as np
@@ -101,19 +102,27 @@ def criar_arquivo_lugares_tipo_1(nome_arquivo_base, qnt_linhas, qnt_colunas, pat
         nome_arquivo_base_com_path = os.path.join(path_arquivos_base, nome_arquivo_base)
 
     lista_layout_temp = fst.arquivo_csv_para_lista(nome_arquivo_base_com_path)
-    lista_layout = [i[2] for i in lista_layout_temp]
+    lista_layout = [i[2] for i in lista_layout_temp] #Pega apenas os valores de lugares (1 == lugar)
     matriz_layout = fst.transformar_lista_em_matriz(lista_layout, qnt_linhas, qnt_colunas)
-    grid = GridV2Fast(qnt_linhas, qnt_colunas,qnt_padrao_agentes, qnt_padrao_lugares, matriz_layout=matriz_layout)
+    cont = 0
+    for j in lista_layout:
+        if j == 1:
+            cont += 1
+    
+    grid = GridV2Fast(qnt_linhas, qnt_colunas,qnt_padrao_agentes, cont, matriz_layout=matriz_layout)
 
     lista_lugares_temp = []
 
+    cont = 0
+
     for celula in grid.array_celulas_grid:
-
-        if celula.andavel is False:
-            if celula.ja_foi_visitado is False:
-
-                celula.ja_foi_visitado = True
+        cont += 1
+        if celula.andavel == False: # É LUGAR
+            if celula.ja_foi_visitado == False: #Não foi visitado
+                
+                celula.ja_foi_visitado = True #Marca como visitado
                 lista_coordenadas_novo_lugar = [celula.pos_grid]
+                
                 lista_celulas_para_testar = [celula]
 
                 while len(lista_celulas_para_testar) > 0:
@@ -133,6 +142,7 @@ def criar_arquivo_lugares_tipo_1(nome_arquivo_base, qnt_linhas, qnt_colunas, pat
                                     lista_coordenadas_novo_lugar.append(vizinho.pos_grid)
                                     lista_celulas_para_testar.append(vizinho)
 
+
                 possiveis_cores = cores.lista_cores_coloridas
                 cor_escolhida = random.choice(possiveis_cores)
 
@@ -141,7 +151,6 @@ def criar_arquivo_lugares_tipo_1(nome_arquivo_base, qnt_linhas, qnt_colunas, pat
 
                 novo_lugar = LugarV2Fast(grid, veio_de_arquivo=False, lista_coordenadas=lista_coordenadas_novo_lugar,
                                          orientacao=orientacao_escolhida, cor=cor_escolhida)
-
                 lista_lugares_temp.append(novo_lugar)
 
     grid.array_lugares = lista_lugares_temp
@@ -150,6 +159,8 @@ def criar_arquivo_lugares_tipo_1(nome_arquivo_base, qnt_linhas, qnt_colunas, pat
 
     if path_arquivos_lugares is not None:
         nome_arquivo_lugares = os.path.join(path_arquivos_lugares, nome_arquivo_lugares)
+
+    print("grid lugares: ", len(grid.array_lugares))
 
     grid.salvar_lugares_arquivo(nome_arquivo_lugares)
 
@@ -284,7 +295,6 @@ def gerar_nome_arquivo_com_info_tamanho(nome_arquivo_original, qnt_linhas, qnt_c
 
 
 def obter_tipo_grid_pelo_nome_arquivo(nome_arquivo_base):
-    print(f'\n\nTIPO DO ARQUIVO: {type(nome_arquivo_base)} ARQUIVO: {nome_arquivo_base}\n\n')
     index_1 = nome_arquivo_base.index("[")
     index_2 = nome_arquivo_base.index("]")
     tipo_grid = nome_arquivo_base[index_1 + 1:index_2]
@@ -304,16 +314,22 @@ def copiar_e_renomear_arquivo(nome_arquivo_original, nome_arquivo_final):
 
     path_arquivo_original = 'Arquivos\\Arquivos_originais\\' + nome_arquivo_original
 
-    arquivo_original = open(path_arquivo_original, "r")
-    lista_linhas = arquivo_original.readlines()
-    arquivo_original.close()
+    try:
+        arquivo_original = open(path_arquivo_original, "r")
+        lista_linhas = arquivo_original.readlines()
+        arquivo_original.close()
+    except:
+        print(f'ERRO ao abrir arquivo original {path_arquivo_original} - [copiar_e_renomear_arquivo]')
 
-    arquivo_final = open(nome_arquivo_final, "w")
+    try:
+        arquivo_final = open(nome_arquivo_final, "w")
 
-    for linha in lista_linhas:
-        arquivo_final.write(linha)
+        for linha in lista_linhas:
+            arquivo_final.write(linha)
 
-    arquivo_final.close()
+        arquivo_final.close()
+    except:
+        print(f'ERRO ao criar arquivo base {nome_arquivo_final} - [copiar_e_renomear_arquivo]')
 
 
 def gerar_nome_arquivo_base(nome_arquivo_original, qnt_linhas, qnt_colunas, numero_tipo):

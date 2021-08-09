@@ -20,13 +20,36 @@ def obter_distancia(pos_grid_inicial, pos_grid_final, custo_menor_mov=10, custo_
 
 
 def arquivo_csv_para_lista(nome_arquivo, separador="\t"):
+
+    try:
+        arquivo = open(nome_arquivo, "r")
+        lista_arquivo = arquivo.readlines()
+        arquivo.close()
+    except:
+        print(f"ERRO ao abrir arquivo {nome_arquivo}")
+
+    lista_temp = [item.strip("\n").split(separador) for item in lista_arquivo]
+    #print(f'\nLISTA_TEMP: {lista_temp}\n')
+    lista_final = [list(map(eval, i)) for i in lista_temp]
+    #print(f'\nLISTA_FINAL: {lista_final}\n')
+    return lista_final
+
+#Teste - ver depois
+def arquivo_csv_tipo_1_para_lista(nome_arquivo, separador="\t"):
     arquivo = open(nome_arquivo, "r")
     lista_arquivo = arquivo.readlines()
     arquivo.close()
 
     lista_temp = [item.strip("\n").split(separador) for item in lista_arquivo]
-    lista_final = [list(map(eval, i)) for i in lista_temp]
-
+    #print(f'\nLISTA_TEMP: {lista_temp}\n')
+    #lista_final = [list(map(eval, i[2])) for i in lista_temp]
+    lista_final = []
+    for i in lista_temp:
+        #print(f'\nCÉLULA: {i}\nVALOR: {i[2]}')
+        if(i[2] == '1'):
+            lista_final.append(i)
+    print(f'\nLISTA_FINAL: {lista_final}\n')
+    quit(1)
     return lista_final
 
 
@@ -36,12 +59,16 @@ def lista_para_arquivo_csv(lista_origem, nome_arquivo_destino, separador="\t", t
     lista_temp_2 = [separador.join(i) for i in lista_temp]
     lista_final = ["{}\n".format(i) for i in lista_temp_2]
 
-    arquivo_destino = open(nome_arquivo_destino, tipo_operacao)
+    try:
 
-    for linha in lista_final:
-        arquivo_destino.write(linha)
+        arquivo_destino = open(nome_arquivo_destino, tipo_operacao)
 
-    arquivo_destino.close()
+        for linha in lista_final:
+            arquivo_destino.write(linha)
+
+        arquivo_destino.close()
+    except:
+        print(f"ERRO ao abrir arquivo {nome_arquivo_destino} - [lista_para_arquivo_csv]")
 
 
 def obter_distancia_euclidiana(ponto_inicial, ponto_final):
