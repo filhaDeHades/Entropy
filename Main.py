@@ -6,13 +6,14 @@ import numpy as np
 import shutil
 import os
 import Modelo_5.apresentacoes as m5ap
+#import Modelo_fast.testes_novos_pesos as tnp
 import Testes.main.visualizacao as v5
 #import Testes.main.recebe_arquivo_original as rao
 import Scripts.inverte_e_cria_arquivo as ica
 
 #ica.cria_Invertido()
 
-m5ap.simulacao_com_arquivo_2()
+#m5ap.simulacao_com_arquivo_2()
 #t2d.teste_modelo_2d()
 
 # so pra rodar esse teste Caio, vou deixar os testes q eu to rodando comentados pra vc
@@ -122,16 +123,26 @@ m5ap.simulacao_com_arquivo_2()
 # ---------------------------------------------------------------------------
 # testes no modelo 2D
 
-# -- fazendo as simulacoes 2d (demorou quase um dia) --
-# pesos_contaminacao_agentes = (1, 0.1)
-# pesos_contaminacao_lugares = (1, 0.1)
-# path_relativo_folder_reusltados = "Testes\\2d_resultados1"
-# t2d.testes_pesos_escolha_lugar_media(pesos_contaminacao_agentes, pesos_contaminacao_lugares, path_relativo_folder_reusltados)
+for arquetipo in range(6):
 
-# -- plotando os graficos dos resultados das simulacoes 2D--
-# nome_dir_origem = "2d_resultados1"
-# nome_dir_destino = "2d_resultados1_graficos"
-# tp.salvar_graficos_resultados(nome_dir_origem, nome_dir_destino)
+    lista_arquivos_base = ["modelo1(42x42)[tipo_1].txt",    # 0
+                        "modelo2-inv(42x42)[tipo_1].txt",    # 1
+                        "modelo3-inv(42x42)[tipo_1].txt",   # 2
+                        "modelo4(42x42)[tipo_1].txt",    # 3
+                        "modelo5(42x42)[tipo_1].txt",    # 4
+                        "modelo6(42x42)[tipo_1].txt"]    # 5
+
+    # -- fazendo as simulacoes 2d (demorou quase um dia) --
+    pesos_escolha_lugar = (0.9, 0.9)
+    pesos_contaminacao_agentes = (0.5, 0.5)
+    pesos_contaminacao_lugares = (0.5, 0.5)
+    path_relativo_folder_reusltados = "Testes\\2d_resultados"
+    resultados = t2d.teste_modelo_2d_com_arquivo(lista_arquivos_base[arquetipo], 2000, pesos_escolha_lugar, pesos_contaminacao_agentes, pesos_contaminacao_lugares)
+
+    # -- plotando os graficos dos resultados das simulacoes 2D--
+    nome_dir_origem = "Testes\\2d_resultados\\arquetipos\\time_steps_2000\\time_steps_2000_0-9" #devem ser pastas já existentes
+    nome_dir_destino = f"modelo{arquetipo+1}" #deve ser o nome de uma nova pasta
+    tp.salvar_graficos_resultados_v2(resultados, nome_dir_destino, nome_dir_origem)
 
 # ---------------------------------------------------------------------------
 # testes no modelo 1D - analisando os padroes gerados pela mudancas nos pesos de contaminacao

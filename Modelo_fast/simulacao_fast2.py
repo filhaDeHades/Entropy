@@ -36,6 +36,8 @@ def simulacao_fast2(grid, pesos=(1, 1, 1), numero_da_simulacao=0, qnt_time_steps
                            "qnt_lugares": [len(grid.array_lugares)],
                            "qnt_time_steps": [qnt_time_steps],
                            }
+    
+    
 
     if nome_arquivo_base is not None:
         nome_arquivo_resultado_ts = func_arq.gerar_nome_arquivo_resultados_ts(nome_arquivo_base, numero_da_simulacao)
@@ -136,7 +138,7 @@ def simulacao_fast2(grid, pesos=(1, 1, 1), numero_da_simulacao=0, qnt_time_steps
         #     for dicionario in grid.lista_caminhos:
         #         print(dicionario)
 
-        entropia_atual = grid.calcular_entropia()
+        entropia_atual = grid.calcular_entropia_geral()
         # print("a entropia foi de: ", entropia_atual)
         resultados_ts["lista_ent"].append(entropia_atual)
 

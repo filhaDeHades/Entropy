@@ -1,5 +1,5 @@
-import plotly.express as px
-import plotly.graph_objects as go
+#import plotly.express as px
+#import plotly.graph_objects as go
 import Modelo_fast.funcoes_fast as fst
 import pandas as pd
 import numpy as np
@@ -57,20 +57,20 @@ def gerar_grafico_evolucao_entropia(nome_arquivo):
     eixo_x = list(range(1, 31))
     eixo_y = lista_entropia_media
 
-    fig = px.line(x=eixo_x, y=eixo_y)
-    fig.show()
+    #fig = px.line(x=eixo_x, y=eixo_y)
+    #fig.show()
 
 
 def obter_grafico_evolucao_entropia_media(lista_entropia, eixo_x):
     eixo_y = obter_lista_entropias_media(lista_entropia)
 
-    fig = go.Figure()
+    '''fig = go.Figure()
 
     dados_grafico = go.Scatter(x=eixo_x, y=eixo_y)
     fig.add_trace(dados_grafico)
 
     fig.update_layout(title="evolução entropia", xaxis_title="time steps", yaxis_title="entropia média")
-    fig.show()
+    fig.show()'''
 
 
 def obter_lista_linhas_usadas(inicio, fim):
@@ -84,8 +84,8 @@ def obter_lista_linhas_usadas(inicio, fim):
 
 # plotly
 def gerar_grafico_multiplas_linhas(valores_x, matriz_valores_y, cores_linhas):
-
-    fig = go.Figure()
+    pass
+    '''fig = go.Figure()
 
     for i in range(len(matriz_valores_y)):
         linha = go.Scatter(
@@ -95,7 +95,7 @@ def gerar_grafico_multiplas_linhas(valores_x, matriz_valores_y, cores_linhas):
             marker=dict(color="rgb{}".format(cores_linhas[i]))
         )
         fig.add_trace(linha)
-    fig.show()
+    fig.show()'''
 
 
 def obter_grafico_multiplas_linhas_entropia(nome_arquivo, linha_inicial, linha_final):

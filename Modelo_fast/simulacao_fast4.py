@@ -93,6 +93,8 @@ def simulacao_fast4(grid, pesosContaminacaoAgente=(1, 0.1), pesosContaminacaoLug
 
     df_agentes = fgn.ordenar_colunas_df_por_id(df_agentes, "agente_")
     df_lugares = fgn.ordenar_colunas_df_por_id(df_lugares, "lugar_")
+
+    
     
     df_resultados_staticos = pd.DataFrame(resultadosStaticos)
     df_resultados_entropia = pd.DataFrame(resultados_entropia)

@@ -966,6 +966,8 @@ def salvar_graficos_resultados(nome_dir_origem, nome_dir_destino):
     dir_principal = os.path.abspath(nome_dir_origem)
     dir_destino = os.path.abspath(nome_dir_destino)
     lista_sub_dirs = os.listdir(dir_principal)
+    print(f'DIRETORIO PRINCIPAL:\n{dir_principal}\nDIR DESTINO:\n{dir_destino}')
+    
     qnt_linhas_heatmap = 5
     qnt_colunas_heatmap = 5
     
@@ -1212,10 +1214,262 @@ def salvar_graficos_resultados(nome_dir_origem, nome_dir_destino):
     # ----------------------------------------------------------------------------------
     # heatmap de entropias
 
-    heatmap_entropia_agentes(dir_principal, qnt_linhas_heatmap, qnt_colunas_heatmap, dir_destino)
-    heatmap_entropia_lugares(dir_principal, qnt_linhas_heatmap, qnt_colunas_heatmap, dir_destino)
-    heatmap_entropia_geral(dir_principal, qnt_linhas_heatmap, qnt_colunas_heatmap, dir_destino)
+    # heatmap_entropia_agentes(dir_principal, qnt_linhas_heatmap, qnt_colunas_heatmap, dir_destino)
+    # heatmap_entropia_lugares(dir_principal, qnt_linhas_heatmap, qnt_colunas_heatmap, dir_destino)
+    # heatmap_entropia_geral(dir_principal, qnt_linhas_heatmap, qnt_colunas_heatmap, dir_destino)
 
+def salvar_graficos_resultados_v2(resultados, nome_destino, nome_dir_origem):
+    """Essa função salva os graficos de resultados das simulações por arquivos
+        de forma correta
+
+    Args:
+        resultados (dict): Resultados de uma simulação com arquivo
+        nome_destino (string): Nome do diretório que será criado para armazenar os resultados
+        nome_dir_origem (string): Caminho do diretório onde o diretório de destino deve ser criado
+    """
+
+    dir_principal = os.path.abspath(nome_dir_origem)
+    dir_destino = os.path.abspath(nome_dir_origem)
+    print(f'DIRETORIO PRINCIPAL:\n{dir_principal}\nDIR DESTINO:\n{dir_destino}')
+    
+    #for sub_dir in lista_sub_dirs:
+    #resultados_simulacao = os.path.join(dir_principal, sub_dir)
+
+    df_agentes = resultados["resultados_agentes"]
+    df_entropia = resultados["resultados_entropia"]
+    df_lugares = resultados["resultados_lugares"]
+
+
+    info_agentes = df_agentes
+    info_lugares = df_lugares
+    info_entropia = df_entropia
+
+    nome_novo_folder = os.path.join(dir_destino, nome_destino)
+    os.mkdir(nome_novo_folder)
+
+    nomes_graficos = {
+        
+        "entropia_agentes": "grafico_entropia_media_agentes.png",
+        "entropia_lugares": "grafico_entropia_media_lugares.png",    
+        "entropia_geral": "grafico_entropia_media_geral.png",
+        "colormap_agentes": "colormap_orientacoes_agentes",
+        "colormap_lugares": "colormap_orientacoes_lugares",
+        "ort_azul_ver": "grafico_linhas_orientacoes_agentes_lugares",
+        "colormap_azul_v1": "colormap_dif_orientacoes_agentes_lugares",
+        "colormap_azul_v2": "colormap_dif_orientacoes_agentes_lugares_msm_id"       
+    
+        }
+
+    # ------------------------------------------------------------------------------------------------------------------
+    # GRAFICO ENTROPIA AGENTES
+
+    valores_entropia_agentes = list(info_entropia["entropia_agentes"])
+    valores_entropia_agentes_media = fst.obter_lista_media(valores_entropia_agentes)
+
+    qnt_linhas, qnt_colunas = info_agentes.shape
+    eixo_x = list(range(1, qnt_linhas + 1))
+
+    plt.plot(eixo_x, valores_entropia_agentes_media, color=(1, 0, 0))
+    plt.xlabel("time steps")
+    plt.ylabel("entropia")
+    plt.title("entropia média agentes x time steps")
+    plt.grid()
+    
+    nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["entropia_agentes"])
+    plt.savefig(nome_grafico)
+    plt.close()
+
+    # ------------------------------------------------------------------------------------------------------------------
+    # GRAFICO ENTROPIA LUGARES
+
+    qnt_linhas, qnt_colunas = info_entropia.shape
+    eixo_x = list(range(1, qnt_linhas + 1))
+
+    valores_entropia_lugares = list(info_entropia["entropia_lugares"])
+    valores_entropia_lugares_media = fst.obter_lista_media(valores_entropia_lugares)
+    plt.plot(eixo_x, valores_entropia_lugares_media, color=(1, 0, 0))
+    plt.xlabel("time steps")
+    plt.ylabel("entropia media lugares")
+    plt.title("entropia média lugares x time steps")
+    plt.grid()
+    
+    nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["entropia_lugares"])
+    plt.savefig(nome_grafico)
+    plt.close()
+    
+    # ------------------------------------------------------------------------------------------------------------------
+    # GRAFICO ENTROPIA GERAL
+
+    valores_entropia_geral = list(info_entropia["entropia_geral"])
+    valores_entropia_geral_media = fst.obter_lista_media(valores_entropia_geral)
+    plt.plot(eixo_x, valores_entropia_geral_media, color=(1, 0, 0))
+    plt.xlabel("time steps")
+    plt.ylabel("entropia media geral")
+    plt.title("entropia media geral x time steps")
+    plt.grid()
+
+    nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["entropia_geral"])
+    plt.savefig(nome_grafico)
+    plt.close()
+
+    # ------------------------------------------------------------------------------------------------------------------
+    # COLORMAP AGENTES
+
+    lista_colunas_agentes = list(info_agentes.columns)
+    grid_agentes = []
+
+    for coluna in lista_colunas_agentes:
+        coluna_agente = list(info_agentes[coluna])
+        grid_agentes.append(coluna_agente)
+
+    fig, ax1 = plt.subplots()
+    grafico1 = ax1.pcolor(grid_agentes, cmap="jet", vmin=0, vmax=1000)
+    fig.colorbar(grafico1, ax=ax1)
+    ax1.set_xlabel("time steps")
+    ax1.set_ylabel("id agentes")
+    ax1.set_title("orientações agentes X time steps")
+    
+    nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["colormap_agentes"])
+    plt.savefig(nome_grafico)
+    plt.close()
+
+    # ------------------------------------------------------------------------------------------------------------------
+    # COLORMAP LUGARES
+    
+    fig, ax1 = plt.subplots()
+
+    lista_colunas_lugares = list(info_lugares.columns)
+    grid_lugares = []
+
+    for coluna in lista_colunas_lugares:
+        coluna_lugar = list(info_lugares[coluna])
+        grid_lugares.append(coluna_lugar)
+
+    grafico2 = ax1.pcolor(grid_lugares, cmap="jet", vmin=0, vmax=1000)
+    fig.colorbar(grafico2, ax=ax1)
+    ax1.set_xlabel("time steps")
+    ax1.set_ylabel("id lugares")
+    ax1.set_title("orientações lugares X time steps")
+
+    nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["colormap_lugares"])
+    plt.savefig(nome_grafico)
+    plt.close()
+
+    # ------------------------------------------------------------------------------------------------------------------
+    # GRAFICO LINHAS ORIENTACAO AGENTES E LUGARES
+
+    for agente in grid_agentes:
+        plt.plot(eixo_x, agente, color=(1, 0, 0), linewidth=0.5)
+
+    for lugar in grid_lugares:
+        plt.plot(eixo_x, lugar, color=(0, 0, 1), linewidth=0.5)
+
+    legenda = [Line2D([0], [0], color="r", label="agentes"),
+            Line2D([0], [0], color="b", label="lugares")]
+
+    plt.title("orientações agentes/lugares X time steps")
+    plt.xlabel("time steps")
+    plt.ylabel("orientações")
+    plt.legend(handles=legenda)
+    
+    nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["ort_azul_ver"])
+    plt.savefig(nome_grafico)
+    plt.close()
+
+    # ------------------------------------------------------------------------------------------------------------------
+    # COLORMAP AZUL DIF ORIENTACOES AGENTES E LUGARES
+
+    matriz_dif_orientacoes_inicial = []
+    matriz_dif_orientacoes_final = []
+
+    qnt_linhas, qnt_colunas = info_agentes.shape
+    ultima_linha = qnt_linhas - 1
+
+    lista_agentes = list(info_agentes.columns)
+    lista_lugares = list(info_lugares.columns)
+
+    for agente in lista_agentes:
+
+        linha_inicio = []
+        linha_fim = []
+
+        for lugar in lista_lugares:
+            orientacao_agente_inicial = info_agentes.loc[0, agente]
+            orientacao_lugar_inicial = info_lugares.loc[0, lugar]
+            dif_orientacao_inicial = abs(orientacao_agente_inicial - orientacao_lugar_inicial)
+            linha_inicio.append(dif_orientacao_inicial)
+
+            orientacao_agente_final = info_agentes.loc[ultima_linha, agente]
+            orientacao_lugar_final = info_lugares.loc[ultima_linha, lugar]
+            dif_orientacao_final = abs(orientacao_agente_final - orientacao_lugar_final)
+            linha_fim.append(dif_orientacao_final)
+
+        matriz_dif_orientacoes_inicial.append(linha_inicio)
+        matriz_dif_orientacoes_final.append(linha_fim)
+
+    fig, (ax1, ax2) = plt.subplots(2, 1)
+
+    grafico1 = ax1.pcolor(matriz_dif_orientacoes_inicial, cmap="PuBu")
+    fig.colorbar(grafico1, ax=ax1)
+    ax1.set_title("diferença orientações agente X lugar (início)")
+    ax1.set_ylabel("agentes")
+
+    grafico2 = ax2.pcolor(matriz_dif_orientacoes_final, cmap="PuBu")
+    fig.colorbar(grafico2, ax=ax2)
+    ax2.set_title("diferença orientações agente X lugar (fim)")
+    ax2.set_xlabel("lugares")
+    ax2.set_ylabel("agentes")
+
+    nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["colormap_azul_v1"])
+    plt.savefig(nome_grafico)
+    plt.close()
+
+    # ------------------------------------------------------------------------------------------------------------------
+    # COLORMAP AZUL DIF ORIENTACOES AGENTE E LUGAR MSM ID AO LONGO DO TEMPO
+
+    # fazendo o colormap de diferencas absolutas de orientacoes entre agentes e lugares
+    # desta vez compara-se apenas os agentes e lugares de mesma posicao (agente 1 no lugar 1, agente 2 no lugar 2, etc)
+    # mas se observa todos os time steps
+
+    qnt_linhas, qnt_colunas = info_agentes.shape
+
+    lista_lugares = list(info_lugares.columns)
+    lista_agentes = list(info_agentes.columns)
+
+    matriz_dif_orientacoes_ts = []
+
+    for agente, lugar in zip(lista_agentes, lista_lugares):
+
+        linha = []
+
+        for time_step in range(qnt_linhas):
+            orientacao_agente = info_agentes.loc[time_step, agente]
+            orientacao_lugar = info_lugares.loc[time_step, lugar]
+            dif_orientacao = abs(orientacao_agente - orientacao_lugar)
+            linha.append(dif_orientacao)
+
+        matriz_dif_orientacoes_ts.append(linha)
+
+    fig, ax = plt.subplots(1)
+
+    grafico = ax.pcolor(matriz_dif_orientacoes_ts, cmap="PuBu")
+    fig.colorbar(grafico, ax=ax)
+    ax.set_title("dif orientações agente e lugar X time Steps")
+    ax.set_xlabel("time steps")
+    ax.set_ylabel("agentes e lugares")
+
+    nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["colormap_azul_v2"])
+    plt.savefig(nome_grafico)
+    plt.close()
+
+    print("graficos criados em: ", nome_novo_folder)
+
+    # ----------------------------------------------------------------------------------
+    # heatmap de entropias
+
+    # heatmap_entropia_agentes(dir_principal, qnt_linhas_heatmap, qnt_colunas_heatmap, dir_destino)
+    # heatmap_entropia_lugares(dir_principal, qnt_linhas_heatmap, qnt_colunas_heatmap, dir_destino)
+    # heatmap_entropia_geral(dir_principal, qnt_linhas_heatmap, qnt_colunas_heatmap, dir_destino)
 
 def heatmap_entropia_agentes(nome_dir_origem, qnt_linhas, qnt_colunas, nome_dir_destino):
     
