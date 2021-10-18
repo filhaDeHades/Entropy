@@ -125,22 +125,23 @@ import Scripts.inverte_e_cria_arquivo as ica
 
 for arquetipo in range(6):
 
-    lista_arquivos_base = ["modelo1(42x42)[tipo_1].txt",    # 0
+    lista_arquivos_base = ["new_york_ID(42x42)[tipo_2].txt", "new_york(1000x1000)[tipo_1].txt", "Sao_Paulo(1000x1000)[tipo_1].txt"]
+    '''lista_arquivos_base = ["modelo1(42x42)[tipo_1].txt",    # 0
                         "modelo2-inv(42x42)[tipo_1].txt",    # 1
                         "modelo3-inv(42x42)[tipo_1].txt",   # 2
                         "modelo4(42x42)[tipo_1].txt",    # 3
                         "modelo5(42x42)[tipo_1].txt",    # 4
-                        "modelo6(42x42)[tipo_1].txt"]    # 5
+                        "modelo6(42x42)[tipo_1].txt"]    # 5'''
 
     # -- fazendo as simulacoes 2d (demorou quase um dia) --
-    pesos_escolha_lugar = (0.9, 0.9)
-    pesos_contaminacao_agentes = (0.5, 0.5)
-    pesos_contaminacao_lugares = (0.5, 0.5)
+    pesos_escolha_lugar = (0.1, 0.1) #alfa e beta
+    pesos_contaminacao_agentes = (0.5, 0.5) #C e D dos agentes
+    pesos_contaminacao_lugares = (0.5, 0.5) #C e D dos lugares
     path_relativo_folder_reusltados = "Testes\\2d_resultados"
     resultados = t2d.teste_modelo_2d_com_arquivo(lista_arquivos_base[arquetipo], 2000, pesos_escolha_lugar, pesos_contaminacao_agentes, pesos_contaminacao_lugares)
 
     # -- plotando os graficos dos resultados das simulacoes 2D--
-    nome_dir_origem = "Testes\\2d_resultados\\arquetipos\\time_steps_2000\\time_steps_2000_0-9" #devem ser pastas já existentes
+    nome_dir_origem = "Testes\\2d_resultados\\cidades\\nova_york" #devem ser pastas já existentes
     nome_dir_destino = f"modelo{arquetipo+1}" #deve ser o nome de uma nova pasta
     tp.salvar_graficos_resultados_v2(resultados, nome_dir_destino, nome_dir_origem)
 

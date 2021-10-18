@@ -195,9 +195,13 @@ class AgenteV2Fast:
 
             expoente = fatorDifOrientacao + fatorDistancia
             peso = math.exp(-expoente)
+            if peso == 0.0:
+                peso = 0.1
+            
             listaPesos.append(peso)
         
         somaListaPesos = sum(listaPesos)
+        #print(f"LISTA PESOS: {listaPesos}\nSOMA: {somaListaPesos}\n")
         # normalização
         listaPesosFinal = [i/somaListaPesos for i in listaPesos]
         # print("lista pesos final: ", sum(listaPesosFinal))
