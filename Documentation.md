@@ -471,38 +471,8 @@ Modelo de simulação 2D com resultados rápidos, sem representação gráfica.
 
         **qnt_agentes**:
 
-    - `gerar_lugares_aleatorios_v2(self, qnt_lugares, ajustar_tam_lugar=True, fracao_espaco_vazio=0.5, tamanho_max_lugar=5, sem_cor_repetida=False, sem_orientacao_repetida=False):`
-        **self**: Presente em todas as classes, representa a si mesmo.
-
-        **qnt_lugares**:
-
-        **ajustar_tam_lugar**: Valor padrão: True. - _bool_.
-
-        **fracao_espaco_vazio**: Valor padrão: 0.5. - _float_.
-
-        **tamanho_max_lugar**: Valor padrão: 5. - _int_.
-
-        **sem_cor_repetida**: Valor padrão: False. - _bool_.
-
-        **sem_orientacao_repetida**: Valor padrão: False. - _bool_.
-
     - `gerar_lugares_aleatorios_v3(self):`
         **self**: Presente em todas as classes, representa a si mesmo.
-
-    - `gerar_lugares_aleatorios_v4(self, qnt_lugares, ajustar_tam_lugar=True, fracao_espaco_vazio=0.5, tamanho_max_lugar=5, sem_cor_repetida=False, sem_orientacao_repetida=False):`
-        **self**: Presente em todas as classes, representa a si mesmo.
-
-        **qnt_lugares**:
-
-        **ajustar_tam_lugar**: Valor padrão: True. - _bool_.
-
-        **fracao_espaco_vazio**: Valor padrão: 0.5. - _float_.
-
-        **tamanho_max_lugar**: Valor padrão: 5. - _int_.
-
-        **sem_cor_repetida**: Valor padrão: False. - _bool_.
-
-        **sem_orientacao_repetida**: Valor padrão: False. - _bool_.
 
     - `teste_lugares_certo(self):`
         **self**: Presente em todas as classes, representa a si mesmo.
