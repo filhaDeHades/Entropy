@@ -9,6 +9,17 @@ class AgenteV2Fast:
     qnt_agentes = 0
 
     def __init__(self, grid, grid_x, grid_y, orientacao_latente=0, orientacao_atual=0, id_agente=None):
+        """Inicializa o agente, adicionando seu id, sua orientação latente,
+            sua orientação atual, o grid e sua posição no grid.
+
+        Args:
+            grid (GridV2Fast): Instância da Classe GridV2Fast onde a simulação ocorre.
+            grid_x (int): Posição X do agente no grid.
+            grid_y (int): Posição Y do agente no grid.
+            orientacao_latente (int, optional): Contém o valor da orientação latente do agente. Defaults to 0.
+            orientacao_atual (int, optional): Contém o valor da orientação atual do agente. Defaults to 0.
+            id_agente (int, optional): Número de identificação do agente. Defaults to None.
+        """
 
         if id_agente is None:
             self.id = AgenteV2Fast.qnt_agentes
@@ -36,16 +47,38 @@ class AgenteV2Fast:
         self.orientacao_atual_inicial = orientacao_atual
 
     def atualizar_celula_grid(self, grid, x, y):
+        """Atualiza a célula do grid.
+
+        Args:
+            grid (GridV2Fast): Grid onde a simulação está sendo feita.
+            x (int): Posição X da célula no grid.
+            y (int): Posição Y da célula no grid.
+        """
+
         celula = grid.obter_celula_array_grid(x, y)
         self.celula_grid = celula
 
     def atualizar_posicao_grid(self, grid, pos_nova_grid):
+        """Atualiza a posição para a posição atual.
+
+        Args:
+            grid (GridV2Fast): Grid onde a simulação está sendo feita.
+            pos_nova_grid (tuple): Tupla com a posição atual da célula.
+        """
+
         self.grid_x = pos_nova_grid[0]
         self.grid_y = pos_nova_grid[1]
         self.pos_grid = pos_nova_grid
         self.atualizar_celula_grid(grid, self.grid_x, self.grid_y)
 
     def contaminacao_agente(self, orientacao_do_lugar, pesos):
+        """Calcula a contaminação do agente pela orientação do lugar.
+
+        Args:
+            orientacao_do_lugar (int): Orientação atual do lugar.
+            pesos (tuple): Pesos C e D do agente.
+        """
+
         a, b = pesos[0], pesos[1]
         soma_pesos = a + b
 
@@ -53,6 +86,10 @@ class AgenteV2Fast:
         self.orientacao_latente = contaminacao
 
     def sortear_nova_orientacao(self):
+        """oorteia uma nova orientação para o agente, sem levar
+            em consideração possíveis contaminações.
+        """
+
         possiveis_orientacoes = list(range(0, 1100, 100))
         nova_orientacao = random.choice(possiveis_orientacoes)
         self.orientacao_atual = nova_orientacao
@@ -162,7 +199,11 @@ class AgenteV2Fast:
             fator_distancia = peso_distancia * distancia
 
             expoente = fator_dif_orientacao + fator_distancia
+
             peso = np.exp(-expoente)
+            if peso == 0.0:
+                peso = np.nextafter(np.float32(0), np.float32(1))
+
             lista_pesos[i] = peso
             norma += peso
 
@@ -173,11 +214,36 @@ class AgenteV2Fast:
 
     @staticmethod
     def sorteioComPesos(listaPossibilidades, listaPesos, qntElementosSorteados=1):
+        """Faz um sorteio ponderado.
+
+        Args:
+            listaPossibilidades (list): Lista com as opções de escolhas
+            listaPesos (list): Lista com os pesos que cada opção de escolha terá
+                no sorteio (ordenada da mesma forma que a listaPossibilidades).
+            qntElementosSorteados (int, optional): Define quantos elementos da
+                listaPossibilidades devem ser sorteados utilizando os pesos
+                informados. Defaults to 1.
+
+        Returns:
+            [list]: Lista contendo todos os valores sorteados.
+        """
+
         listaElementosSorteados = random.choices(listaPossibilidades, weights=listaPesos, k=qntElementosSorteados)
         return listaElementosSorteados
 
     # funcao importada do modelo 1D, so esta sendo adaptada para o model 2D
     def escolher_lugar(self, listaLugares, pesos):
+        """É atribuido os pesos que cada lugar terá no sorteio do próximo destino
+            do agente.
+
+        Args:
+            listaLugares (list): Lista contendo todos os lugares do grid.
+            pesos (tupla): Pesos C e D dos agentes
+
+        Returns:
+            [LugarV2Fast]: Lugar escolhido como próximo destino na simulação.
+        """
+
         pesoDifOrientacao = pesos[0]
         pesoDistancia = pesos[1]
 
@@ -194,22 +260,27 @@ class AgenteV2Fast:
             fatorDistancia = pesoDistancia * distancia
 
             expoente = fatorDifOrientacao + fatorDistancia
+
+
             peso = math.exp(-expoente)
             if peso == 0.0:
-                peso = 0.1
+                peso = np.nextafter(np.float32(0), np.float32(1))
             
             listaPesos.append(peso)
         
         somaListaPesos = sum(listaPesos)
-        #print(f"LISTA PESOS: {listaPesos}\nSOMA: {somaListaPesos}\n")
+
         # normalização
         listaPesosFinal = [i/somaListaPesos for i in listaPesos]
-        # print("lista pesos final: ", sum(listaPesosFinal))
 
         lugarEscolhido = self.sorteioComPesos(listaLugares, listaPesosFinal)[0]
         return lugarEscolhido
 
     def resgatar_estado_inicial(self):
+        """Resgata o estado inicial da célula, ou seja, o estado
+            padrão antes das mudanças feitas pelo A*
+        """
+
         self.grid_x = self.grid_x_inicial
         self.grid_y = self.grid_y_inicial
         self.pos_grid = self.pos_grid_inicial
