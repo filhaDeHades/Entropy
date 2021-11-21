@@ -134,7 +134,7 @@ for arquetipo in range(6):
                         "modelo6(42x42)[tipo_1].txt"]    # 5'''
 
     # -- fazendo as simulacoes 2d (demorou quase um dia) --
-    pesos_escolha_lugar = (0.1, 0.1) #alfa e beta
+    pesos_escolha_lugar = (0.1, 0.5) #alfa e beta
     pesos_contaminacao_agentes = (0.5, 0.5) #C e D dos agentes
     pesos_contaminacao_lugares = (0.5, 0.5) #C e D dos lugares
     path_relativo_folder_reusltados = "Testes\\2d_resultados"
@@ -142,7 +142,7 @@ for arquetipo in range(6):
 
     # -- plotando os graficos dos resultados das simulacoes 2D--
     
-    nome_dir_origem = "Testes\\2d_resultados\\arquetipos\\time_steps_2000\\agentes_atualizados\\(0-1)(0-1)" #devem ser pastas já existentes
+    nome_dir_origem = "Testes\\2d_resultados\\arquetipos\\time_steps_2000\\agentes_atualizados\\(0-1)(0-5)" #devem ser pastas já existentes
     nome_dir_destino = f"modelo{arquetipo+1}" #deve ser o nome de uma nova pasta
     tp.salvar_graficos_resultados_v2(resultados, nome_dir_destino, nome_dir_origem)
 

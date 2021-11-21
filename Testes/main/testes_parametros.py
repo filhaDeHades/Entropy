@@ -16,8 +16,6 @@ def teste_pesos_escolha_lugar():
     grid = Grid1D(tam_grid_1D, qnt_agentes, qnt_lugares, agentes_aleatorios=False, lugares_aleatorios=False,
                   rangePossiveisOrientacoes=range_orientacoes)
 
-    # print("lista orietacoes: ", grid.listaDeOrientacoes)
-
     pesos_escolha_lugar = (0.1, 0.1)
     pesos_contaminacao = (1, 0.1)
 
@@ -30,25 +28,6 @@ def teste_pesos_escolha_lugar():
     info_lugares = resultados["resultados_lugares"]
     info_entropia = resultados["resultados_entropia"]
 
-    # print("INFO STATICA:\n")
-    # print(info_statica)
-    #
-    # print("\n---------------------------------\n")
-    #
-    # print("INFO TIME STEPS:\n")
-    # print(info_time_steps)
-    #
-    # print("\n---------------------------------\n")
-    #
-    # print("INFO AGENTES:\n")
-    # print(info_agentes)
-    #
-    # print("\n---------------------------------\n")
-    #
-    # print("INFO LUGARES: \n")
-    # print(info_lugares)
-    #
-    # print("\n---------------------------------\n")
 
     # ------------------------------------------------------------------------------------------------------------------
     # grafico de entropia
@@ -1214,10 +1193,6 @@ def salvar_graficos_resultados(nome_dir_origem, nome_dir_destino):
     # ----------------------------------------------------------------------------------
     # heatmap de entropias
 
-    # heatmap_entropia_agentes(dir_principal, qnt_linhas_heatmap, qnt_colunas_heatmap, dir_destino)
-    # heatmap_entropia_lugares(dir_principal, qnt_linhas_heatmap, qnt_colunas_heatmap, dir_destino)
-    # heatmap_entropia_geral(dir_principal, qnt_linhas_heatmap, qnt_colunas_heatmap, dir_destino)
-
 def salvar_graficos_resultados_v2(resultados, nome_destino, nome_dir_origem):
     """Essa função salva os graficos de resultados das simulações por arquivos
         de forma correta
@@ -1231,9 +1206,6 @@ def salvar_graficos_resultados_v2(resultados, nome_destino, nome_dir_origem):
     dir_principal = os.path.abspath(nome_dir_origem)
     dir_destino = os.path.abspath(nome_dir_origem)
     print(f'DIRETORIO PRINCIPAL:\n{dir_principal}\nDIR DESTINO:\n{dir_destino}')
-    
-    #for sub_dir in lista_sub_dirs:
-    #resultados_simulacao = os.path.join(dir_principal, sub_dir)
 
     df_agentes = resultados["resultados_agentes"]
     df_entropia = resultados["resultados_entropia"]
@@ -1248,17 +1220,21 @@ def salvar_graficos_resultados_v2(resultados, nome_destino, nome_dir_origem):
     os.mkdir(nome_novo_folder)
 
     nomes_graficos = {
-        
         "entropia_agentes": "grafico_entropia_media_agentes.png",
         "entropia_lugares": "grafico_entropia_media_lugares.png",    
         "entropia_geral": "grafico_entropia_media_geral.png",
         "colormap_agentes": "colormap_orientacoes_agentes",
         "colormap_lugares": "colormap_orientacoes_lugares",
         "ort_azul_ver": "grafico_linhas_orientacoes_agentes_lugares",
-        "colormap_azul_v1": "colormap_dif_orientacoes_agentes_lugares",
-        "colormap_azul_v2": "colormap_dif_orientacoes_agentes_lugares_msm_id"       
-    
+        "histograma_agentes_inicio": "histograma_orientacoes_agentes_inicio",
+        "histograma_agentes_final": "histograma_orientacoes_agentes_final",
+        "histograma_lugares_inicio": "histograma_orientacoes_lugares_inicio",
+        "histograma_lugares_final": "histograma_orientacoes_lugares_final" 
         }
+
+    # GRÁFICOS
+
+    #Esses gráficos são salvos e são mostrados
 
     # ------------------------------------------------------------------------------------------------------------------
     # GRAFICO ENTROPIA AGENTES
@@ -1277,6 +1253,7 @@ def salvar_graficos_resultados_v2(resultados, nome_destino, nome_dir_origem):
     
     nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["entropia_agentes"])
     plt.savefig(nome_grafico)
+    plt.show()
     plt.close()
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -1295,6 +1272,7 @@ def salvar_graficos_resultados_v2(resultados, nome_destino, nome_dir_origem):
     
     nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["entropia_lugares"])
     plt.savefig(nome_grafico)
+    plt.show()
     plt.close()
     
     # ------------------------------------------------------------------------------------------------------------------
@@ -1310,6 +1288,7 @@ def salvar_graficos_resultados_v2(resultados, nome_destino, nome_dir_origem):
 
     nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["entropia_geral"])
     plt.savefig(nome_grafico)
+    plt.show()
     plt.close()
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -1331,6 +1310,7 @@ def salvar_graficos_resultados_v2(resultados, nome_destino, nome_dir_origem):
     
     nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["colormap_agentes"])
     plt.savefig(nome_grafico)
+    plt.show()
     plt.close()
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -1353,6 +1333,7 @@ def salvar_graficos_resultados_v2(resultados, nome_destino, nome_dir_origem):
 
     nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["colormap_lugares"])
     plt.savefig(nome_grafico)
+    plt.show()
     plt.close()
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -1374,13 +1355,14 @@ def salvar_graficos_resultados_v2(resultados, nome_destino, nome_dir_origem):
     
     nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["ort_azul_ver"])
     plt.savefig(nome_grafico)
+    plt.show()
     plt.close()
 
     # ------------------------------------------------------------------------------------------------------------------
-    # COLORMAP AZUL DIF ORIENTACOES AGENTES E LUGARES
+    # HISTOGRAMA NÚMERO DE AGENTES EM CADA ORIENTAÇÃO
 
-    matriz_dif_orientacoes_inicial = []
-    matriz_dif_orientacoes_final = []
+    lista_orientacoes_inicial = []
+    lista_orientacoes_final = []
 
     qnt_linhas, qnt_colunas = info_agentes.shape
     ultima_linha = qnt_linhas - 1
@@ -1390,86 +1372,39 @@ def salvar_graficos_resultados_v2(resultados, nome_destino, nome_dir_origem):
 
     for agente in lista_agentes:
 
-        linha_inicio = []
-        linha_fim = []
+        orientacao_agente_inicial = info_agentes.loc[0, agente]
+        lista_orientacoes_inicial.append(orientacao_agente_inicial)
 
-        for lugar in lista_lugares:
-            orientacao_agente_inicial = info_agentes.loc[0, agente]
-            orientacao_lugar_inicial = info_lugares.loc[0, lugar]
-            dif_orientacao_inicial = abs(orientacao_agente_inicial - orientacao_lugar_inicial)
-            linha_inicio.append(dif_orientacao_inicial)
+        orientacao_agente_final = info_agentes.loc[ultima_linha, agente]
+        lista_orientacoes_final.append(orientacao_agente_final)
 
-            orientacao_agente_final = info_agentes.loc[ultima_linha, agente]
-            orientacao_lugar_final = info_lugares.loc[ultima_linha, lugar]
-            dif_orientacao_final = abs(orientacao_agente_final - orientacao_lugar_final)
-            linha_fim.append(dif_orientacao_final)
+    # ---------- Histograma Início ----------
+    
+    plt.hist(lista_orientacoes_inicial, bins=200)
+    plt.xlabel('Orientações')
+    plt.ylabel('Número de Agentes')
+    plt.title('Histograma Agentes Início')
+    
 
-        matriz_dif_orientacoes_inicial.append(linha_inicio)
-        matriz_dif_orientacoes_final.append(linha_fim)
-
-    fig, (ax1, ax2) = plt.subplots(2, 1)
-
-    grafico1 = ax1.pcolor(matriz_dif_orientacoes_inicial, cmap="PuBu")
-    fig.colorbar(grafico1, ax=ax1)
-    ax1.set_title("diferença orientações agente X lugar (início)")
-    ax1.set_ylabel("agentes")
-
-    grafico2 = ax2.pcolor(matriz_dif_orientacoes_final, cmap="PuBu")
-    fig.colorbar(grafico2, ax=ax2)
-    ax2.set_title("diferença orientações agente X lugar (fim)")
-    ax2.set_xlabel("lugares")
-    ax2.set_ylabel("agentes")
-
-    nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["colormap_azul_v1"])
+    nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["histograma_agentes_inicio"])
     plt.savefig(nome_grafico)
+    plt.show()
     plt.close()
 
-    # ------------------------------------------------------------------------------------------------------------------
-    # COLORMAP AZUL DIF ORIENTACOES AGENTE E LUGAR MSM ID AO LONGO DO TEMPO
+    # ---------- Histograma Final ----------
+    
+    plt.hist(lista_orientacoes_final, bins=200)
+    plt.xlabel('Orientações')
+    plt.ylabel('Número de Agentes')
+    plt.title('Histograma Agentes Final')
 
-    # fazendo o colormap de diferencas absolutas de orientacoes entre agentes e lugares
-    # desta vez compara-se apenas os agentes e lugares de mesma posicao (agente 1 no lugar 1, agente 2 no lugar 2, etc)
-    # mas se observa todos os time steps
-
-    qnt_linhas, qnt_colunas = info_agentes.shape
-
-    lista_lugares = list(info_lugares.columns)
-    lista_agentes = list(info_agentes.columns)
-
-    matriz_dif_orientacoes_ts = []
-
-    for agente, lugar in zip(lista_agentes, lista_lugares):
-
-        linha = []
-
-        for time_step in range(qnt_linhas):
-            orientacao_agente = info_agentes.loc[time_step, agente]
-            orientacao_lugar = info_lugares.loc[time_step, lugar]
-            dif_orientacao = abs(orientacao_agente - orientacao_lugar)
-            linha.append(dif_orientacao)
-
-        matriz_dif_orientacoes_ts.append(linha)
-
-    fig, ax = plt.subplots(1)
-
-    grafico = ax.pcolor(matriz_dif_orientacoes_ts, cmap="PuBu")
-    fig.colorbar(grafico, ax=ax)
-    ax.set_title("dif orientações agente e lugar X time Steps")
-    ax.set_xlabel("time steps")
-    ax.set_ylabel("agentes e lugares")
-
-    nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["colormap_azul_v2"])
+    nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["histograma_agentes_final"])
     plt.savefig(nome_grafico)
+    plt.show()
     plt.close()
-
-    print("graficos criados em: ", nome_novo_folder)
 
     # ----------------------------------------------------------------------------------
     # heatmap de entropias
-
-    # heatmap_entropia_agentes(dir_principal, qnt_linhas_heatmap, qnt_colunas_heatmap, dir_destino)
-    # heatmap_entropia_lugares(dir_principal, qnt_linhas_heatmap, qnt_colunas_heatmap, dir_destino)
-    # heatmap_entropia_geral(dir_principal, qnt_linhas_heatmap, qnt_colunas_heatmap, dir_destino)
 
 def heatmap_entropia_agentes(nome_dir_origem, qnt_linhas, qnt_colunas, nome_dir_destino):
     
@@ -1478,18 +1413,12 @@ def heatmap_entropia_agentes(nome_dir_origem, qnt_linhas, qnt_colunas, nome_dir_
     matriz_entropia_agentes = []
 
     matriz_sub_dirs = np.array(lista_sub_dirs).reshape((qnt_linhas, qnt_colunas))
-    # print("qnt linhas: ", len(matriz_sub_dirs))
-    # print("qnt colunas: ", len(matriz_sub_dirs[0]))
-    print(matriz_sub_dirs)
-
-    # matriz_entropia_agentes = []
 
     for linha in matriz_sub_dirs:
 
         linha_nova = []
 
         for nome_dir in linha:
-            # print("nome: ", nome_dir_atual)
             nome_dir_atual = os.path.join(nome_dir_origem, nome_dir)
 
             nome_df_entropia = os.path.join(nome_dir_atual, "df_entropia.csv")
@@ -1501,9 +1430,6 @@ def heatmap_entropia_agentes(nome_dir_origem, qnt_linhas, qnt_colunas, nome_dir_
         
         linha_nova = [round(i, 3) for i in linha_nova]
         matriz_entropia_agentes.insert(0, linha_nova)
-
-    # print("qnt linhas: ", len(matriz_entropia_agentes))
-    # print("qnt colunas: ", len(matriz_entropia_agentes[0]))
 
     for linha in matriz_entropia_agentes:
         print(linha)
@@ -1531,8 +1457,8 @@ def heatmap_entropia_agentes(nome_dir_origem, qnt_linhas, qnt_colunas, nome_dir_
     nome_grafico = "heatmap_entropia_({}, {})".format(qnt_linhas, qnt_colunas)
     nome_grafico = os.path.join(nome_dir_destino, nome_grafico)
     plt.savefig(nome_grafico)
+    plt.show()
     plt.close()
-
 
 def heatmap_entropia_lugares(nome_dir_origem, qnt_linhas, qnt_colunas, nome_dir_destino):
     lista_sub_dirs = os.listdir(nome_dir_origem)
@@ -1540,16 +1466,12 @@ def heatmap_entropia_lugares(nome_dir_origem, qnt_linhas, qnt_colunas, nome_dir_
     matriz_entropia_lugares = []
 
     matriz_sub_dirs = np.array(lista_sub_dirs).reshape((qnt_linhas, qnt_colunas))
-    # print("qnt linhas: ", len(matriz_sub_dirs))
-    # print("qnt colunas: ", len(matriz_sub_dirs[0]))
-    # print(matriz_sub_dirs)
 
     for linha in matriz_sub_dirs:
 
         linha_nova = []
 
         for nome_dir in linha:
-            # print("nome: ", nome_dir_atual)
             nome_dir_atual = os.path.join(nome_dir_origem, nome_dir)
 
             nome_df_entropia = os.path.join(nome_dir_atual, "df_entropia.csv")
@@ -1561,9 +1483,6 @@ def heatmap_entropia_lugares(nome_dir_origem, qnt_linhas, qnt_colunas, nome_dir_
         
         linha_nova = [round(i, 3) for i in linha_nova]
         matriz_entropia_lugares.insert(0, linha_nova)
-
-    # print("qnt linhas: ", len(matriz_entropia_agentes))
-    # print("qnt colunas: ", len(matriz_entropia_agentes[0]))
 
     for linha in matriz_entropia_lugares:
         print(linha)
@@ -1591,8 +1510,8 @@ def heatmap_entropia_lugares(nome_dir_origem, qnt_linhas, qnt_colunas, nome_dir_
     nome_grafico = "heatmap_entropia_({}, {})".format(qnt_linhas, qnt_colunas)
     nome_grafico = os.path.join(nome_dir_destino, nome_grafico)
     plt.savefig(nome_grafico)
+    plt.show()
     plt.close()
-
 
 def heatmap_entropia_geral(nome_dir_origem, qnt_linhas, qnt_colunas, nome_dir_destino):
     lista_sub_dirs = os.listdir(nome_dir_origem)
@@ -1600,16 +1519,12 @@ def heatmap_entropia_geral(nome_dir_origem, qnt_linhas, qnt_colunas, nome_dir_de
     matriz_entropia_geral = []
 
     matriz_sub_dirs = np.array(lista_sub_dirs).reshape((qnt_linhas, qnt_colunas))
-    # print("qnt linhas: ", len(matriz_sub_dirs))
-    # print("qnt colunas: ", len(matriz_sub_dirs[0]))
-    # print(matriz_sub_dirs)
 
     for linha in matriz_sub_dirs:
 
         linha_nova = []
 
         for nome_dir in linha:
-            # print("nome: ", nome_dir_atual)
             nome_dir_atual = os.path.join(nome_dir_origem, nome_dir)
 
             nome_df_entropia = os.path.join(nome_dir_atual, "df_entropia.csv")
@@ -1621,9 +1536,6 @@ def heatmap_entropia_geral(nome_dir_origem, qnt_linhas, qnt_colunas, nome_dir_de
         
         linha_nova = [round(i, 3) for i in linha_nova]
         matriz_entropia_geral.insert(0, linha_nova)
-
-    # print("qnt linhas: ", len(matriz_entropia_agentes))
-    # print("qnt colunas: ", len(matriz_entropia_agentes[0]))
 
     for linha in matriz_entropia_geral:
         print(linha)
@@ -1651,85 +1563,10 @@ def heatmap_entropia_geral(nome_dir_origem, qnt_linhas, qnt_colunas, nome_dir_de
     nome_grafico = "heatmap_entropia_({}, {})".format(qnt_linhas, qnt_colunas)
     nome_grafico = os.path.join(nome_dir_destino, nome_grafico)
     plt.savefig(nome_grafico)
+    plt.show()
     plt.close()
 
 
 def testes():
-
-    # path = "Testes\\main\\resultados_entropia"
-    # lista_arquivos = os.listdir(path)
-    # ultimo_arquivo = lista_arquivos[-1]
-    # print(os.path.join(path, ultimo_arquivo))
-
-    # nome = "resultados_entropia_(0.5, 0.4)"
-    # obter_peso_pelo_nome_arq(nome)
-
-    # ultimo_peso = (3, 3)
-    
-    # pesos_a = list(range(4))
-    # pesos_b = list(range(4))
-
-    # lista_pesos = [(a, b) for a in pesos_a for b in pesos_b]
-
-    # print("lista pesos antes: ", lista_pesos)
-
-    # nome_arquivo = "TempFile_contador.txt"
-    # path = "Testes\\main"
-    # nome_arquivo_completo = os.path.join(path, nome_arquivo)
-
-    # if (os.path.exists(nome_arquivo_completo)):
-    #     arquivo = open(nome_arquivo_completo, "r")
-    #     n = arquivo.readline()
-    #     n = int(n)
-    #     lista_pesos = lista_pesos[n:]
-    #     arquivo.close()
-    #     print("indice: ", n)
-    # else:
-    #     print("nao achou arquivo")
-    
-    # print("lista pesos final: ", lista_pesos)
-
-    # pesos_a = np.arange(0.1, 0.4, 0.1)
-    # pesos_b = np.arange(0.1, 0.4, 0.1)
-
-    # pesos_a = [round(a, 3) for a in pesos_a]
-    # pesos_b = [round(b, 3) for b in pesos_b]
-
-    # qnt_pesos_a = len(pesos_a)
-    # qnt_pesos_b = len(pesos_b)
-
-    # for a in range(qnt_pesos_a):
-
-    #     if a + 1 == qnt_pesos_a:
-    #         proximo_peso_a = 0.1
-    #     else:
-    #         proximo_peso_a = pesos_a[a+1]
-
-    #     for b in range(qnt_pesos_b):
-            
-    #         peso_a = pesos_a[a]
-    #         peso_b = pesos_b[b]
-
-    #         peso_atual = (peso_a, peso_b)
-    #         print("peso atual: ", peso_atual)
-
-            
-    #         proximo_peso_a = peso_a
-    #         proximo_peso_b = 0
-
-    #         if b + 1 == qnt_pesos_b:
-    #             proximo_peso_b = pesos_b[0]
-                
-    #             if a + 1 == qnt_pesos_a:
-    #                 proximo_peso_a = 0
-    #             else:
-    #                 proximo_peso_a = pesos_a[a+1]
-            
-    #         else:
-    #             proximo_peso_b = pesos_b[b+1]
-            
-    #         proximo_peso = (proximo_peso_a, proximo_peso_b)
-    #         print("proximo_peso: ", proximo_peso)
-    #         print("--------------------")
 
     salvar_graficos_resultados("resultados6")
