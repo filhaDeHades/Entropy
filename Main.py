@@ -137,7 +137,6 @@ for arquetipo in range(6):
     pesos_escolha_lugar = (0.1, 0.5) #alfa e beta
     pesos_contaminacao_agentes = (0.5, 0.5) #C e D dos agentes
     pesos_contaminacao_lugares = (0.5, 0.5) #C e D dos lugares
-    path_relativo_folder_reusltados = "Testes\\2d_resultados"
     resultados = t2d.teste_modelo_2d_com_arquivo(lista_arquivos_base[arquetipo], 2000, pesos_escolha_lugar, pesos_contaminacao_agentes, pesos_contaminacao_lugares)
 
     # -- plotando os graficos dos resultados das simulacoes 2D--
