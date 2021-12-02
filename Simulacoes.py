@@ -15,7 +15,7 @@ import Testes.main.testes_modelo2D as t2d
 
 
 # testes no modelo 2D
-arquivo = open('inputSimulacao4.txt')
+arquivo = open('inputSimulacao.txt')
 linhas = arquivo.readlines()
 
 fast = 0

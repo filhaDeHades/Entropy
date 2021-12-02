@@ -29,7 +29,8 @@ class GridV2Fast:
             self.obter_array_celulas_grid_definido(matriz_layout)
 
         self.array_lugares = []
-        self.gerar_lugares_aleatorios_v3()
+        #self.gerar_lugares_aleatorios_Vmodelo5(self.qnt_lugares, 5)
+        #self.gerar_lugares_aleatorios_v3()
 
         self.array_agentes = [] 
         self.gerar_agentes_aleatorios_v3(self.qnt_agentes)
@@ -199,6 +200,65 @@ class GridV2Fast:
 
         self.array_lugares = np.array(lista_lugares)
 
+    def gerar_lugares_aleatorios_Vmodelo5(self, qnt_lugares, tamanho_max_lugar, sem_cor_repetida=False, sem_orientacao_repetida=False):
+        
+        lista_lugares = []
+        lista_cores = cores.lista_cores_coloridas[:]
+        lista_orientacoes = list(range(0, 1100, 100))
+
+        for lugar in range(qnt_lugares):
+            celula_aceitavel = False
+            celula_escolhida = None
+
+            while celula_aceitavel is False:
+                x = random.randint(0, self.qnt_colunas - 1)
+                y = random.randint(0, self.qnt_linhas - 1)
+                pos_array = y * self.qnt_colunas + x
+                celula_escolhida_temp = self.array_celulas_grid[pos_array]
+
+                if celula_escolhida_temp not in self.array_lugares:
+                    celula_escolhida = celula_escolhida_temp
+                    celula_aceitavel = True
+
+            lista_celulas_escolhidas = []
+            tamanho_lugar_temp = 0
+
+            while tamanho_lugar_temp < tamanho_max_lugar:
+                lista_celulas_escolhidas.append(celula_escolhida)
+                np.append(self.array_lugares, celula_escolhida)
+                lista_vizinhos = self.obter_nodulos_vizinhos(celula_escolhida)
+                set_vizinhos = None
+                set_vizinhos_eh_usavel = False
+
+                while set_vizinhos_eh_usavel is False:
+                    set_vizinhos_temp = set(lista_vizinhos) - set(lista_celulas_escolhidas)
+                    if len(set_vizinhos_temp) == 0:
+                        nova_celula_escolhida = random.choice(lista_celulas_escolhidas)
+                        lista_vizinhos = self.obter_nodulos_vizinhos(nova_celula_escolhida)
+                    else:
+                        set_vizinhos = set_vizinhos_temp
+                        set_vizinhos_eh_usavel = True
+                
+                lista_vizinhos_final = list(set_vizinhos)
+                celula_escolhida = random.choice(lista_vizinhos_final)
+                tamanho_lugar_temp += 1
+
+            cor_escolhida = random.choice(lista_cores)
+            if sem_cor_repetida is True:
+                lista_cores.remove(cor_escolhida)
+            
+            orientacao_escolhida = random.choice(lista_orientacoes)
+            if sem_orientacao_repetida is True:
+                lista_orientacoes.remove(orientacao_escolhida)
+
+            lista_coordenadas_escolhidas = [i.pos_grid for i in lista_celulas_escolhidas]
+            lugar_novo = LugarV2Fast(self, veio_de_arquivo=False, lista_coordenadas=lista_coordenadas_escolhidas,
+                                cor=cor_escolhida, orientacao=orientacao_escolhida)
+            
+            lista_lugares.append(lugar_novo)
+        
+        self.lista_lugares = lista_lugares
+
     # testando se os lugares tem todos coordenadas diferentes
     # delete me
     def teste_lugares_certo(self):
@@ -240,7 +300,8 @@ class GridV2Fast:
             lugar_novo = LugarV2Fast(self, veio_de_arquivo=True, lista_arquivo=lugar)
             self.array_lugares = np.append(self.array_lugares, lugar_novo)
         
-        self.gerar_lugares_aleatorios_v3()
+        self.gerar_lugares_aleatorios_Vmodelo5(self.qnt_lugares, 5)
+        #self.gerar_lugares_aleatorios_v3()
 
     def resgatar_caminhos_arquivo(self, nome_arquivo_caminhos):
 
