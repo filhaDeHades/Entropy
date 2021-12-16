@@ -33,7 +33,7 @@ def arquivo_csv_para_lista(nome_arquivo, separador="\t"):
         #print(f'\nLISTA_FINAL: {lista_final}\n')
         return lista_final
     except:
-        print(f'ERRO ao ler arquivo {nome_arquivo} na função arquivo_csv_para_lista(nome_arquivo, separador="\t")')
+        print(f'ERRO ao ler arquivo {nome_arquivo} na função arquivo_csv_para_lista(nome_arquivo, separador="\\t")')
         exit(1)
 
 #Teste - ver depois

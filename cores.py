@@ -1,4 +1,7 @@
 # CORES EM RGB
+import random
+
+
 preto = (0, 0, 0)
 branco = (255, 255, 255)
 cinza = (106, 106, 106)
@@ -21,3 +24,15 @@ roxo_escuro = (139, 0, 139)
 lista_cores_completa = [preto, branco, vermelho, laranja, amarelo, verde, azul, roxo]
 lista_cores_coloridas = [vermelho, laranja, amarelo, verde, verde_claro, verde_escuro, verde_azeite, verde_amarronzado,
                          azul, azul_cyan, azul_claro, azul_escuro, rosa, roxo, roxo_escuro]
+
+pulo = 50
+
+lista_cores_random = []
+for i in range(0, 1000, pulo):
+    x = random.randint(0, 255)
+    y = random.randint(0, 255)
+    z = random.randint(0, 255)
+    if (x,y,z) in lista_cores_random:
+        i -= 1
+        continue
+    lista_cores_random.append((x,y,z))

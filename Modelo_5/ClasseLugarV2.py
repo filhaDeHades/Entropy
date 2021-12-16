@@ -151,20 +151,23 @@ class LugarV2:
                     dicionario["caminho"] = caminho
                 # print("lista atualizada!\n")
 
-    def contaminacao_lugar(self, mudar_cor=True, grid=None):
-        a = 9
-        b = 1
-        soma_pesos = a + b
+    def contaminacao_lugar(self, pesos, mudar_cor=True, grid=None):
+        peso_lugar = pesos[0]
+        peso_agentes = pesos[1]
 
-        lista_orientacao_agentes = [i.orientacao_atual for i in self.lista_agentes_presentes]
+        soma_pesos = sum(pesos)
+        lista_orientacao_agentes = [i.orientacao_latente for i in self.lista_agentes_presentes]
+
         soma_orientacoes_agentes = sum(lista_orientacao_agentes)
-        media_orientacao_agentes = soma_orientacoes_agentes // len(lista_orientacao_agentes)
+        qnt_agentes = len(lista_orientacao_agentes)
 
-        nova_orientacao = (a*self.orientacao + b*media_orientacao_agentes) // soma_pesos
+        media_orientacao_agentes = soma_orientacoes_agentes // qnt_agentes
+
+        nova_orientacao = (peso_lugar*self.orientacao + peso_agentes*media_orientacao_agentes) // soma_pesos
         self.orientacao = nova_orientacao
 
         if mudar_cor is True:
-            self.cor = funcoes.update_orientacao_cor(grid.dict_orientacoes_cores, self.orientacao)
+            self.cor = funcoes.update_orientacao_cor(grid.dict_orientacoes_cores, self.orientacao, 1000)
 
     def resgatar_estado_inicial(self):
         self.orientacao = self.orientacao_inicial

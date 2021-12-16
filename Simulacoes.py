@@ -55,9 +55,11 @@ for linha in range(len(linhas)):
         arquivos.append(linhas[linha].strip('\n'))
 
 for arquetipo in range(len(arquivos)):
-
+ 
     if(fast):
         resultados = t2d.teste_modelo_2d_com_arquivo(arquivos[arquetipo], timeStep, (alfa, beta), (cAgentes, dAgentes), (cLugares, dLugares))
+    else:
+        resultados = t2d.teste_modelo_2d_visual(arquivos[arquetipo], timeStep, (alfaEBeta), (cAgentes, dAgentes), (cLugares, dLugares))
 
     # -- plotando os graficos dos resultados das simulacoes 2D--
     

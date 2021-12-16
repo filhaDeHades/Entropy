@@ -86,7 +86,7 @@ class AgenteV2Fast:
         self.orientacao_latente = contaminacao
 
     def sortear_nova_orientacao(self):
-        """oorteia uma nova orientação para o agente, sem levar
+        """Sorteia uma nova orientação para o agente, sem levar
             em consideração possíveis contaminações.
         """
 

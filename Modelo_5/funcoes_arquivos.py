@@ -3,6 +3,7 @@ from Modelo_fast.ClasseCelulaGridV2Fast import CelulaGridV2Fast
 from Modelo_fast.ClasseLugarV2Fast import LugarV2Fast
 import Modelo_fast.funcoes_fast as fst
 import numpy as np
+import pandas as pd
 import random
 import cores
 import os
@@ -143,7 +144,7 @@ def criar_arquivo_lugares_tipo_1(nome_arquivo_base, qnt_linhas, qnt_colunas, pat
                                     lista_celulas_para_testar.append(vizinho)
 
 
-                possiveis_cores = cores.lista_cores_coloridas
+                possiveis_cores = cores.lista_cores_random
                 cor_escolhida = random.choice(possiveis_cores)
 
                 possiveis_orientacoes = list(range(0, 1100, 100))
@@ -201,7 +202,7 @@ def criar_arquivo_lugares_tipo_1_v2(nome_arquivo_base, qnt_linhas, qnt_colunas):
                         lista_celulas_para_testar.append(vizinho)
                         vizinho.ja_foi_visitado = True
 
-            possiveis_cores = cores.lista_cores_coloridas
+            possiveis_cores = cores.lista_cores_random
             cor_escolhida = random.choice(possiveis_cores)
 
             possiveis_orientacoes = list(range(0, 1100, 100))
@@ -376,6 +377,24 @@ def corrigir_arquivo_invertido(nome_arquivo_invertido, nome_arquivo_certo):
 
     fst.lista_para_arquivo_csv(lista_arquivo, nome_arquivo_certo)
 
+def criar_matriz_layout(nome_arquivo):
+    lista_arquivo = fst.arquivo_csv_para_lista(nome_arquivo)
+    tam = obter_tam_grid_pelo_nome_arquivo(nome_arquivo)
+    matriz = []
+    #print(lista_arquivo)
+    for i in range(tam[0]):
+        #print()
+        linha=[]
+        for j in range(tam[1]):
+            #print("1 ")
+            
+            if lista_arquivo[i*j+i][2] == 0:
+                linha.append(0)
+            else:
+                linha.append(1)
+        matriz.append(linha)
+    return matriz
+
 
 def contar_qnt_linhas_arq(nome_arq):
 
@@ -387,6 +406,52 @@ def contar_qnt_linhas_arq(nome_arq):
         qnt_linhas += 1
 
     return qnt_linhas
+
+
+def checar_existencia_arquivo(nome_arquivo):
+    resultado = os.path.isfile(nome_arquivo)
+    return resultado
+
+
+def criar_ou_atualizar_arquivo_resultados(path, nome_arquivo_resultados, dict_resultado):
+    arquivo_resultado_com_path = obter_path_completo_arquivo(path, nome_arquivo_resultados)
+    existencia_arquivo_resultados = checar_existencia_arquivo(arquivo_resultado_com_path)
+
+    if existencia_arquivo_resultados is False:
+        data_frame = pd.DataFrame(dict_resultado)
+        data_frame.to_csv(arquivo_resultado_com_path, index=False)
+    else:
+        transformar_resultado_em_linha_csv(dict_resultado, arquivo_resultado_com_path)
+
+
+def obter_path_completo_arquivo(path, nome_arquivo):
+    path_completo = os.path.join(path, nome_arquivo)
+    return path_completo
+
+
+def transformar_resultado_em_linha_csv(dict_resultado, nome_arquivo_destino):
+    a = {key: value[0] for key, value in dict_resultado.items()}
+    b = [i for i in a.values()]
+    c = [b]
+    lista_para_arquivo_csv(c, nome_arquivo_destino, separador=",", tipo_operacao="a")
+
+
+def lista_para_arquivo_csv(lista_origem, nome_arquivo_destino, separador="\t", tipo_operacao="w"):
+
+    lista_temp = [list(map(str, i)) for i in lista_origem]
+    lista_temp_2 = [separador.join(i) for i in lista_temp]
+    lista_final = ["{}\n".format(i) for i in lista_temp_2]
+
+    try:
+
+        arquivo_destino = open(nome_arquivo_destino, tipo_operacao)
+
+        for linha in lista_final:
+            arquivo_destino.write(linha)
+
+        arquivo_destino.close()
+    except:
+        print(f"ERRO ao abrir arquivo {nome_arquivo_destino} - [lista_para_arquivo_csv]")
 
 
 def recebimento_arquivo_original(nome_arquivo_original, qnt_linhas, qnt_colunas, numero_tipo):

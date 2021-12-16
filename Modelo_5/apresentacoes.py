@@ -1,5 +1,5 @@
 from Modelo_5.simulacao import *
-from Modelo_5.simulacao2 import simulacao2
+import Modelo_5.simulacao2 as s2
 import Modelo_5.funcoes_arquivos as func_arq
 import os
 
@@ -153,7 +153,22 @@ def simulacao_com_arquivo_2():
     grid.resgatar_lugares_arquivo(nome_arquivo_lugares_completo)
     print("foram resgatados {} lugares, vindos do arquivo {}".format(len(grid.lista_lugares),
                                                                      nome_arquivo_base_utilizado))
-    simulacao2(peso_teste, grid, qnt_time_steps_teste)
+    s2.simulacao2(peso_teste, grid, qnt_time_steps_teste)
 
 
+def simulacao_com_arquivo_V(arquivo, timesteps=2000,  peso_escolha_lugar=(0.1, 0.1), peso_cont_agente=(1,1), peso_cont_lugar=(1,1)):
 
+    qnt_time_steps = timesteps
+    pesos_escolha_lugar = peso_escolha_lugar
+    pesos_agente = peso_cont_agente
+    pesos_lugar = peso_cont_lugar
+
+    resultados = s2.simulacao_utiliza_arquivo(arquivo, pesos_escolha_lugar=pesos_escolha_lugar, peso_cont_agente=pesos_agente,
+                                        peso_cont_lugar=pesos_lugar, qnt_time_steps=qnt_time_steps,
+                                        salvar_resultados=True, mostrar_grafico_entropia=True, retornar_resultados_ts=False)
+    
+    # info_agentes = resultados["resultados_agentes"]
+    # info_lugares = resultados["resultados_lugares"]
+    # info_entropia = resultados["resultados_entropia"]
+
+    

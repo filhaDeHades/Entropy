@@ -1,4 +1,6 @@
 import pygame as pg
+import pandas as pd
+import Modelo_5.funcoes_arquivos as func_arq
 from Modelo_5.ClasseAgenteV2 import AgenteV2
 from Modelo_5.ClasseGridV2 import GridV2
 from Modelo_5.ClasseLugarV2 import LugarV2
@@ -6,7 +8,7 @@ import funcoes
 import cores
 
 
-def simulacao(pesos, grid, qnt_time_steps, numero_da_simulacao, iniciar_automaticamente=False, mov_randomico_agentes=False,
+def simulacao(pesos, grid, qnt_time_steps, numero_da_simulacao, nome_arquivo_base=None, iniciar_automaticamente=False, mov_randomico_agentes=False,
               nome_arquivo_caminhos_utlizado=None):
 
     pg.init()
@@ -35,6 +37,42 @@ def simulacao(pesos, grid, qnt_time_steps, numero_da_simulacao, iniciar_automati
                   "lista_ent_med": [],
                   "delta_ent": 0
                   }
+
+    resultados_staticos = {"qnt_linhas": [grid.qnt_linhas],
+                           "qnt_colunas": [grid.qnt_colunas],
+                           "peso_a": [pesos[0]],
+                           "peso_b": [pesos[1]],
+                           "peso_c": [pesos[2]],
+                           "qnt_agentes": [len(grid.array_agentes)],
+                           "qnt_lugares": [len(grid.lista_celulas_ocupadas)],
+                           "qnt_time_steps": [qnt_time_steps],
+                           }
+    
+    if nome_arquivo_base is not None:
+        nome_arquivo_resultado_ts = func_arq.gerar_nome_arquivo_resultados_ts(nome_arquivo_base, numero_da_simulacao)
+        resultados_staticos["res_time_steps"] = [nome_arquivo_resultado_ts]
+
+    resultados_ts = {"0": [],
+                     "100": [],
+                     "200": [],
+                     "300": [],
+                     "400": [],
+                     "500": [],
+                     "600": [],
+                     "700": [],
+                     "800": [],
+                     "900": [],
+                     "1000": [],
+                     "lista_ent": []
+                     }
+    
+    dict_inicial_agentes = {str(i): [] for i in range(qnt_time_steps)}
+    df_agentes = pd.DataFrame(dict_inicial_agentes)
+    lista_colunas_df_agentes = list(df_agentes.columns)
+
+    dict_inicial_lugares = {str(i): [] for i in range(qnt_time_steps)}
+    df_lugares = pd.DataFrame(dict_inicial_lugares)
+    lista_colunas_df_lugares = list(df_lugares.columns)
 
     mainloop = True
 
@@ -66,7 +104,6 @@ def simulacao(pesos, grid, qnt_time_steps, numero_da_simulacao, iniciar_automati
 
                     if celula_selecionada.lugar is None:
                         if grid.permissao_criar_lugares_manuais is False:
-                            # print("{}, nao ha lugar nessa celula".format(celula_selecionada.pos_grid))
                             if len(celula_selecionada.lista_agentes_presentes) == 0:
                                 grid.mudar_estado_celula(celula_selecionada)
                         else:       # esta no modo de criar lugares manuais
@@ -77,18 +114,6 @@ def simulacao(pesos, grid, qnt_time_steps, numero_da_simulacao, iniciar_automati
                                 celula_selecionada.mudar_cor(cores.branco)
                                 grid.lista_coordenadas_lugar_temp.remove(celula_selecionada)
                     else:
-                        # print("lugar atual: ", celula_selecionada.lugar.id)
-                        # print("cel ocupadas: ", celula_selecionada.lugar.lista_coordenadas)
-                        # print("orientacao: ", celula_selecionada.lugar.orientacao)
-                        # print("-----------------------------------------------")
-                        # celula_selecionada.lugar.display_caminhos = True
-                        # if len(celula_selecionada.lugar.lista_celulas_grid_acessiveis) == 0:
-                        #     celula_selecionada.lugar.achar_celulas_acessiveis(grid)
-                        # celula_selecionada.lugar.display_celulas_acessiveis = True
-
-                        # if len(celula_selecionada.lugar.lista_caminhos) == 0:
-                        #     print("nao ha caminhos na lista")
-                        # else:
                         print("\n")
                         print("lugar: ", celula_selecionada.lugar.id)
                         print("orientacao: ", celula_selecionada.lugar.orientacao)
@@ -102,14 +127,6 @@ def simulacao(pesos, grid, qnt_time_steps, numero_da_simulacao, iniciar_automati
                                 if dicionario["possui_caminho"] is True:
                                     print("caminho: ", dicionario["caminho"])
                             print("*****************")
-
-                        # if agente_teste.escolheu_destino is False:
-                        #     lugar_atual_agente = None
-                        #     if agente_teste.celula_grid.lugar is not None:
-                        #         lugar_atual_agente = agente_teste.celula_grid.lugar
-                        #     agente_teste.configuracoes_proximo_destino(grid, celula_selecionada.lugar, lugar_atual=lugar_atual_agente)
-                        #     print("o agente escolheu o destino: ", agente_teste.destino_atual.id)
-                        #     print("o destino esta em: ", agente_teste.destino_atual.lista_coordenadas)
 
                     if len(celula_selecionada.lista_agentes_presentes) > 0:
                         for agente in celula_selecionada.lista_agentes_presentes:
@@ -144,7 +161,6 @@ def simulacao(pesos, grid, qnt_time_steps, numero_da_simulacao, iniciar_automati
 
                 if event.key == pg.K_x:
                     grid.resgatar_lugares_arquivo("arquivo_lugares_teste_3.txt")
-                    # grid.init_lista_caminho_lugares()
                     print("lugares resgatados")
 
                 if event.key == pg.K_e:
@@ -267,8 +283,6 @@ def simulacao(pesos, grid, qnt_time_steps, numero_da_simulacao, iniciar_automati
 
                 if iniciar_time_step is True:
                     print("INICIO DO TIME STEP: {} \n".format(time_step))
-                    # for agente in grid.lista_agentes:
-                        # print("agente {} tem orientacao: {}".format(agente.id, agente.orientacao_latente))
                     iniciar_time_step = False
 
                 for agente in grid.lista_agentes:
@@ -280,9 +294,6 @@ def simulacao(pesos, grid, qnt_time_steps, numero_da_simulacao, iniciar_automati
                         if agente.celula_grid.lugar is not None:
                             lugar_atual_agente = agente.celula_grid.lugar
                         lugar_escolhido = agente.escolher_lugar_v4(grid)
-                        # lugar_escolhido = agente.escolher_lugar_v5(grid.lista_lugares)
-                        # print("lugar escolhido: ", lugar_escolhido.id)
-                        # print("diferenca de orientacao: ", abs(agente.orientacao_latente - lugar_escolhido.orientacao))
                         agente.configuracoes_proximo_destino(grid, lugar_escolhido, lugar_atual=lugar_atual_agente)
 
                     if agente.escolheu_destino is True:
@@ -290,21 +301,26 @@ def simulacao(pesos, grid, qnt_time_steps, numero_da_simulacao, iniciar_automati
                             agente.update_posicao(grid)
                             for coordenada in agente.destino_atual.lista_coordenadas:
                                 if agente.pos_grid == coordenada:
-                                    agente.contaminacao_agente(grid, agente.destino_atual.orientacao, pesos)
+                                    agente.contaminacao_agente(grid, agente.destino_atual.orientacao, pesos[1])
                                     agente.configuracoes_chegou_destino()
                                     controle_agentes += 1
                                     break
+                
+                entropia_atual = grid.calcular_entropia_geral()
+                resultados_ts["lista_ent"].append(entropia_atual)
+
+                ocorrencia_orientacoes = grid.obter_dict_ocorrencia_orientacoes()
+
+                for orientacao in resultados_ts:
+                    for key, value in ocorrencia_orientacoes.items():
+                        if orientacao == key:
+                            resultados_ts[key].append(value)
 
                 if controle_agentes == AgenteV2.qnt_agentes:
                     for lugar in grid.lista_lugares:
                         if len(lugar.lista_agentes_presentes) > 0:
-                            # print("o lugar sofre contaminacao")
-                            # print("o lugar tinha uma orientacao de: ", lugar.orientacao)
-                            lugar.contaminacao_lugar(mudar_cor=True, grid=grid)
-                            # print("agora o lugar tem um orientacao de: ", lugar.orientacao)
+                            lugar.contaminacao_lugar(pesos[2], mudar_cor=True, grid=grid)
                         lista_agentes_id = [i.id for i in lugar.lista_agentes_presentes]
-                        # print("lugar: ", lugar.id)
-                        # print("agentes presentes: ", lista_agentes_id)
                         lugar.lista_agentes_presentes.clear()
 
                     for agente in grid.lista_agentes:
@@ -316,25 +332,19 @@ def simulacao(pesos, grid, qnt_time_steps, numero_da_simulacao, iniciar_automati
                     iniciar_time_step = True
 
                     entropia_atual = grid.calcular_entropia()
-                    # print("a entropia foi de: ", entropia_atual)
                     resultados["lista_ent"].append(entropia_atual)
 
                     entropia_media_atual = round(sum(resultados["lista_ent"]) / len(resultados["lista_ent"]), 3)
-                    # print("a entropia media eh de: ", entropia_media_atual)
                     resultados["lista_ent_med"].append(entropia_media_atual)
 
                     dict_orientacoes_ocorrencias_temp = grid.obter_dict_ocorrencia_orientacoes()
                     if len(resultados["dict_ocr_ortcs"]) == 0:
                         resultados["dict_ocr_ortcs"] = dict_orientacoes_ocorrencias_temp
-                        # print("lista orientacoes: ", dict_orientacoes_ocorrencias_temp)
                     else:
-                        # print("lista orientacoes antiga: ", resultados["dict_ocr_ortcs"])
-                        # print("lista orientacoes nova: ", dict_orientacoes_ocorrencias_temp)
                         lista_temp = funcoes.obter_lista_com_elementos_repetidos(resultados["dict_ocr_ortcs"])
                         lista_temp_2 = funcoes.obter_lista_com_elementos_repetidos(dict_orientacoes_ocorrencias_temp)
                         lista_temp.extend(lista_temp_2)
                         dict_orientacoes_ocorrencias_final = funcoes.obter_dict_contagem_elementos_repetidos_v2(lista_temp)
-                        # print("lista orientacoes atualizada: ", dict_orientacoes_ocorrencias_final)
                         resultados["dict_ocr_ortcs"] = dict_orientacoes_ocorrencias_final
 
                 if time_step == meta:
@@ -360,7 +370,15 @@ def simulacao(pesos, grid, qnt_time_steps, numero_da_simulacao, iniciar_automati
         grid.update_grid(janela)
         pg.display.update()
         relogio.tick(60)
+    
+    resultados_finais = {"resultados_staticos": resultados_staticos, "resultados_ts": resultados_ts}
 
-    return resultados
+    # if retornar_info_agentes is True:
+    #     resultados_finais["resultados_agentes"] = df_agentes
+
+    # if retornar_info_lugares is True:
+    #     resultados_finais["resultados_lugares"] = df_lugares
+
+    return resultados_finais
 
 

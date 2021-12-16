@@ -4,6 +4,10 @@ from Modelo_fast.ClasseLugarV2Fast import LugarV2Fast
 from Modelo_fast.simulacao_fast4 import simulacao_fast4
 from Modelo_fast.apresentacoes_fast2 import simulacao_com_arquivo
 import Modelo_5.funcoes_arquivos as func_arq
+import Modelo_5.simulacao2 as s2
+import Modelo_5.apresentacoes as apr
+from Modelo_5.apresentacoes import simulacao_com_arquivo_2
+from Modelo_5.simulacao import simulacao
 from matplotlib.lines import Line2D
 import matplotlib.pyplot as plt
 import Modelo_fast.funcoes_fast as fst
@@ -394,20 +398,13 @@ def teste_modelo_2d_com_arquivo(nomeArquivo, qnt_time_step=2000, peso_escolha_lu
         dict: Dados resultantes da simulação
     """
 
-    qnt_linhas, qnt_colunas = func_arq.obter_tam_grid_pelo_nome_arquivo(nomeArquivo)
-    qnt_agentes = 100
-    qnt_lugares = 100
-    range_orientacoes = (0, 1001, 1)
-    grid = GridV2Fast(qnt_linhas, qnt_colunas, qnt_agentes, qnt_lugares,
-                        range_possiveis_orientacoes=range_orientacoes)
-
     qnt_time_steps = qnt_time_step
     pesos_escolha_lugar = peso_escolha_lugar
     peso_contaminacao_agente = peso_cont_agente
     peso_contaminacao_lugar = peso_cont_lugar
 
     resultados = simulacao_com_arquivo(nomeArquivo, pesos_escolha_lugar=pesos_escolha_lugar, peso_cont_agente=peso_contaminacao_agente,
-                                        peso_cont_lugar=peso_contaminacao_lugar, qnt_agentes=qnt_agentes,qnt_time_steps=qnt_time_steps,
+                                        peso_cont_lugar=peso_contaminacao_lugar,qnt_time_steps=qnt_time_steps,
                                         salvar_resultados=True, mostrar_grafico_entropia=True, retornar_resultados_ts=False)
     
     info_agentes = resultados["resultados_agentes"]
@@ -416,3 +413,20 @@ def teste_modelo_2d_com_arquivo(nomeArquivo, qnt_time_step=2000, peso_escolha_lu
 
     return resultados
 
+def teste_modelo_2d_visual(nomeArquivo, qnt_time_step=2000, peso_escolha_lugar=(0.1, 0.1), peso_cont_agente=(1,1), peso_cont_lugar=(1,1)):
+    qnt_time_steps = qnt_time_step
+    pesos_escolha_lugar = peso_escolha_lugar
+    peso_contaminacao_agente = peso_cont_agente
+    peso_contaminacao_lugar = peso_cont_lugar
+
+    resultados = apr.simulacao_com_arquivo_V(nomeArquivo, qnt_time_steps, pesos_escolha_lugar, peso_contaminacao_agente, peso_contaminacao_lugar)
+
+    # resultados = simulacao_com_arquivo(nomeArquivo, pesos_escolha_lugar=pesos_escolha_lugar, peso_cont_agente=peso_contaminacao_agente,
+    #                                     peso_cont_lugar=peso_contaminacao_lugar,qnt_time_steps=qnt_time_steps,
+    #                                     salvar_resultados=True, mostrar_grafico_entropia=True, retornar_resultados_ts=False)
+    
+    # info_agentes = resultados["resultados_agentes"]
+    # info_lugares = resultados["resultados_lugares"]
+    # info_entropia = resultados["resultados_entropia"]
+
+    return resultados

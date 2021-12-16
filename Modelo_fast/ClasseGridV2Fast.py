@@ -30,7 +30,7 @@ class GridV2Fast:
 
         self.array_lugares = []
         #self.gerar_lugares_aleatorios_Vmodelo5(self.qnt_lugares, 5)
-        #self.gerar_lugares_aleatorios_v3()
+        self.gerar_lugares_aleatorios_v3()
 
         self.array_agentes = [] 
         self.gerar_agentes_aleatorios_v3(self.qnt_agentes)
@@ -50,6 +50,11 @@ class GridV2Fast:
         self.qnt_agentes = totalAgentes
         self.gerar_agentes_aleatorios_v3(self.qnt_agentes)
         time.sleep(3)
+
+    def get_qnt_agentes(self):
+        totalLugares = len([celula for celula in self.array_celulas_grid if celula.andavel is False])
+        totalAgentes = int(totalLugares *1.2)
+        return totalAgentes
 
     def obter_dict_orientacoes_cores(self):
         self.dict_orientacoes_cores = fst.converter_orientacao_para_cor_v3(self.qnt_orientacoes)
@@ -145,7 +150,7 @@ class GridV2Fast:
         # print("tamanho maximo do lugar: ", tamanho_maximo_lugar)
 
         lista_lugares = []
-        lista_cores = cores.lista_cores_coloridas[:]
+        lista_cores = cores.lista_cores_random[:]
         lista_orientacoes = list(self.range_possiveis_orientacoes)
         lista_celulas_livres = [celula for celula in self.array_celulas_grid if celula.andavel is True]
         # print("qnt celulas livres: ", len(lista_celulas_livres))
@@ -203,7 +208,7 @@ class GridV2Fast:
     def gerar_lugares_aleatorios_Vmodelo5(self, qnt_lugares, tamanho_max_lugar, sem_cor_repetida=False, sem_orientacao_repetida=False):
         
         lista_lugares = []
-        lista_cores = cores.lista_cores_coloridas[:]
+        lista_cores = cores.lista_cores_random[:]
         lista_orientacoes = list(range(0, 1100, 100))
 
         for lugar in range(qnt_lugares):
@@ -300,8 +305,8 @@ class GridV2Fast:
             lugar_novo = LugarV2Fast(self, veio_de_arquivo=True, lista_arquivo=lugar)
             self.array_lugares = np.append(self.array_lugares, lugar_novo)
         
-        self.gerar_lugares_aleatorios_Vmodelo5(self.qnt_lugares, 5)
-        #self.gerar_lugares_aleatorios_v3()
+        #self.gerar_lugares_aleatorios_Vmodelo5(self.qnt_lugares, 5)
+        self.gerar_lugares_aleatorios_v3()
 
     def resgatar_caminhos_arquivo(self, nome_arquivo_caminhos):
 

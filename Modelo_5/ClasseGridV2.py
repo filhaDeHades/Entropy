@@ -18,6 +18,7 @@ class GridV2:
 
         self.qnt_linhas = qnt_linhas
         self.qnt_colunas = qnt_colunas
+        self.qnt_agentes = 0
         self.cell_size = cell_size
         self.largura = qnt_colunas * cell_size
         self.altura = qnt_linhas * cell_size
@@ -26,6 +27,7 @@ class GridV2:
         self.custo_maior_mov = 14
         self.matriz_celulas = []
         self.lista_celulas_ocupadas = []
+        self.array_agentes = []
         self.qnt_orientacoes = qnt_orientacoes
         self.dict_orientacoes_cores = {}
         self.obter_dict_orientacoes_cores()
@@ -40,6 +42,7 @@ class GridV2:
 
                 if andavel is True:
                     novo_nodulo = CelulaGridV2(x, y, cell_size, andavel)
+                    self.array_agentes.append(novo_nodulo)
                 else:
                     novo_nodulo = CelulaGridV2(x, y, cell_size, andavel, cor=cores.preto)
 
@@ -731,7 +734,7 @@ class GridV2:
     # obsoleto, n funcional
     def gerar_lugares_aleatorios(self, qnt_lugares, tamanho_max_lugar, sem_cor_repetida=True):
 
-        lista_cores = cores.lista_cores_coloridas
+        lista_cores = cores.lista_cores_random
 
         for lugar in range(qnt_lugares):
 
@@ -776,7 +779,7 @@ class GridV2:
     def gerar_lugares_aleatorios_v2(self, qnt_lugares, tamanho_max_lugar, sem_cor_repetida=False, sem_orientacao_repetida=False):
 
         lista_lugares = []
-        lista_cores = cores.lista_cores_coloridas[:]
+        lista_cores = cores.lista_cores_random[:]
         lista_orientacoes = list(range(0, 1100, 100))
 
         for lugar in range(qnt_lugares):
@@ -835,7 +838,7 @@ class GridV2:
     # obsoleto, n funcional
     def gerar_agentes_aleatorios(self, qnt_agentes, sem_cor_repetida=False, sem_orientacao_repetida=False):
 
-        lista_cores = cores.lista_cores_coloridas
+        lista_cores = cores.lista_cores_random
         lista_orientacoes = list(range(0, 1100, 100))
 
         for agente in range(qnt_agentes):
@@ -863,12 +866,13 @@ class GridV2:
 
             novo_agente = AgenteV2(pos_x_inicial, pos_y_inicial, self.cell_size, cor=cor_escolhida,
                                    orientacao_latente=orientacao_escolhida, orientacao_atual=orientacao_escolhida)
+            self
 
             self.lista_agentes.append(novo_agente)
             print("novo agente criado!")
         self.atualizar_celulas_com_agentes()
 
-    def gerar_agentes_aleatorios_v2(self, qnt_agentes, sem_cor_repetida=False, sem_orientacao_repetida=False):
+    def gerar_agentes_aleatorios_v2(self, sem_cor_repetida=False, sem_orientacao_repetida=False):
 
         lista_celulas_livres = []
 
@@ -877,8 +881,10 @@ class GridV2:
                 if celula.andavel is True:
                     lista_celulas_livres.append(celula)
 
-        lista_cores = cores.lista_cores_coloridas
+        lista_cores = cores.lista_cores_random
         lista_orientacoes = list(range(0, 1100, 100))
+
+        qnt_agentes = int(len(self.lista_lugares) * 1.2)
 
         for agente in range(qnt_agentes):
 
@@ -888,9 +894,10 @@ class GridV2:
             pos_x_inicial = celula_escolhida.grid_x
             pos_y_inicial = celula_escolhida.grid_y
 
+            print(lista_cores)
             cor_escolhida = random.choice(lista_cores)
-            if sem_cor_repetida is True:
-                lista_cores.remove(cor_escolhida)
+            # if sem_cor_repetida is True:
+            #     lista_cores.remove(cor_escolhida)
 
             orientacao_escolhida = random.choice(lista_orientacoes)
             if sem_orientacao_repetida is True:
@@ -900,6 +907,8 @@ class GridV2:
                                    orientacao_latente=orientacao_escolhida, orientacao_atual=orientacao_escolhida)
 
             self.lista_agentes.append(novo_agente)
+
+            self.qnt_agentes = qnt_agentes
 
     def criar_lugar_manual(self):
         lista_coordenadas_finais = [celula.pos_grid for celula in self.lista_coordenadas_lugar_temp]
@@ -1186,6 +1195,29 @@ class GridV2:
         frenquencia_orientacoes = {key: (value / qnt_total_agentes) for key, value in dict_orientacoes_e_ocorrencias.items()}
 
         lista_entropia = [value * math.log(value) for value in frenquencia_orientacoes.values()]
+        entropia_final = -sum(lista_entropia)
+        entropia_final = round(entropia_final, 3)
+        return entropia_final
+    
+    def calcular_entropia_geral(self):
+        lista_orientacoes_agentes = [math.ceil(agente.orientacao_latente / 100) * 100 for agente in self.lista_agentes]
+        lista_orientacoes_lugares = [math.ceil(lugar.orientacao / 100) * 100 for lugar in self.lista_lugares]
+        lista_orientacoes_geral = lista_orientacoes_agentes + lista_orientacoes_lugares
+
+        dict_orientacoes_e_ocorrencias = funcoes.obter_dict_contagem_elementos_repetidos_v2(lista_orientacoes_geral)
+        qnt_total = len(self.lista_lugares) + len(self.lista_lugares)
+        frenquencia_orientacoes = {key: (value / qnt_total) for key, value in
+                                   dict_orientacoes_e_ocorrencias.items()}
+
+        lista_entropia = []
+
+        for value in frenquencia_orientacoes.values():
+            if value == 0:
+                lista_entropia.append(value)
+            else:
+                resultado = value * math.log(value)
+                lista_entropia.append(resultado)
+
         entropia_final = -sum(lista_entropia)
         entropia_final = round(entropia_final, 3)
         return entropia_final
