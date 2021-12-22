@@ -285,57 +285,6 @@ Modelo de simulação 2D com resultados rápidos, sem representação gráfica.
 
     **qnt_agentes**: Quantidade de agentes criados para a simulação - _int_.
 
-    - `__init__(self, grid, grid_x, grid_y, orientacao_latente=0, orientacao_atual=0, id_agente=None):`
-        Inicializa o agente, adicionando seu id, sua orientação latente, sua orientação atual, o grid e sua posição no grid.
-
-        **self**: Presente em todas as classes, representa a si mesmo.
-
-        **grid**: Instância da Classe GridV2Fast onde a simulação ocorre. - _GridV2Fast_.
-
-        **grid_x**: Posição X do agente no grid. - _int_.
-
-        **grid_y**: Posição Y do agente no grid. - _int_.
-
-        **orientacao_latente**: Contém o valor da orientação latente do agente. - _int_.
-
-        **orientacao_atual**: Contém o valor da orientação atual do agente. - _int_.
-
-        **id_agente**: Número de identificação do agente. - _int_.
-
-    - `atualizar_celula_grid(self, grid, x, y):`
-        Atualiza a celula do grid em que o agente se encontra.
-
-        **self**: Presente em todas as classes, representa a si mesmo.
-
-        **grid**: Instância da Classe GridV2Fast onde a simulação ocorre. - _GridV2Fast_.
-
-        **x**: Posição X do agente no grid. - _int_.
-
-        **y**: Posição Y do agente no grid. - _int_.
-
-    - `atualizar_posicao_grid(self, grid, pos_nova_grid):`
-        Atualiza a posição do grid que o agente se encontra.
-
-        **self**: Presente em todas as classes, representa a si mesmo.
-
-        **grid**: Instância da Classe GridV2Fast onde a simulação ocorre. - _GridV2Fast_.
-
-        **pos_nova_grid**: Lista contendo a nova posição no grid. - _list_.
-
-    - `contaminacao_agente(self, orientacao_do_lugar, pesos):`
-        Calcula a nova orientação latente do agente depois da contaminação pelo lugar onde ele se encontra na simulação.
-
-        **self**: Presente em todas as classes, representa a si mesmo.
-
-        **orientacao_do_lugar**: Contém a orientação do lugar onde o agente se encontra no momento. - _int_.
-
-        **pesos**: Lista contendo os pesos a serem usados no cálculo da contaminação. - _list_.
-
-    - `sortear_nova_orientacao(self):`
-        Sorteia uma nova orientação atual para o agente.
-
-        **self**: Presente em todas as classes, representa a si mesmo.
-
     - `escolher_lugar_v4(self, grid):`
         Versão 4. Escolhe um lugar para onde o agente deve se movimentar.
 
@@ -353,29 +302,6 @@ Modelo de simulação 2D com resultados rápidos, sem representação gráfica.
         **lista_pesos**: Lista contendo os pesos que a diferença de orientação e a distância terão durante o sorteio. Valor padrão: (0.1, 0.1). - _tupla_.
 
         **modelo_fabiano**: Define se a orientação a ser utilizada é a orientação latente (True) ou a atual (False). Valor padrão: False. - _bool_.
-
-    - `sorteioComPesos(listaPossibilidades, listaPesos, qntElementosSorteados=1):`
-        Método estático. Sorteia um determinado número de elementos utilizando pesos na decisão.
-
-        **listaPossibilidades**: Lista contendo os elementos possíveis de serem sorteados. - _list_.
-
-        **listaPesos**: Lista contendo o pesos a ser levado em conta para os elementos a serem sorteados. - _list_.
-
-        **qntElementosSorteados**: Define quantos elementos devem ser sorteados pela função. Valor padrão: 1. - _int_.-
-
-    - `escolher_lugar(self, listaLugares, pesos):`
-        Método importado do modelo 1D e adaptado para o modelo 2D.  Define o peso dos lugares e com essa informação define o próximo lugar que o agente deve escolher com um sorteio. Retorna o lugar escolhido.
-
-        **self**: Presente em todas as classes, representa a si mesmo.
-
-        **listaLugares**: Lista contendo todos os lugares presentes na simulação. - _list_.
-
-        **pesos**: Lista contendo os pesos que a orientação e a distancia, respectivamente, terão na escolha do lugar. - _list_.
-
-    - `resgatar_estado_inicial(self):`
-        Resgata as configurações iniciais do grid, orientação latente e orientação atual e reseta o agente.
-
-        **self**: Presente em todas as classes, representa a si mesmo.
 
 #### Classe Celula Grid Modelo Fast
 -> `ClasseCelulaGridV2Fast.py`
@@ -471,38 +397,8 @@ Modelo de simulação 2D com resultados rápidos, sem representação gráfica.
 
         **qnt_agentes**:
 
-    - `gerar_lugares_aleatorios_v2(self, qnt_lugares, ajustar_tam_lugar=True, fracao_espaco_vazio=0.5, tamanho_max_lugar=5, sem_cor_repetida=False, sem_orientacao_repetida=False):`
-        **self**: Presente em todas as classes, representa a si mesmo.
-
-        **qnt_lugares**:
-
-        **ajustar_tam_lugar**: Valor padrão: True. - _bool_.
-
-        **fracao_espaco_vazio**: Valor padrão: 0.5. - _float_.
-
-        **tamanho_max_lugar**: Valor padrão: 5. - _int_.
-
-        **sem_cor_repetida**: Valor padrão: False. - _bool_.
-
-        **sem_orientacao_repetida**: Valor padrão: False. - _bool_.
-
     - `gerar_lugares_aleatorios_v3(self):`
         **self**: Presente em todas as classes, representa a si mesmo.
-
-    - `gerar_lugares_aleatorios_v4(self, qnt_lugares, ajustar_tam_lugar=True, fracao_espaco_vazio=0.5, tamanho_max_lugar=5, sem_cor_repetida=False, sem_orientacao_repetida=False):`
-        **self**: Presente em todas as classes, representa a si mesmo.
-
-        **qnt_lugares**:
-
-        **ajustar_tam_lugar**: Valor padrão: True. - _bool_.
-
-        **fracao_espaco_vazio**: Valor padrão: 0.5. - _float_.
-
-        **tamanho_max_lugar**: Valor padrão: 5. - _int_.
-
-        **sem_cor_repetida**: Valor padrão: False. - _bool_.
-
-        **sem_orientacao_repetida**: Valor padrão: False. - _bool_.
 
     - `teste_lugares_certo(self):`
         **self**: Presente em todas as classes, representa a si mesmo.

@@ -5,6 +5,7 @@ import Modelo_5.funcoes_arquivos as func_arq
 import Modelo_fast.funcoes_fast as fst
 import Modelo_fast.gerar_graficos as gg
 import pandas as pd
+import time
 
 path_base_projeto = "Arquivos\\"
 agentes = 100
@@ -22,6 +23,9 @@ def simulacao_com_arquivo(nome_arquivo_base, pesos=(1, 1, 1), pesos_escolha_luga
     path_arquivos_lugares = path_base_projeto + "Arquivos_lugares"
     nome_arquivo_lugares_com_path = fst.obter_path_completo_arquivo(path_arquivos_lugares, nome_arquivo_lugares)
     grid.resgatar_lugares_arquivo(nome_arquivo_lugares_com_path)
+    print("RESGATOU")
+    time.sleep(5)
+    
 
     grid.gerar_agentes_aleatorios_v3(qnt_agentes)
 

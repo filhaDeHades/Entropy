@@ -30,8 +30,9 @@ Para conseguir utilizar o programa no seu computador será necessário fazer alg
 
     É necessário que você garanta que seu ambiente virtual tem instalado as seguintes linguagens/bibliotecas:
     - **python 3.9** ou superior
-    - biblioteca **pandas**
     - biblioteca **matplotlib**
+    - biblioteca **numpy**
+    - biblioteca **pandas**
     - biblioteca **pygame**
 
 4. **...**
@@ -39,8 +40,99 @@ Para conseguir utilizar o programa no seu computador será necessário fazer alg
 ## **Documentação**
 Para ver a documentação do projeto basta clicar [nesse link](Documentation.md).
 
-## **Automatizando Simulações**
-Para ver como preparar arquivos para automatizar as simulações basta clicar [nesse link](DescricaoArquivoInput.md).
+## **Utilizando o programa**
+Aqui estão alguns exemplos de uso que podem ser úteis.
+
+- **Preparar um arquivo para simulação**
+
+Esse script roda automaticamente quando o arquivo que recebeu sua importação
+é executado, logo, basta apenas que as pastas sejam configuradas e as importações sejam feitas como demonstrado abaixo para que seja feita a utilização no código.
+
+- Importações necessárias:
+    ```python
+    import Testes.main.recebe_arquivo_original
+    ```
+- Configuração das pastas:
+
+    ```
+    ├── Entropy
+    │   ├── Arquivos
+    │   │   ├── Arquivos_base
+    │   │   ├── Arquivos_caminhos
+    │   │   ├── Arquivos_lugares
+    │   │   ├── Arquivos_originais
+    │   │   ├── Arquivos_resultados
+    │   │   └── Arquivos_resultados_ts
+    │   ...
+    ...
+    ```
+- Exemplos de Inputs:
+
+    1. Arquivo do tipo 1 com matriz de 25x25:
+    ```
+    Digite o nome, nº de linhas, nº de colunas e tipo do arquivo:
+    cidadeTal.txt 25 25 1
+    ```
+    2. Arquivo do tipo 2 com matriz de 100x100:
+    ```
+    Digite o nome, nº de linhas, nº de colunas e tipo do arquivo:
+    outraCidade.txt 100 100 2
+    ```
+
+- **Fazer uma simulação (fast) com arquivos de Layout utilizando o arquivo de inputs**
+
+- Como organizar seu arquivo de inputs:
+
+    ```
+    1                                                       -> tipo da simulação
+    0.1 0.1                                                 -> alfa e beta
+    0.5 0.5                                                 -> C e D agentes
+    0.5 0.5                                                 -> C e D lugares
+    2000                                                    -> quantidade de timesteps
+    caminho\\onde\\voce\\quer\\guardar\\os\\resultados      -> caminho para a pasta-mãe
+    nome-da-pasta-que-sera-criada                           -> nome da pasta
+    arquivo-de-layout(12x12)[tipo_1].txt                    -> a partir daqui arquivos utilizados
+    arquivo-de-layout-2(12x12)[tipo_2].txt
+    ```
+
+    * **Tipo da Simulação**
+
+    Caso a simulação escolhida seja a simulação fast o valor escolhido deve ser "1".
+    Caso a simulação escolhida seja a simulação com saída gráfica o valor escolhido deve ser "2" (ainda a ser implementado).
+
+    * **Alfa e Beta**
+
+    Alfa e Beta definem, respectivamente, o peso que a diferença de orientação e a distancia entre agente e lugar terão na escolha do próximo lugar que o agente visitará.
+
+    * **C e D Agentes**
+
+    C e D definem, respectivamente, o peso que a orientação atual do agente e a orientação do lugar onde ela se encontra terão no cálculo da próxima orientação do agente.
+
+    * **C e D Lugares**
+
+    C e D definem, respectivamente, o peso que a orientação atual do lugar e as orientações dos agentes que se encontram nele terão no cálculo da próxima orientação do lugar.
+
+    * **Quantidade de TimeSteps**
+
+    A quantidade de timesteps indica quantos ciclos a simulação deve ter.
+
+    * **Caminho para a Pasta-mãe**
+
+    Caminho relativo até a pasta de destino.
+
+    * **Nome da Pasta**
+
+    Nome da pasta que será criada pela simulação (não pode ser uma pasta existente, o programa não sobrescreve uma pasta criada).
+
+    * **Arquivos de Layout**
+
+    As últimas linhas devem conter cada uma apenas 1 arquivo que será utilizado para a simulação. Tendo como mínimo 1 arquivo e sem máximo estipulado.
+
+- Fazendo a Simulação:
+
+Depois de preenchido o arquivo de input é só rodar o arquivo "Simulacoes.py" e as simulações serão feitas automaticamente.
+
+
 ## **Organização dos Arquivos**
 
 1. **Nomeando Elementos**

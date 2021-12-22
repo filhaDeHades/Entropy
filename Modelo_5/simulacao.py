@@ -8,7 +8,7 @@ import cores
 import pyautogui
 import imageio
 
-modelo=2
+modelo=3
 listaImagem=[]
 
 def simulacao(grid, qnt_time_steps, numero_da_simulacao, pesosEscolhaLugar, pesosContaminacaoAgente, pesosContaminacaoLugar, iniciar_automaticamente=False, mov_randomico_agentes=False,
