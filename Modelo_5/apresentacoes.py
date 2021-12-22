@@ -167,8 +167,9 @@ def simulacao_com_arquivo_V(arquivo, timesteps=2000,  peso_escolha_lugar=(0.1, 0
                                         peso_cont_lugar=pesos_lugar, qnt_time_steps=qnt_time_steps,
                                         salvar_resultados=True, mostrar_grafico_entropia=True, retornar_resultados_ts=False)
     
-    # info_agentes = resultados["resultados_agentes"]
-    # info_lugares = resultados["resultados_lugares"]
-    # info_entropia = resultados["resultados_entropia"]
+    info_agentes = resultados["resultados_agentes"]
+    info_lugares = resultados["resultados_lugares"]
+    info_entropia = resultados["resultados_entropia"]
+    return resultados
 
     

@@ -424,7 +424,7 @@ def teste_modelo_2d_visual(nomeArquivo, qnt_time_step=2000, peso_escolha_lugar=(
     # resultados = simulacao_com_arquivo(nomeArquivo, pesos_escolha_lugar=pesos_escolha_lugar, peso_cont_agente=peso_contaminacao_agente,
     #                                     peso_cont_lugar=peso_contaminacao_lugar,qnt_time_steps=qnt_time_steps,
     #                                     salvar_resultados=True, mostrar_grafico_entropia=True, retornar_resultados_ts=False)
-    
+
     # info_agentes = resultados["resultados_agentes"]
     # info_lugares = resultados["resultados_lugares"]
     # info_entropia = resultados["resultados_entropia"]

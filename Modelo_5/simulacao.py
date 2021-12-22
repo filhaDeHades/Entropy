@@ -1,6 +1,7 @@
 import pygame as pg
 import pandas as pd
 import Modelo_5.funcoes_arquivos as func_arq
+import Testes.src.funcoes_geracao_nomes as fgn
 from Modelo_5.ClasseAgenteV2 import AgenteV2
 from Modelo_5.ClasseGridV2 import GridV2
 from Modelo_5.ClasseLugarV2 import LugarV2
@@ -9,7 +10,8 @@ import cores
 
 
 def simulacao(pesos, grid, qnt_time_steps, numero_da_simulacao, nome_arquivo_base=None, iniciar_automaticamente=False, mov_randomico_agentes=False,
-              nome_arquivo_caminhos_utlizado=None):
+              nome_arquivo_caminhos_utlizado=None, nome_arquivo_lugares=None, nome_arquivo_lugares_dinamicos=None,
+              nome_arquivo_agentes=None):
 
     pg.init()
     janela = pg.display.set_mode(grid.tamanho_tela)
@@ -27,52 +29,24 @@ def simulacao(pesos, grid, qnt_time_steps, numero_da_simulacao, nome_arquivo_bas
 
     # RESULTADOS
 
-    resultados = {"pesos_sim": pesos,
-                  "qnt_time_steps": qnt_time_steps,
-                  "dict_ocr_ortcs": {},
-                  "media_ortcs": 0,
-                  "moda_ortcs": 0,
-                  "mediana_ortcs": 0,
-                  "lista_ent": [],
-                  "lista_ent_med": [],
-                  "delta_ent": 0
-                  }
+    resultadosStaticos = {  "tamGrid" :                     [(grid.qnt_linhas, grid.qnt_colunas)],
+                            "pesosContaminacaoAgente" :     [pesos[1]],
+                            "pesosContaminacaoLugar" :      [pesos[2]],
+                            "pesosEscolhaLugar" :           [pesos[0]],
+                            "qntAgentes" :                  [grid.qnt_agentes],
+                            "qntLugares" :                  [grid.qnt_lugares],
+                            "qntTimeSteps" :                [qnt_time_steps]
+                        }
 
-    resultados_staticos = {"qnt_linhas": [grid.qnt_linhas],
-                           "qnt_colunas": [grid.qnt_colunas],
-                           "peso_a": [pesos[0]],
-                           "peso_b": [pesos[1]],
-                           "peso_c": [pesos[2]],
-                           "qnt_agentes": [len(grid.array_agentes)],
-                           "qnt_lugares": [len(grid.lista_celulas_ocupadas)],
-                           "qnt_time_steps": [qnt_time_steps],
-                           }
-    
-    if nome_arquivo_base is not None:
-        nome_arquivo_resultado_ts = func_arq.gerar_nome_arquivo_resultados_ts(nome_arquivo_base, numero_da_simulacao)
-        resultados_staticos["res_time_steps"] = [nome_arquivo_resultado_ts]
+    resultados_entropia = {
+                            "entropia_agentes": [],
+                            "entropia_lugares": [],
+                            "entropia_geral": []
+    }
 
-    resultados_ts = {"0": [],
-                     "100": [],
-                     "200": [],
-                     "300": [],
-                     "400": [],
-                     "500": [],
-                     "600": [],
-                     "700": [],
-                     "800": [],
-                     "900": [],
-                     "1000": [],
-                     "lista_ent": []
-                     }
-    
-    dict_inicial_agentes = {str(i): [] for i in range(qnt_time_steps)}
-    df_agentes = pd.DataFrame(dict_inicial_agentes)
-    lista_colunas_df_agentes = list(df_agentes.columns)
+    df_agentes = pd.DataFrame()
+    df_lugares = pd.DataFrame()
 
-    dict_inicial_lugares = {str(i): [] for i in range(qnt_time_steps)}
-    df_lugares = pd.DataFrame(dict_inicial_lugares)
-    lista_colunas_df_lugares = list(df_lugares.columns)
 
     mainloop = True
 
@@ -285,6 +259,8 @@ def simulacao(pesos, grid, qnt_time_steps, numero_da_simulacao, nome_arquivo_bas
                     print("INICIO DO TIME STEP: {} \n".format(time_step))
                     iniciar_time_step = False
 
+                dict_agentes = {}
+
                 for agente in grid.lista_agentes:
                     if agente.chegou_destino is True:
                         continue
@@ -305,23 +281,34 @@ def simulacao(pesos, grid, qnt_time_steps, numero_da_simulacao, nome_arquivo_bas
                                     agente.configuracoes_chegou_destino()
                                     controle_agentes += 1
                                     break
+                    
+                    dict_agentes["agente_{}".format(agente.id)] = round(agente.orientacao_latente)
                 
-                entropia_atual = grid.calcular_entropia_geral()
-                resultados_ts["lista_ent"].append(entropia_atual)
-
-                ocorrencia_orientacoes = grid.obter_dict_ocorrencia_orientacoes()
-
-                for orientacao in resultados_ts:
-                    for key, value in ocorrencia_orientacoes.items():
-                        if orientacao == key:
-                            resultados_ts[key].append(value)
+                df_agentes = df_agentes.append(dict_agentes, ignore_index=True)
+                
 
                 if controle_agentes == AgenteV2.qnt_agentes:
+
+                    dict_lugares = {}
+
                     for lugar in grid.lista_lugares:
                         if len(lugar.lista_agentes_presentes) > 0:
                             lugar.contaminacao_lugar(pesos[2], mudar_cor=True, grid=grid)
-                        lista_agentes_id = [i.id for i in lugar.lista_agentes_presentes]
-                        lugar.lista_agentes_presentes.clear()
+                            lugar.lista_agentes_presentes.clear()
+                            lista_agentes_id = [i.id for i in lugar.lista_agentes_presentes]
+                        
+                        dict_lugares["lugar_{}".format(lugar.id)] = round(lugar.orientacao)
+                    
+                    df_lugares = df_lugares.append(dict_lugares, ignore_index=True)
+
+                    entropia_agentes = grid.calcular_entropia_agentes()
+                    resultados_entropia["entropia_agentes"].append(entropia_agentes)
+
+                    entropia_lugares = grid.calcular_entropia_lugares()
+                    resultados_entropia["entropia_lugares"].append(entropia_lugares)
+
+                    entropia_geral = grid.calcular_entropia_geral()
+                    resultados_entropia["entropia_geral"].append(entropia_geral)
 
                     for agente in grid.lista_agentes:
                         agente.chegou_destino = False
@@ -331,24 +318,15 @@ def simulacao(pesos, grid, qnt_time_steps, numero_da_simulacao, nome_arquivo_bas
                     controle_agentes = 0
                     iniciar_time_step = True
 
-                    entropia_atual = grid.calcular_entropia()
-                    resultados["lista_ent"].append(entropia_atual)
-
-                    entropia_media_atual = round(sum(resultados["lista_ent"]) / len(resultados["lista_ent"]), 3)
-                    resultados["lista_ent_med"].append(entropia_media_atual)
-
-                    dict_orientacoes_ocorrencias_temp = grid.obter_dict_ocorrencia_orientacoes()
-                    if len(resultados["dict_ocr_ortcs"]) == 0:
-                        resultados["dict_ocr_ortcs"] = dict_orientacoes_ocorrencias_temp
-                    else:
-                        lista_temp = funcoes.obter_lista_com_elementos_repetidos(resultados["dict_ocr_ortcs"])
-                        lista_temp_2 = funcoes.obter_lista_com_elementos_repetidos(dict_orientacoes_ocorrencias_temp)
-                        lista_temp.extend(lista_temp_2)
-                        dict_orientacoes_ocorrencias_final = funcoes.obter_dict_contagem_elementos_repetidos_v2(lista_temp)
-                        resultados["dict_ocr_ortcs"] = dict_orientacoes_ocorrencias_final
-
                 if time_step == meta:
                     print("-- FIM DA SIMULACAO {} -- / PESOS: {}".format(numero_da_simulacao, pesos))
+
+                    grid.salvar_lugares_arquivo(nome_arquivo_lugares)
+
+                    nome_arquivo_lugares_ts = nome_arquivo_lugares_dinamicos
+
+                    if nome_arquivo_lugares_ts is None:
+                        nome_arquivo_lugares_ts = fgn.gerar_nome_arquivo_info_lugares_dinamicos(nome_arquivo_lugares)
 
                     for agente in grid.lista_agentes:
                         agente.resgatar_estado_inicial()
@@ -356,28 +334,28 @@ def simulacao(pesos, grid, qnt_time_steps, numero_da_simulacao, nome_arquivo_bas
                     for lugar in grid.lista_lugares:
                         lugar.resgatar_estado_inicial()
 
+                    df_agentes = fgn.ordenar_colunas_df_por_id(df_agentes, "agente_")
+                    df_lugares = fgn.ordenar_colunas_df_por_id(df_lugares, "lugar_")
+
                     if nome_arquivo_caminhos_utlizado is not None:
                         grid.salvar_caminhos_arquivo_v2(nome_arquivo_caminhos_utlizado)
 
-                    lista_orientacoes_com_repeticoes = funcoes.obter_lista_com_elementos_repetidos(resultados["dict_ocr_ortcs"])
-                    lista_usavel = [int(i) for i in lista_orientacoes_com_repeticoes]
-                    resultados["media_ortcs"] = funcoes.obter_media_aritimetica_simples(lista_usavel)
-                    resultados["moda_ortcs"] = funcoes.obter_moda(lista_usavel)
-                    resultados["mediana_ortcs"] = funcoes.obter_mediana(lista_usavel)
-                    resultados["delta_ent"] = round(resultados["lista_ent_med"][-1] - resultados["lista_ent_med"][0], 3)
                     mainloop = False
 
         grid.update_grid(janela)
         pg.display.update()
         relogio.tick(60)
+
+    df_resultados_staticos = pd.DataFrame(resultadosStaticos)
+    df_resultados_entropia = pd.DataFrame(resultados_entropia)
     
-    resultados_finais = {"resultados_staticos": resultados_staticos, "resultados_ts": resultados_ts}
-
-    # if retornar_info_agentes is True:
-    #     resultados_finais["resultados_agentes"] = df_agentes
-
-    # if retornar_info_lugares is True:
-    #     resultados_finais["resultados_lugares"] = df_lugares
+    resultados_finais = {"resultados_staticos": df_resultados_staticos,
+                         "resultados_agentes": df_agentes,
+                         "resultados_lugares": df_lugares,
+                         "resultados_entropia": df_resultados_entropia
+                         }
+    
+    #tem resultado
 
     return resultados_finais
 

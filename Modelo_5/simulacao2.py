@@ -125,4 +125,7 @@ def simulacao_utiliza_arquivo(nome_arquivo_base, pesos=(1, 1, 1), pesos_escolha_
         nome_novo_arquivo_lugares_com_path = func_arq.obter_path_completo_arquivo(path_arquivos_lugares, nome_arquivo_lugares_modificado)
         grid.salvar_lugares_arquivo(nome_novo_arquivo_lugares_com_path)
 
+
+    #tem resultado
+
     return resultados

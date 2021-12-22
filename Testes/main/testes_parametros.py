@@ -518,6 +518,8 @@ def testes_colormap_entropia_v2():
     path = "Testes\\main"
     nome_arquivo_temp_completo = os.path.join(path, nome_arquivo_temp)
 
+    n = None
+
     if (os.path.exists(nome_arquivo_temp_completo)):
         arquivo = open(nome_arquivo_temp_completo, "r")
         n = arquivo.readline()
@@ -1206,6 +1208,8 @@ def salvar_graficos_resultados_v2(resultados, nome_destino, nome_dir_origem):
     dir_principal = os.path.abspath(nome_dir_origem)
     dir_destino = os.path.abspath(nome_dir_origem)
     print(f'DIRETORIO PRINCIPAL:\n{dir_principal}\nDIR DESTINO:\n{dir_destino}')
+
+    print(resultados)
 
     df_agentes = resultados["resultados_agentes"]
     df_entropia = resultados["resultados_entropia"]

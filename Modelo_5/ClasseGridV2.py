@@ -19,6 +19,7 @@ class GridV2:
         self.qnt_linhas = qnt_linhas
         self.qnt_colunas = qnt_colunas
         self.qnt_agentes = 0
+        self.qnt_lugares = 0
         self.cell_size = cell_size
         self.largura = qnt_colunas * cell_size
         self.altura = qnt_linhas * cell_size
@@ -782,6 +783,8 @@ class GridV2:
         lista_cores = cores.lista_cores_random[:]
         lista_orientacoes = list(range(0, 1100, 100))
 
+        self.qnt_lugares = qnt_lugares
+
         for lugar in range(qnt_lugares):
             celula_aceitavel = False
             celula_escolhida = None
@@ -873,6 +876,12 @@ class GridV2:
         self.atualizar_celulas_com_agentes()
 
     def gerar_agentes_aleatorios_v2(self, sem_cor_repetida=False, sem_orientacao_repetida=False):
+        """Gera agentes com orientações e posições aleatórias.
+
+        Args:
+            sem_cor_repetida (bool, optional): as cores usadas pelos agentes não se repetem. Defaults to False.
+            sem_orientacao_repetida (bool, optional): orientações dos agentes não se repetem. Defaults to False.
+        """
 
         lista_celulas_livres = []
 
@@ -1007,7 +1016,14 @@ class GridV2:
         funcoes.lista_para_arquivo_csv(lista_final, nome_arquivo)
 
     def resgatar_lugares_arquivo(self, nome_arquivo_lugares):
+        """Resgata  lugares de um arquivo e adiciona ao grid.
+
+        Args:
+            nome_arquivo_lugares (string): Nome do arquivo de onde serão resgatados os lugares.
+        """
+
         lista_lugares = funcoes.arquivo_csv_para_lista(nome_arquivo_lugares)
+        self.qnt_lugares = len(lista_lugares)
         for lugar in lista_lugares:
             lugar_novo = LugarV2(self, veio_de_arquivo=True, lista_arquivo=lugar)
             print("resgatou o lugar {}".format(lugar_novo.id))
@@ -1195,6 +1211,47 @@ class GridV2:
         frenquencia_orientacoes = {key: (value / qnt_total_agentes) for key, value in dict_orientacoes_e_ocorrencias.items()}
 
         lista_entropia = [value * math.log(value) for value in frenquencia_orientacoes.values()]
+        entropia_final = -sum(lista_entropia)
+        entropia_final = round(entropia_final, 3)
+        return entropia_final
+
+    def calcular_entropia_agentes(self):
+
+        lista_orientacoes_agentes = [math.ceil(agente.orientacao_latente / 100) * 100 for agente in self.lista_agentes]
+        dict_orientacoes_e_ocorrencias = funcoes.obter_dict_contagem_elementos_repetidos_v2(lista_orientacoes_agentes)
+        qnt_total_agentes = len(self.lista_agentes)
+        frenquencia_orientacoes = {key: (value / qnt_total_agentes) for key, value in dict_orientacoes_e_ocorrencias.items()}
+
+        lista_entropia = []
+
+        for value in frenquencia_orientacoes.values():
+            if value == 0:
+                lista_entropia.append(value)
+            else:
+                resultado = value * math.log(value)
+                lista_entropia.append(resultado)
+
+        entropia_final = -sum(lista_entropia)
+        entropia_final = round(entropia_final, 3)
+        return entropia_final
+
+    def calcular_entropia_lugares(self):
+
+        lista_orientacoes_lugares = [math.ceil(lugar.orientacao / 100) * 100 for lugar in self.lista_lugares]
+        dict_orientacoes_e_ocorrencias = funcoes.obter_dict_contagem_elementos_repetidos_v2(lista_orientacoes_lugares)
+        qnt_total_lugares = len(self.lista_lugares)
+        frenquencia_orientacoes = {key: (value / qnt_total_lugares) for key, value in
+                                   dict_orientacoes_e_ocorrencias.items()}
+
+        lista_entropia = []
+
+        for value in frenquencia_orientacoes.values():
+            if value == 0:
+                lista_entropia.append(value)
+            else:
+                resultado = value * math.log(value)
+                lista_entropia.append(resultado)
+
         entropia_final = -sum(lista_entropia)
         entropia_final = round(entropia_final, 3)
         return entropia_final
