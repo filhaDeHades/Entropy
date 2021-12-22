@@ -3,7 +3,7 @@ import random
 import math
 import os
 
-path_base_projeto = "C:\\Users\\tamid\\OneDrive\\Área/ de/ Trabalho\\Repositórios\\entropia\\Entropy\\Arquivos\\"   #"C:\\Users\\lucas\\PycharmProjects\\Pratica_IC\\"
+path_base_projeto = "C:\\Users\\julio\Desktop\\Entropy\Arquivos\\"   #"C:\\Users\\lucas\\PycharmProjects\\Pratica_IC\\"
 
 
 def obter_distancia(pos_grid_inicial, pos_grid_final, custo_menor_mov=10, custo_maior_mov=14):

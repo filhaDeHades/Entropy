@@ -1,3 +1,4 @@
+from math import sqrt
 import pygame as pg
 import pandas as pd
 import Modelo_5.funcoes_arquivos as func_arq
@@ -7,7 +8,13 @@ from Modelo_5.ClasseGridV2 import GridV2
 from Modelo_5.ClasseLugarV2 import LugarV2
 import funcoes
 import cores
+import pyautogui
+import imageio
 
+path = "C:\\Users\\julio\\Desktop\\resultados\\modelo"
+
+modelo=3
+listaImagem=[]
 
 def simulacao(pesos, grid, qnt_time_steps, numero_da_simulacao, nome_arquivo_base=None, iniciar_automaticamente=False, mov_randomico_agentes=False,
               nome_arquivo_caminhos_utlizado=None, nome_arquivo_lugares=None, nome_arquivo_lugares_dinamicos=None,
@@ -252,7 +259,7 @@ def simulacao(pesos, grid, qnt_time_steps, numero_da_simulacao, nome_arquivo_bas
 
             if mov_randomico_agentes is False:
                 if time_step == 0 and uma_vez is True:
-                    print("-- INICIO DA SIMULACAO {} -- / PESOS = {} \n".format(numero_da_simulacao, pesos))
+                    print("-- INICIO DA SIMULACAO {} -- / PESOS = {} \n".format(numero_da_simulacao, pesosEscolhaLugar))
                     uma_vez = False
 
                 if iniciar_time_step is True:
@@ -269,7 +276,7 @@ def simulacao(pesos, grid, qnt_time_steps, numero_da_simulacao, nome_arquivo_bas
                         lugar_atual_agente = None
                         if agente.celula_grid.lugar is not None:
                             lugar_atual_agente = agente.celula_grid.lugar
-                        lugar_escolhido = agente.escolher_lugar_v4(grid)
+                        lugar_escolhido = agente.escolher_lugar_v4(grid, pesos[2])
                         agente.configuracoes_proximo_destino(grid, lugar_escolhido, lugar_atual=lugar_atual_agente)
 
                     if agente.escolheu_destino is True:
@@ -314,6 +321,10 @@ def simulacao(pesos, grid, qnt_time_steps, numero_da_simulacao, nome_arquivo_bas
                         agente.chegou_destino = False
 
                     print("FIM DO TIME STEP: {}".format(time_step))
+                    # xxx=pyautogui.screenshot(region=(347,42,672,680))
+                    # passagem=path+f"{modelo}\\imagem{time_step}.png"
+                    # xxx.save(passagem)
+                    # listaImagem.append(imageio.imread(passagem))
                     time_step += 1
                     controle_agentes = 0
                     iniciar_time_step = True
@@ -340,6 +351,23 @@ def simulacao(pesos, grid, qnt_time_steps, numero_da_simulacao, nome_arquivo_bas
                     if nome_arquivo_caminhos_utlizado is not None:
                         grid.salvar_caminhos_arquivo_v2(nome_arquivo_caminhos_utlizado)
 
+                    # lista_orientacoes_com_repeticoes = funcoes.obter_lista_com_elementos_repetidos(resultados["dict_ocr_ortcs"])
+                    # lista_usavel = [int(i) for i in lista_orientacoes_com_repeticoes]
+                    # resultados["media_ortcs"] = funcoes.obter_media_aritimetica_simples(lista_usavel)
+                    # resultados["moda_ortcs"] = funcoes.obter_moda(lista_usavel)
+                    # resultados["mediana_ortcs"] = funcoes.obter_mediana(lista_usavel)
+                    # resultados["delta_ent"] = round(resultados["lista_ent_med"][-1] - resultados["lista_ent_med"][0], 3)
+                    # imageio.mimsave(path+f"{modelo}\\vid.gif", listaImagem, duration=0.1)
+                    # arq=open(path+f"{modelo}\\lugaresVizitados.txt".format(modelo),"w")
+                    # for agente in grid.lista_agentes:
+                    #     #resultados["lugares_vizitados"].append((agente.id,agente.lugares_vizitados))
+                    #     linha=""
+                    #     linha+=str(agente.id)+"#"
+                    #     for lugar in agente.lugares_vizitados:
+                    #         linha+=str(lugar)+"@"
+                    #     arq.write(linha.strip("@"))
+                    #     arq.write("\n")
+                    # arq.close
                     mainloop = False
 
         grid.update_grid(janela)

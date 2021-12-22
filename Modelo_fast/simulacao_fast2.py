@@ -176,7 +176,7 @@ def simulacao_fast2(grid, pesos=(1, 1, 1), numero_da_simulacao=0, qnt_time_steps
 
     if salvar_caminhos_arquivo is True:
         nome_arquivo_caminhos = func_arq.gerar_nome_arquivo_caminhos(nome_arquivo_base)
-        path_arquivos_caminhos = "C:\\Users\\lucas\\PycharmProjects\\Pratica_IC\\Arquivos_caminhos"
+        path_arquivos_caminhos = "C:\\Users\\julio\\Desktop\\Entropy\\Arquivos\\Arquivos_caminhos"
         nome_arquivo_caminhos_com_path = fst.obter_path_completo_arquivo(path_arquivos_caminhos, nome_arquivo_caminhos)
         grid.criar_ou_atualizar_arquivo_caminhos(nome_arquivo_caminhos_com_path)
 

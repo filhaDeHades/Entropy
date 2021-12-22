@@ -4,7 +4,8 @@ import cores
 import funcoes
 import random
 import math
-
+import numpy as np
+from math import sqrt, degrees, acos, cos, radians, sin
 
 class AgenteV2:
 
@@ -15,6 +16,8 @@ class AgenteV2:
 
         self.id = AgenteV2.qnt_agentes
         AgenteV2.qnt_agentes += 1
+        
+        self.lugares_vizitados=set()
 
         self.grid_x = grid_x
         self.grid_y = grid_y
@@ -269,7 +272,53 @@ class AgenteV2:
             self.escolheu_caminho = True
             # print("n tem caminho pre definido, o caminho eh: ", self.caminho_atual)
 
-    def contaminacao_agente(self, grid, orientacao_do_lugar, pesos, atualizar_cor=True):
+    def somaVetor(self,vetores):
+    #ve a quantidade de vetores
+        qtdVetores = len(vetores)
+        #verifica se todos tem a mesma dimencao
+        for i in range(qtdVetores):
+            for j in range(i + 1, qtdVetores):
+                if len(vetores[i]) != len(vetores[j]):
+                    return -1
+        dim = len(vetores[0])
+        s = []
+        # faz a soma das coornadas caso todos possuam as mesmas dimenssões (vetor resultante) 
+        # e acha o vetor resultante
+        for col in range(dim):
+            soma = 0
+            for lin in range(qtdVetores):
+                soma += vetores[lin][col]
+            s.append(soma)
+        return s
+
+    def anguloVX(self,vetor):
+        x = vetor[0]
+        y = vetor[1]
+        tam = sqrt(x * x + y * y)
+        cosseno = x / tam
+        ang = degrees(acos(cosseno))
+        #produto positivo implica em quadrante impar
+        if x * y > 0:
+            if x > 0:
+                return ang
+            else:
+                return ang + 180
+        #produto negativo implica em quadrante par
+        elif x * y < 0:
+            if y > 0:
+                return ang
+            else:
+                return ang + 180
+        elif x*y == 0:
+            if x==0 and y>0:
+                return 90
+            elif x==0 and y<0:
+                return 270
+            elif x>0 and y==0:
+                return 0
+            else: 
+                return 180
+    def contaminacao_agente(self, grid, orientacao_do_lugar, pesoContaminacaoAgente, atualizar_cor=True):
         """Calcula a contaminação do agente pela orientação do lugar.
 
         Args:
@@ -277,11 +326,12 @@ class AgenteV2:
             pesos (tuple): Pesos C e D do agente.
         """
 
-        a, b = pesos[0], pesos[1]
-        soma_pesos = a + b
+        a, b = pesoContaminacaoAgente[0],pesoContaminacaoAgente[1]
+        aux1=[ ( a*cos(radians(self.orientacao_latente)) , a*sin(radians(self.orientacao_latente)) ) , ( b*cos(radians(orientacao_do_lugar)), b*sin(radians(orientacao_do_lugar)) ) ]
+        contaminacao= int(self.anguloVX(self.somaVetor(aux1)))
+        
+        self.orientacao_atual=contaminacao
 
-        contaminacao = int((a*self.orientacao_latente + b*orientacao_do_lugar) / soma_pesos)
-        self.orientacao_latente = contaminacao
         if atualizar_cor is True:
             # print("cor antes: ", self.cor)
             self.cor = funcoes.update_orientacao_cor(grid.dict_orientacoes_cores, self.orientacao_atual)
@@ -342,7 +392,94 @@ class AgenteV2:
 
         return lugar_escolhido_final
 
-    def escolher_lugar_v4(self, grid):
+    def escolher_lugar_v3(self, grid):
+        # usa o mesmo procemento que a funcao "escolher_lugar_v2"
+        # a unica diferenca eh que, caso o agente esteja em um lugar
+        # e caso n haja caminho entre o lugar atual e o lugar destino escolhido,
+        # usa-se o A* para criar esse caminho, caso possivel, e armazena-lo na lista de caminhos deste lugar
+
+        lugar_escolhido_eh_aceitavel = False
+        lista_lugares_usaveis = grid.lista_lugares[:]
+        lugar_onde_agente_esta = self.celula_grid.lugar
+
+        if lugar_onde_agente_esta is not None:
+            lista_lugares_usaveis.remove(lugar_onde_agente_esta)
+
+        lugar_escolhido_final = lista_lugares_usaveis[0]
+
+        while lugar_escolhido_eh_aceitavel is False:
+
+            if len(lista_lugares_usaveis) == 0:
+                # print("n ha lugares onde o agente possa ir")
+                return None
+
+            lugar_escolhido = funcoes.escolher_lugar_menor_e(self, lista_lugares_usaveis)
+            # print("o agente {} escolheu o lugar {}".format(self.id, lugar_escolhido.id))
+
+            if lugar_onde_agente_esta is not None:
+                # print("o agente {} se encontra no lugar {} ".format(self.id, lugar_onde_agente_esta.id))
+
+                checar_lugar_escolhido = lugar_onde_agente_esta.checar_existencia_lugar_na_lista_caminhos(lugar_escolhido)
+
+                if checar_lugar_escolhido is False:
+                    lugar_onde_agente_esta.add_caminho_lugar(lugar_escolhido, caminho_analisado=False)
+                    lugar_escolhido.add_caminho_lugar(lugar_onde_agente_esta, caminho_analisado=False)
+
+                for dicionario in lugar_onde_agente_esta.lista_caminhos:
+
+                    if dicionario["destino"] == lugar_escolhido:
+
+                        if dicionario["caminho_analisado"] is False:
+                            # print("n foi checado se ha caminho entre os dois lugares")
+                            resultados_a_star = grid.a_star_lugar_v2(lugar_onde_agente_esta, lugar_escolhido)
+
+                            if resultados_a_star is None:
+                                # print("n ha caminho entre os dois lugares")
+                                lista_lugares_usaveis.remove(lugar_escolhido)
+                                lugar_onde_agente_esta.atualizar_lista_caminhos(lugar_escolhido, False)
+                                lugar_escolhido.atualizar_lista_caminhos(lugar_onde_agente_esta, False)
+                                grid.atualizar_lista_caminhos_grid(lugar_onde_agente_esta.id, lugar_escolhido.id,
+                                                                   possui_caminho=False)
+                            else:
+                                # print("ha caminho entre os dois lugares")
+                                lugar_escolhido_final = lugar_escolhido
+                                lugar_escolhido_eh_aceitavel = True
+                                lista_refinada = resultados_a_star[1]
+                                lugar_onde_agente_esta.atualizar_lista_caminhos(lugar_escolhido, True,
+                                                                                caminho=lista_refinada)
+
+                                caminho_volta = list(reversed(lista_refinada[:]))
+                                lugar_escolhido.atualizar_lista_caminhos(lugar_onde_agente_esta, True,
+                                                                         caminho=caminho_volta)
+
+                                grid.atualizar_lista_caminhos_grid(lugar_onde_agente_esta.id, lugar_escolhido.id,
+                                                                   possui_caminho=True, caminho=lista_refinada)
+                        else:
+                            # print("ja poi checado o caminho entre os dois lugares")
+                            if dicionario["possui_caminho"] is True:
+                                # print("o lugar {} ja possui caminho definido".format(lugar_escolhido.id))
+                                lugar_escolhido_final = lugar_escolhido
+                                lugar_escolhido_eh_aceitavel = True
+
+                            if dicionario["possui_caminho"] is False:
+                                # print("o lugar {} n possui caminho ate o agente".format(lugar_escolhido.id))
+                                lista_lugares_usaveis.remove(lugar_escolhido)
+
+            else:
+                # print("o agente {} n se encontra em nenhum lugar".format(self.id))
+                resultados_a_star = grid.a_star_lugar(self.celula_grid, lugar_escolhido)
+
+                if resultados_a_star is None:
+                    # print("n ha caminho entre a celula do agente {} e o lugar escolhido".format(self.id))
+                    lista_lugares_usaveis.remove(lugar_escolhido)
+                else:
+                    # print("ha um caminho entre a celula do agente {} e o lugar escolhido".format(self.id))
+                    lugar_escolhido_final = lugar_escolhido
+                    lugar_escolhido_eh_aceitavel = True
+
+        return lugar_escolhido_final
+
+    def escolher_lugar_v4(self, grid,listaPesos):
         # funciona da mesma forma que a funcao "escolher_lugar_v3"
         # o unico diferencial eh a retirada do parametro "caminho analisado" da lista caminhos
         # apos analisar o arquivo de caminhos, esse parametro eh redundante, desnecessario
@@ -365,7 +502,7 @@ class AgenteV2:
                 return None
 
             # lugar_escolhido = funcoes.escolher_lugar_menor_e(self, lista_lugares_usaveis)
-            lugar_escolhido = self.escolher_lugar_v5(lista_lugares_usaveis)
+            lugar_escolhido = self.escolher_lugar_v5(lista_lugares_usaveis,listaPesos)
             # print("o agente {} escolheu o lugar {}".format(self.id, lugar_escolhido.id))
 
             if lugar_onde_agente_esta is not None:
@@ -427,7 +564,7 @@ class AgenteV2:
 
         return lugar_escolhido_final
 
-    def escolher_lugar_v5(self, lista_lugares, lista_pesos=(0.1, 0.1)):
+    def escolher_lugar_v5(self, lista_lugares, lista_pesos=(0.1,0.1)):
         peso_dif_orientacao = lista_pesos[0]
         peso_distancia = lista_pesos[1]
 
@@ -456,6 +593,9 @@ class AgenteV2:
 
         lugar_escolhido = funcoes.sorteio_com_pesos(lista_lugares, lista_pesos_final)[0]
         return lugar_escolhido
+
+    def atualizar_lugares_vizitados(self,id):
+        self.lugares_vizitados.add(id)
 
     def resgatar_estado_inicial(self):
         self.grid_x = self.grid_x_inicial
