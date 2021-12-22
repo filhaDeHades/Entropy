@@ -1042,7 +1042,7 @@ def distancia_sebastiana(custo_menor_mov, custo_maior_mov, pos_grid_inicial, pos
 
 
 def obter_distancia_manhattan(coordenada1, coordenada2):
-    distancia_eixo_x = abs(coordenada1[0] - coordenada2[1])
+    distancia_eixo_x = abs(coordenada1[0] - coordenada2[0])
     distancia_eixo_y = abs(coordenada1[1] - coordenada2[1])
 
     distancia_total = distancia_eixo_x + distancia_eixo_y

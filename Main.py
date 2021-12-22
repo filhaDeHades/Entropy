@@ -1,3 +1,4 @@
+from Modelo_5.funcoes_arquivos import criar_arquivo_lugares
 import Testes.main.testes_parametros as tp
 import Testes.src.funcoes_geracao_nomes as fgn
 import Testes.main.testes_modelo2D as t2d
@@ -10,6 +11,7 @@ import Modelo_5.apresentacoes as m5ap
 import Testes.main.visualizacao as v5
 #import Testes.main.recebe_arquivo_original as rao
 import Scripts.inverte_e_cria_arquivo as ica
+import pyautogui
 
 #ica.cria_Invertido()
 
@@ -123,6 +125,7 @@ import Scripts.inverte_e_cria_arquivo as ica
 # ---------------------------------------------------------------------------
 # testes no modelo 2D
 
+"""
 for arquetipo in range(6):
 
     lista_arquivos_base = ["modelo1(42x42)[tipo_1].txt",    # 0
@@ -143,6 +146,23 @@ for arquetipo in range(6):
     nome_dir_origem = "Testes\\2d_resultados\\arquetipos\\time_steps_2000\\time_steps_2000_0-9" #devem ser pastas já existentes
     nome_dir_destino = f"modelo{arquetipo+1}" #deve ser o nome de uma nova pasta
     tp.salvar_graficos_resultados_v2(resultados, nome_dir_destino, nome_dir_origem)
+
+"""
+"""    #faz o recebimento dos arquivos originais, enviados pelo Caio
+path_originais="C:\\Users\\julio\\Desktop\\Entropy\\Arquivos\\Arquivos_originais"
+path_base="C:\\Users\\julio\\Desktop\\Entropy\\Arquivos\\Arquivos_base"
+path_lugares="C:\\Users\\julio\\Desktop\\Entropy\\Arquivos\\Arquivos_lugares"
+ica.cria_Invertido()
+    #fazendo as simulações com o modelo animado
+"""
+
+arqBase = "cenarioNovoCorreto(25x25)[tipo_1].txt"
+pesos_escolha_lugar=(0.1,0.2) # A e B
+pesos_contaminacao_agentes = (0.5,5) #C e D
+pesos_contaminacao_lugares = (0.5, 0.5) #C e D
+    #path_relativo_folder_reusltados = "Testes\\2d_resultados"
+resultados=m5ap.simulacao_com_arquivo(arqBase,pesos_escolha_lugar,pesos_contaminacao_agentes,pesos_contaminacao_lugares)
+    #m5ap.simulacao_com_arquivo(lista_arquivos_base[arquetipo])
 
 # ---------------------------------------------------------------------------
 # testes no modelo 1D - analisando os padroes gerados pela mudancas nos pesos de contaminacao
@@ -222,5 +242,5 @@ for arquetipo in range(6):
 # ----------------------------------------------------------------
 # 27/05/2021: testando Modelo 5 para apresentacoes
 
-# m5ap.simulacao_3()
+#m5ap.simulacao_3()
 # v5.visualizacao()

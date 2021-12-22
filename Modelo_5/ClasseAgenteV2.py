@@ -3,7 +3,8 @@ import cores
 import funcoes
 import random
 import math
-
+import numpy as np
+from math import sqrt, degrees, acos, cos, radians, sin
 
 class AgenteV2:
 
@@ -14,6 +15,8 @@ class AgenteV2:
 
         self.id = AgenteV2.qnt_agentes
         AgenteV2.qnt_agentes += 1
+        
+        self.lugares_vizitados=set()
 
         self.grid_x = grid_x
         self.grid_y = grid_y
@@ -268,13 +271,63 @@ class AgenteV2:
             self.escolheu_caminho = True
             # print("n tem caminho pre definido, o caminho eh: ", self.caminho_atual)
 
-    def contaminacao_agente(self, grid, orientacao_do_lugar, pesos, atualizar_cor=True):
+    def somaVetor(self,vetores):
+    #ve a quantidade de vetores
+        qtdVetores = len(vetores)
+        #verifica se todos tem a mesma dimencao
+        for i in range(qtdVetores):
+            for j in range(i + 1, qtdVetores):
+                if len(vetores[i]) != len(vetores[j]):
+                    return -1
+        dim = len(vetores[0])
+        s = []
+        # faz a soma das coornadas caso todos possuam as mesmas dimenssões (vetor resultante) 
+        # e acha o vetor resultante
+        for col in range(dim):
+            soma = 0
+            for lin in range(qtdVetores):
+                soma += vetores[lin][col]
+            s.append(soma)
+        return s
 
-        a, b, c = pesos[0], pesos[1], pesos[2]
-        soma_pesos = sum(pesos)
+    def anguloVX(self,vetor):
+        x = vetor[0]
+        y = vetor[1]
+        tam = sqrt(x * x + y * y)
+        cosseno = x / tam
+        ang = degrees(acos(cosseno))
+        #produto positivo implica em quadrante impar
+        if x * y > 0:
+            if x > 0:
+                return ang
+            else:
+                return ang + 180
+        #produto negativo implica em quadrante par
+        elif x * y < 0:
+            if y > 0:
+                return ang
+            else:
+                return ang + 180
+        elif x*y == 0:
+            if x==0 and y>0:
+                return 90
+            elif x==0 and y<0:
+                return 270
+            elif x>0 and y==0:
+                return 0
+            else: 
+                return 180
+    def contaminacao_agente(self, grid, orientacao_do_lugar, pesoContaminacaoAgente, atualizar_cor=True):
+        a, b = pesoContaminacaoAgente[0],pesoContaminacaoAgente[1]
+        #soma_pesos = a + b
 
-        contaminacao = int((a*self.orientacao_latente + b*self.orientacao_atual + c*orientacao_do_lugar) / soma_pesos)
-        self.orientacao_atual = contaminacao
+        #contaminacao = int((a*self.orientacao_latente + b*orientacao_do_lugar) / soma_pesos)
+        #self.orientacao_latente = contaminacao
+        aux1=[ ( a*cos(radians(self.orientacao_latente)) , a*sin(radians(self.orientacao_latente)) ) , ( b*cos(radians(orientacao_do_lugar)), b*sin(radians(orientacao_do_lugar)) ) ]
+        contaminacao= int(self.anguloVX(self.somaVetor(aux1)))
+        
+        self.orientacao_atual=contaminacao
+
         if atualizar_cor is True:
             # print("cor antes: ", self.cor)
             self.cor = funcoes.update_orientacao_cor(grid.dict_orientacoes_cores, self.orientacao_atual)
@@ -508,7 +561,7 @@ class AgenteV2:
 
         return lugar_escolhido_final
 
-    def escolher_lugar_v4(self, grid):
+    def escolher_lugar_v4(self, grid,listaPesos):
         # funciona da mesma forma que a funcao "escolher_lugar_v3"
         # o unico diferencial eh a retirada do parametro "caminho analisado" da lista caminhos
         # apos analisar o arquivo de caminhos, esse parametro eh redundante, desnecessario
@@ -531,7 +584,7 @@ class AgenteV2:
                 return None
 
             # lugar_escolhido = funcoes.escolher_lugar_menor_e(self, lista_lugares_usaveis)
-            lugar_escolhido = self.escolher_lugar_v5(lista_lugares_usaveis)
+            lugar_escolhido = self.escolher_lugar_v5(lista_lugares_usaveis,listaPesos)
             # print("o agente {} escolheu o lugar {}".format(self.id, lugar_escolhido.id))
 
             if lugar_onde_agente_esta is not None:
@@ -593,7 +646,7 @@ class AgenteV2:
 
         return lugar_escolhido_final
 
-    def escolher_lugar_v5(self, lista_lugares, lista_pesos=(0.1, 0.1)):
+    def escolher_lugar_v5(self, lista_lugares, lista_pesos=(0.1,0.1)):
         peso_dif_orientacao = lista_pesos[0]
         peso_distancia = lista_pesos[1]
 
@@ -611,6 +664,8 @@ class AgenteV2:
 
             expoente = fator_dif_orientacao + fator_distancia
             peso = math.exp(-expoente)
+            if peso==0.0:
+                peso=np.nextafter(np.float32(0),np.float32(1))
             lista_pesos.append(peso)
 
         soma_lista_pesos = sum(lista_pesos)
@@ -619,6 +674,9 @@ class AgenteV2:
 
         lugar_escolhido = funcoes.sorteio_com_pesos(lista_lugares, lista_pesos_final)[0]
         return lugar_escolhido
+
+    def atualizar_lugares_vizitados(self,id):
+        self.lugares_vizitados.add(id)
 
     def resgatar_estado_inicial(self):
         self.grid_x = self.grid_x_inicial

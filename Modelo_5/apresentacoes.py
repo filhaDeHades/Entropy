@@ -2,12 +2,13 @@ from Modelo_5.simulacao import *
 from Modelo_5.simulacao2 import simulacao2
 import Modelo_5.funcoes_arquivos as func_arq
 import os
+from math import ceil
 
-path_base_projeto = "Arquivos\\Arquivos_lugares\\"
+path_base_projeto = "C:\\Users\\julio\\Desktop\\Entropy\\Arquivos\\Arquivos_base"
 
 # info compartilhadas
 peso_teste = (1, 1, 1)
-qnt_time_steps_teste = 1000
+qnt_time_steps_teste = 2000
 numero_simulacao_teste = 0
 iniciar_automaticamente_teste = False
 
@@ -15,7 +16,7 @@ iniciar_automaticamente_teste = False
 def simulacao_1():
     qnt_linhas = 42
     qnt_colunas = 42
-    tamanho_celula = 10
+    tamanho_celula = 17
     matriz_layout = funcoes.obter_grid_manual(qnt_linhas, qnt_colunas)
     grid = GridV2(qnt_linhas, qnt_colunas, tamanho_celula, matriz_layout)
     grid.permissao_display_linhas_grid = False
@@ -69,32 +70,33 @@ def simulacao_3():
     resultados = simulacao(peso_teste, grid, qnt_time_steps_teste, numero_simulacao_teste)
 
 
-def simulacao_com_arquivo():
+def simulacao_com_arquivo(nome_arquivo_base_utilizado,pesosEscolhaLugar,pesosContaminacaoAgente, pesosContaminacaoLugar):
 
-    lista_arquivos_base = ["modelo1(42x42)[tipo_1].txt"]
+    #lista_arquivos_base = ["modelo1(42x42)[tipo_1].txt"]
 
     # lista_arquivos_base = ["new_york_ID(1000x1000)[tipo_2].txt",    # 0
     #                        "SaoPaulo_6-7v2(1000x1000)[tipo_1].txt"  # 1
     #                        ]
 
-    nome_arquivo_base_utilizado = lista_arquivos_base[0]
+    #nome_arquivo_base_utilizado = lista_arquivos_base[0]
 
     tam_grid = func_arq.obter_tam_grid_pelo_nome_arquivo(nome_arquivo_base_utilizado)
     qnt_linhas = tam_grid[0]
     qnt_colunas = tam_grid[1]
-    tamanho_celula = 5
+    tamanho_celula = 16
     matriz_layout = funcoes.obter_grid_manual(qnt_linhas, qnt_colunas)
     grid = GridV2(qnt_linhas, qnt_colunas, tamanho_celula, matriz_layout)
-
-    qnt_agentes = 100
-    grid.gerar_agentes_aleatorios_v2(qnt_agentes, sem_cor_repetida=False, sem_orientacao_repetida=False)
 
     nome_arquivo_lugares = func_arq.gerar_nome_arquivo_lugares(nome_arquivo_base_utilizado)
     nome_arquivo_lugares_completo = func_arq.obter_path_completo_arquivo_lugares(nome_arquivo_lugares)
     grid.resgatar_lugares_arquivo(nome_arquivo_lugares_completo)
-    print("foram resgatados {} lugares, vindos do arquivo {}".format(len(grid.lista_lugares), nome_arquivo_base_utilizado))
+    qtd_lugares=len(grid.lista_lugares)
+    print("foram resgatados {} lugares, vindos do arquivo {}".format(qtd_lugares, nome_arquivo_base_utilizado))
 
-    resultados = simulacao(peso_teste, grid, qnt_time_steps_teste, numero_simulacao_teste)
+    qnt_agentes = ceil(qtd_lugares*1.2)
+    grid.gerar_agentes_aleatorios_v2(qnt_agentes, sem_cor_repetida=False, sem_orientacao_repetida=False)
+
+    resultados = simulacao(grid, qnt_time_steps_teste, numero_simulacao_teste, pesosEscolhaLugar, pesosContaminacaoAgente, pesosContaminacaoLugar)
 
 
 def simulacao_manual():
@@ -149,7 +151,7 @@ def simulacao_com_arquivo_2():
     nome_arquivo_lugares = func_arq.gerar_nome_arquivo_lugares(nome_arquivo_base_utilizado)
     # nome_arquivo_lugares_completo = func_arq.obter_path_completo_arquivo_lugares(nome_arquivo_lugares)
 
-    nome_arquivo_lugares_completo = path_base_projeto + nome_arquivo_lugares      #"C:\\Users\\lucas\\PycharmProjects\\Pratica_IC\\Arquivos_lugares\\new_york_ID(1000x1000)[tipo_2]_lugaresv2.txt"
+    nome_arquivo_lugares_completo = "C:\\Users\\julio\\Desktop\\Entropy\\Arquivos\\Arquivos_lugares"      #"C:\\Users\\lucas\\PycharmProjects\\Pratica_IC\\Arquivos_lugares\\new_york_ID(1000x1000)[tipo_2]_lugaresv2.txt"
     grid.resgatar_lugares_arquivo(nome_arquivo_lugares_completo)
     print("foram resgatados {} lugares, vindos do arquivo {}".format(len(grid.lista_lugares),
                                                                      nome_arquivo_base_utilizado))

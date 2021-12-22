@@ -1,12 +1,17 @@
+from math import sqrt
 import pygame as pg
 from Modelo_5.ClasseAgenteV2 import AgenteV2
 from Modelo_5.ClasseGridV2 import GridV2
 from Modelo_5.ClasseLugarV2 import LugarV2
 import funcoes
 import cores
+import pyautogui
+import imageio
 
+modelo=2
+listaImagem=[]
 
-def simulacao(pesos, grid, qnt_time_steps, numero_da_simulacao, iniciar_automaticamente=False, mov_randomico_agentes=False,
+def simulacao(grid, qnt_time_steps, numero_da_simulacao, pesosEscolhaLugar, pesosContaminacaoAgente, pesosContaminacaoLugar, iniciar_automaticamente=False, mov_randomico_agentes=False,
               nome_arquivo_caminhos_utlizado=None):
 
     pg.init()
@@ -25,7 +30,7 @@ def simulacao(pesos, grid, qnt_time_steps, numero_da_simulacao, iniciar_automati
 
     # RESULTADOS
 
-    resultados = {"pesos_sim": pesos,
+    resultados = {"pesosContaminacaoAgente": pesosContaminacaoAgente,
                   "qnt_time_steps": qnt_time_steps,
                   "dict_ocr_ortcs": {},
                   "media_ortcs": 0,
@@ -33,7 +38,8 @@ def simulacao(pesos, grid, qnt_time_steps, numero_da_simulacao, iniciar_automati
                   "mediana_ortcs": 0,
                   "lista_ent": [],
                   "lista_ent_med": [],
-                  "delta_ent": 0
+                  "delta_ent": 0,
+                  "lugares_vizitados": []
                   }
 
     mainloop = True
@@ -262,7 +268,7 @@ def simulacao(pesos, grid, qnt_time_steps, numero_da_simulacao, iniciar_automati
 
             if mov_randomico_agentes is False:
                 if time_step == 0 and uma_vez is True:
-                    print("-- INICIO DA SIMULACAO {} -- / PESOS = {} \n".format(numero_da_simulacao, pesos))
+                    print("-- INICIO DA SIMULACAO {} -- / PESOS = {} \n".format(numero_da_simulacao, pesosEscolhaLugar))
                     uma_vez = False
 
                 if iniciar_time_step is True:
@@ -279,8 +285,8 @@ def simulacao(pesos, grid, qnt_time_steps, numero_da_simulacao, iniciar_automati
                         lugar_atual_agente = None
                         if agente.celula_grid.lugar is not None:
                             lugar_atual_agente = agente.celula_grid.lugar
-                        lugar_escolhido = agente.escolher_lugar_v4(grid)
-                        # lugar_escolhido = agente.escolher_lugar_v5(grid.lista_lugares)
+                        lugar_escolhido = agente.escolher_lugar_v4(grid,pesosEscolhaLugar)
+                        agente.atualizar_lugares_vizitados(lugar_escolhido.id)
                         # print("lugar escolhido: ", lugar_escolhido.id)
                         # print("diferenca de orientacao: ", abs(agente.orientacao_latente - lugar_escolhido.orientacao))
                         agente.configuracoes_proximo_destino(grid, lugar_escolhido, lugar_atual=lugar_atual_agente)
@@ -290,7 +296,7 @@ def simulacao(pesos, grid, qnt_time_steps, numero_da_simulacao, iniciar_automati
                             agente.update_posicao(grid)
                             for coordenada in agente.destino_atual.lista_coordenadas:
                                 if agente.pos_grid == coordenada:
-                                    agente.contaminacao_agente(grid, agente.destino_atual.orientacao, pesos)
+                                    agente.contaminacao_agente(grid, agente.destino_atual.orientacao, pesosContaminacaoAgente)
                                     agente.configuracoes_chegou_destino()
                                     controle_agentes += 1
                                     break
@@ -300,7 +306,7 @@ def simulacao(pesos, grid, qnt_time_steps, numero_da_simulacao, iniciar_automati
                         if len(lugar.lista_agentes_presentes) > 0:
                             # print("o lugar sofre contaminacao")
                             # print("o lugar tinha uma orientacao de: ", lugar.orientacao)
-                            lugar.contaminacao_lugar(mudar_cor=True, grid=grid)
+                            lugar.contaminacao_lugar(pesosContaminacaoLugar,mudar_cor=True, grid=grid)
                             # print("agora o lugar tem um orientacao de: ", lugar.orientacao)
                         lista_agentes_id = [i.id for i in lugar.lista_agentes_presentes]
                         # print("lugar: ", lugar.id)
@@ -311,6 +317,10 @@ def simulacao(pesos, grid, qnt_time_steps, numero_da_simulacao, iniciar_automati
                         agente.chegou_destino = False
 
                     print("FIM DO TIME STEP: {}".format(time_step))
+                    xxx=pyautogui.screenshot(region=(347,42,672,680))
+                    passagem="C:\\Users\\julio\\Desktop\\resultados\\modelo{}\\imagem{}.png".format(modelo,time_step)
+                    xxx.save(passagem)
+                    listaImagem.append(imageio.imread(passagem))
                     time_step += 1
                     controle_agentes = 0
                     iniciar_time_step = True
@@ -338,7 +348,7 @@ def simulacao(pesos, grid, qnt_time_steps, numero_da_simulacao, iniciar_automati
                         resultados["dict_ocr_ortcs"] = dict_orientacoes_ocorrencias_final
 
                 if time_step == meta:
-                    print("-- FIM DA SIMULACAO {} -- / PESOS: {}".format(numero_da_simulacao, pesos))
+                    print("-- FIM DA SIMULACAO {} -- / PESOS: {}".format(numero_da_simulacao, pesosContaminacaoAgente))
 
                     for agente in grid.lista_agentes:
                         agente.resgatar_estado_inicial()
@@ -355,6 +365,17 @@ def simulacao(pesos, grid, qnt_time_steps, numero_da_simulacao, iniciar_automati
                     resultados["moda_ortcs"] = funcoes.obter_moda(lista_usavel)
                     resultados["mediana_ortcs"] = funcoes.obter_mediana(lista_usavel)
                     resultados["delta_ent"] = round(resultados["lista_ent_med"][-1] - resultados["lista_ent_med"][0], 3)
+                    imageio.mimsave("C:\\Users\\julio\\Desktop\\resultados\\modelo{}\\vid.gif".format(modelo), listaImagem, duration=0.1)
+                    arq=open("C:\\Users\\julio\\Desktop\\resultados\\modelo{}\\lugaresVizitados.txt".format(modelo),"w")
+                    for agente in grid.lista_agentes:
+                        #resultados["lugares_vizitados"].append((agente.id,agente.lugares_vizitados))
+                        linha=""
+                        linha+=str(agente.id)+"#"
+                        for lugar in agente.lugares_vizitados:
+                            linha+=str(lugar)+"@"
+                        arq.write(linha.strip("@"))
+                        arq.write("\n")
+                    arq.close
                     mainloop = False
 
         grid.update_grid(janela)
