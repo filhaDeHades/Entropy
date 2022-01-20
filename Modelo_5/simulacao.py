@@ -8,8 +8,8 @@ from Modelo_5.ClasseGridV2 import GridV2
 from Modelo_5.ClasseLugarV2 import LugarV2
 import funcoes
 import cores
-import pyautogui
-import imageio
+# import pyautogui
+# import imageio
 
 path = "C:\\Users\\julio\\Desktop\\resultados\\modelo"
 

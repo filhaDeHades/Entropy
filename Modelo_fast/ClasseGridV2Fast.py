@@ -45,7 +45,7 @@ class GridV2Fast:
     
     def atualizaQuantAgentes(self):
         totalLugares = len([celula for celula in self.array_celulas_grid if celula.andavel is False])
-        totalAgentes = int(totalLugares *1.2)
+        totalAgentes = int(totalLugares *2.5)
         print(f'TOTAL LUGARES: {totalLugares}\nTOTAL AGENTES: {totalAgentes}')
         self.qnt_agentes = totalAgentes
         self.gerar_agentes_aleatorios_v3(self.qnt_agentes)
@@ -53,7 +53,7 @@ class GridV2Fast:
 
     def get_qnt_agentes(self):
         totalLugares = len([celula for celula in self.array_celulas_grid if celula.andavel is False])
-        totalAgentes = int(totalLugares *1.2)
+        totalAgentes = int(totalLugares *2.5)
         return totalAgentes
 
     def obter_dict_orientacoes_cores(self):
@@ -102,8 +102,8 @@ class GridV2Fast:
 
         for agente in range(qnt_agentes):
             pos_aleatoria = random.randint(0, qnt_cel_livres - 1)
-            celula_inicial = lista_celulas_livres.pop(pos_aleatoria)
-            qnt_cel_livres -= 1
+            celula_inicial = lista_celulas_livres[pos_aleatoria]
+            #qnt_cel_livres -= 1
 
             x_inicial = celula_inicial.grid_x
             y_inicial = celula_inicial.grid_y

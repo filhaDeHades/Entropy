@@ -1,7 +1,7 @@
 import Modelo_fast.funcoes_fast as fst
 import numpy as np
 import cores
-
+from math import sqrt, degrees, acos, cos, radians, sin
 
 class LugarV2Fast:
 
@@ -72,23 +72,67 @@ class LugarV2Fast:
 
         return coordenada_escolhida
 
-    def contaminacao_lugar(self, pesos_contaminacao=(1, 1), mudar_cor=False, grid=None):
+    def somaVetor(self,vetores):
+    #ve a quantidade de vetores
+        qtdVetores = (len(vetores))
+        #verifica se todos tem a mesma dimencao
+        for i in range(qtdVetores):
+            for j in range(i + 1, qtdVetores):
+                if len(vetores[i]) != len(vetores[j]):
+                    return -1
+        dim = len(vetores[0])
+        s = []
+        # faz a soma das coornadas caso todos possuam as mesmas dimenssões (vetor resultante) 
+        # e acha o vetor resultante
+        for col in range(dim):
+            soma = 0
+            for lin in range(qtdVetores):
+                soma += vetores[lin][col]
+            s.append(soma)
+        return s
 
-        peso_lugar = pesos_contaminacao[0]
-        peso_agentes = pesos_contaminacao[1]
+    def anguloVX(self,vetor):
+        x = vetor[0]
+        y = vetor[1]
+        tam = max(sqrt(x * x + y * y), np.nextafter(np.float32(0), np.float32(1)))
+        cosseno = x / tam
+        ang = degrees(acos(cosseno))
+        #produto positivo implica em quadrante impar
+        if x * y > 0:
+            if x > 0:
+                return ang
+            else:
+                return ang + 180
+        #produto negativo implica em quadrante par
+        elif x * y < 0:
+            if y > 0:
+                return ang
+            else:
+                return ang + 180
+        elif x*y == 0:
+            if x==0 and y>0:
+                return 90
+            elif x==0 and y<0:
+                return 270
+            elif x>0 and y==0:
+                return 0
+            else: 
+                return 180
 
-        soma_pesos = sum(pesos_contaminacao)
-        lista_orientacao_agentes = [i.orientacao_latente for i in self.lista_agentes_presentes]
+    def contaminacao_lugar(self,pesosContaminacaoLugar, mudar_cor=True, grid=None):
+        
+        peso_lugar = pesosContaminacaoLugar[0]
+        peso_agentes = pesosContaminacaoLugar[1]
+        
+        lista_orientacao_agentes = [(cos(radians(i.orientacao_atual)), sin(radians(i.orientacao_atual))) for i in self.lista_agentes_presentes]
 
-        soma_orientacoes_agentes = sum(lista_orientacao_agentes)
-        qnt_agentes = len(lista_orientacao_agentes)
-        media_orientacao_agentes = soma_orientacoes_agentes // qnt_agentes
-
-        nova_orientacao = (peso_lugar*self.orientacao + peso_agentes*media_orientacao_agentes) // soma_pesos
+        media_orientacao_agentes=self.anguloVX(self.somaVetor(lista_orientacao_agentes))
+        aux=[ ( peso_agentes*cos(radians(media_orientacao_agentes)) ,peso_agentes*sin(radians(media_orientacao_agentes)) ),( peso_lugar*cos(radians(self.orientacao)), peso_lugar*sin(radians(self.orientacao)) ) ]
+        nova_orientacao = round(self.anguloVX(self.somaVetor(aux)))
         self.orientacao = nova_orientacao
 
-        if mudar_cor is True:
-            self.cor = fst.update_orientacao_cor(grid.dict_orientacoes_cores, self.orientacao)
+        #if mudar_cor is True:
+            #self.cor = fst.update_orientacao_cor(grid.dict_orientacoes_cores, self.orientacao, 1000)
 
     def resgatar_estado_inicial(self):
         self.orientacao = self.orientacao_inicial

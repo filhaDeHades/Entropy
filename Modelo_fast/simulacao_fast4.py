@@ -47,7 +47,7 @@ def simulacao_fast4(grid, pesosContaminacaoAgente=(1, 0.1), pesosContaminacaoLug
             lista_agentes_presentes_id = [i.id for i in lugarEscolhido.lista_agentes_presentes]
             # print("o Lugar {} agr tem os agentes: {}".format(lugarEscolhido.id, lista_agentes_presentes_id))
 
-            agente.contaminacao_agente(lugarEscolhido.orientacao, pesosContaminacaoAgente)
+            agente.contaminacao_agente(grid, lugarEscolhido.orientacao, pesosContaminacaoAgente)
             # print("o agente agr tem orientacao: {}".format(agente.orientacao_latente))
 
             dict_agentes["agente_{}".format(agente.id)] = round(agente.orientacao_latente)
@@ -66,7 +66,7 @@ def simulacao_fast4(grid, pesosContaminacaoAgente=(1, 0.1), pesosContaminacaoLug
 
             if len(lugar.lista_agentes_presentes) > 0:
                 # print("qnt agentes no lugar: ", len(lugar.lista_agentes_presentes))
-                lugar.contaminacao_lugar(pesos_contaminacao=pesosContaminacaoLugar)
+                lugar.contaminacao_lugar(pesosContaminacaoLugar)
                 # print("orientacao pos contaminacao: ", lugar.orientacao)
                 lugar.lista_agentes_presentes.clear()
 

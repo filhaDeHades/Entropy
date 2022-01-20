@@ -57,18 +57,3 @@ resultados = simulacao_fast3(grid, pesos=pesos_contaminacao, qnt_time_steps=qnt_
                              salvar_dados_agentes=True, nome_arquivo_agentes=nome_arq_agentes_dinamicos_completo,
                              atualizar_agentes=True, salvar_dados_lugares=True,
                              nome_arquivo_lugares=nome_arq_lugares_dinamicos_completo, atualizar_lugares=True)
-
-# print("RESULTADOS AGENTES:")
-# resultados_agentes = resultados["resultados_agentes"]
-# print(resultados_agentes)
-# print("---------------------------------")
-#
-# print("RESULTADOS LUGARES:")
-# resultados_lugares = resultados["resultados_lugares"]
-# print(resultados_lugares)
-# print("---------------------------------")
-#
-# print("RESULTADOS ENTROPIA:")
-# resultados_entropia = resultados["resultados_entropia"]
-# print(resultados_entropia)
-# print("---------------------------------")

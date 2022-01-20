@@ -1,8 +1,5 @@
 import Testes.main.testes_parametros as tp
-# import Testes.src.funcoes_geracao_nomes as fgn
 import Testes.main.testes_modelo2D as t2d
-# import numpy as np
-# import shutil
 # import os
 # import Modelo_5.apresentacoes as m5ap
 # import Testes.main.visualizacao as v5

@@ -1207,9 +1207,8 @@ def salvar_graficos_resultados_v2(resultados, nome_destino, nome_dir_origem):
 
     dir_principal = os.path.abspath(nome_dir_origem)
     dir_destino = os.path.abspath(nome_dir_origem)
-    print(f'DIRETORIO PRINCIPAL:\n{dir_principal}\nDIR DESTINO:\n{dir_destino}')
+    #print(f'DIRETORIO PRINCIPAL:\n{dir_principal}\nDIR DESTINO:\n{dir_destino}')
 
-    print(resultados)
 
     df_agentes = resultados["resultados_agentes"]
     df_entropia = resultados["resultados_entropia"]
@@ -1257,7 +1256,7 @@ def salvar_graficos_resultados_v2(resultados, nome_destino, nome_dir_origem):
     
     nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["entropia_agentes"])
     plt.savefig(nome_grafico)
-    plt.show()
+    #plt.show()
     plt.close()
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -1276,7 +1275,7 @@ def salvar_graficos_resultados_v2(resultados, nome_destino, nome_dir_origem):
     
     nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["entropia_lugares"])
     plt.savefig(nome_grafico)
-    plt.show()
+    #plt.show()
     plt.close()
     
     # ------------------------------------------------------------------------------------------------------------------
@@ -1292,7 +1291,7 @@ def salvar_graficos_resultados_v2(resultados, nome_destino, nome_dir_origem):
 
     nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["entropia_geral"])
     plt.savefig(nome_grafico)
-    plt.show()
+    #plt.show()
     plt.close()
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -1314,7 +1313,7 @@ def salvar_graficos_resultados_v2(resultados, nome_destino, nome_dir_origem):
     
     nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["colormap_agentes"])
     plt.savefig(nome_grafico)
-    plt.show()
+    #plt.show()
     plt.close()
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -1337,7 +1336,7 @@ def salvar_graficos_resultados_v2(resultados, nome_destino, nome_dir_origem):
 
     nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["colormap_lugares"])
     plt.savefig(nome_grafico)
-    plt.show()
+    #plt.show()
     plt.close()
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -1359,7 +1358,7 @@ def salvar_graficos_resultados_v2(resultados, nome_destino, nome_dir_origem):
     
     nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["ort_azul_ver"])
     plt.savefig(nome_grafico)
-    plt.show()
+    #plt.show()
     plt.close()
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -1392,7 +1391,7 @@ def salvar_graficos_resultados_v2(resultados, nome_destino, nome_dir_origem):
 
     nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["histograma_agentes_inicio"])
     plt.savefig(nome_grafico)
-    plt.show()
+    #plt.show()
     plt.close()
 
     # ---------- Histograma Final ----------
@@ -1404,7 +1403,7 @@ def salvar_graficos_resultados_v2(resultados, nome_destino, nome_dir_origem):
 
     nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["histograma_agentes_final"])
     plt.savefig(nome_grafico)
-    plt.show()
+    #plt.show()
     plt.close()
 
     # ----------------------------------------------------------------------------------
@@ -1461,7 +1460,7 @@ def heatmap_entropia_agentes(nome_dir_origem, qnt_linhas, qnt_colunas, nome_dir_
     nome_grafico = "heatmap_entropia_({}, {})".format(qnt_linhas, qnt_colunas)
     nome_grafico = os.path.join(nome_dir_destino, nome_grafico)
     plt.savefig(nome_grafico)
-    plt.show()
+    #plt.show()
     plt.close()
 
 def heatmap_entropia_lugares(nome_dir_origem, qnt_linhas, qnt_colunas, nome_dir_destino):

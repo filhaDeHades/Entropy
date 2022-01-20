@@ -2,6 +2,7 @@ import Modelo_fast.funcoes_fast as fst
 import numpy as np
 import random
 import math
+from math import sqrt, degrees, acos, cos, radians, sin
 
 
 class AgenteV2Fast:
@@ -71,7 +72,63 @@ class AgenteV2Fast:
         self.pos_grid = pos_nova_grid
         self.atualizar_celula_grid(grid, self.grid_x, self.grid_y)
 
-    def contaminacao_agente(self, orientacao_do_lugar, pesos):
+    def somaVetor(self,vetores):
+        """[summary]
+
+        Args:
+            vetores ([type]): [description]
+
+        Returns:
+            [type]: [description]
+        """
+
+    #ve a quantidade de vetores
+        qtdVetores = len(vetores)
+        #verifica se todos tem a mesma dimencao
+        for i in range(qtdVetores):
+            for j in range(i + 1, qtdVetores):
+                if len(vetores[i]) != len(vetores[j]):
+                    return -1
+        dim = len(vetores[0])
+        s = []
+        # faz a soma das coornadas caso todos possuam as mesmas dimenssões (vetor resultante) 
+        # e acha o vetor resultante
+        for col in range(dim):
+            soma = 0
+            for lin in range(qtdVetores):
+                soma += vetores[lin][col]
+            s.append(soma)
+        return s
+
+    def anguloVX(self,vetor):
+        x = vetor[0]
+        y = vetor[1]
+        tam = max(sqrt(x * x + y * y), np.nextafter(np.float32(0), np.float32(1)))
+        cosseno = x / tam
+        ang = degrees(acos(cosseno))
+        #produto positivo implica em quadrante impar
+        if x * y > 0:
+            if x > 0:
+                return ang
+            else:
+                return ang + 180
+        #produto negativo implica em quadrante par
+        elif x * y < 0:
+            if y > 0:
+                return ang
+            else:
+                return ang + 180
+        elif x*y == 0:
+            if x==0 and y>0:
+                return 90
+            elif x==0 and y<0:
+                return 270
+            elif x>0 and y==0:
+                return 0
+            else: 
+                return 180
+
+    def contaminacao_agente(self, grid, orientacao_do_lugar, pesoContaminacaoAgente, atualizar_cor=True):
         """Calcula a contaminação do agente pela orientação do lugar.
 
         Args:
@@ -79,11 +136,17 @@ class AgenteV2Fast:
             pesos (tuple): Pesos C e D do agente.
         """
 
-        a, b = pesos[0], pesos[1]
-        soma_pesos = a + b
+        a, b = pesoContaminacaoAgente[0],pesoContaminacaoAgente[1]
+        aux1=[ ( a*cos(radians(self.orientacao_latente)) , a*sin(radians(self.orientacao_latente)) ) , ( b*cos(radians(orientacao_do_lugar)), b*sin(radians(orientacao_do_lugar)) ) ]
+        contaminacao= int(self.anguloVX(self.somaVetor(aux1)))
+        
+        self.orientacao_atual=contaminacao
 
-        contaminacao = int((a*self.orientacao_latente + b*orientacao_do_lugar) / soma_pesos)
-        self.orientacao_latente = contaminacao
+        # if atualizar_cor is True:
+        #     # print("cor antes: ", self.cor)
+        #     self.cor = fst.update_orientacao_cor(grid.dict_orientacoes_cores, self.orientacao_atual)
+        #     # print("cor agora: ", self.cor)
+        #     grid.dict_orientacoes_cores[str(self.orientacao_atual)] = self.cor
 
     def sortear_nova_orientacao(self):
         """Sorteia uma nova orientação para o agente, sem levar

@@ -26,8 +26,8 @@ Ao receber um arquivo novo (arquivo original) deve-se mudar seu nome para transf
 Um arquivo base contem infos eu seu nome que sao necessarias para iniciar a simulacao
 """
 
-path_base_projeto = "C:\\Users\\julio\\Desktop\\Entropy\\Arquivos\\"   #"C:\\Users\\lucas\\PycharmProjects\\Pratica_IC\\"
-
+#path_base_projeto = "C:\\Users\\julio\\Desktop\\Entropy\\Arquivos\\"   #"C:\\Users\\lucas\\PycharmProjects\\Pratica_IC\\"
+path_base_projeto = "C:\\Users\\tamid\\Desktop\\repositorios\\entropia\\Entropy\\Arquivos\\"
 qnt_padrao_agentes = 100
 qnt_padrao_lugares = 100
 

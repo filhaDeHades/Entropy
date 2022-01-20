@@ -9,7 +9,7 @@ import os
 import Modelo_5.apresentacoes as m5ap
 #import Modelo_fast.testes_novos_pesos as tnp
 import Testes.main.visualizacao as v5
-#import Testes.main.recebe_arquivo_original as rao
+#import recebe_arquivo_original as rao
 import Scripts.inverte_e_cria_arquivo as ica
 import pyautogui
 

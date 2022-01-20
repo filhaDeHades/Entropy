@@ -93,7 +93,7 @@ def simulacao_com_arquivo(nome_arquivo_base_utilizado,pesosEscolhaLugar,pesosCon
     qtd_lugares=len(grid.lista_lugares)
     print("foram resgatados {} lugares, vindos do arquivo {}".format(qtd_lugares, nome_arquivo_base_utilizado))
 
-    qnt_agentes = ceil(qtd_lugares*1.2)
+    qnt_agentes = ceil(qtd_lugares*2.5)
     grid.gerar_agentes_aleatorios_v2(qnt_agentes, sem_cor_repetida=False, sem_orientacao_repetida=False)
 
     resultados = simulacao(grid, qnt_time_steps_teste, numero_simulacao_teste, pesosEscolhaLugar, pesosContaminacaoAgente, pesosContaminacaoLugar)
