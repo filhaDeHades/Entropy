@@ -58,6 +58,14 @@ class LugarV2Fast:
         return array_celulas_grid
 
     def achar_coordenada_principal(self, ponto_referencia):
+        """Descobre qual é a célula principal de um lugar quando o lugar ocupa mais de uma célula.
+
+        Args:
+            ponto_referencia (ClasseCelulaV2Fast): [description].
+
+        Returns:
+            ClasseLugarV2Fast: Returna a coordenada principal.
+        """
 
         menor_distancia = fst.obter_distancia_manhattan(ponto_referencia, self.array_coordenadas[0])
         coordenada_escolhida = self.array_coordenadas[0]
@@ -73,6 +81,15 @@ class LugarV2Fast:
         return coordenada_escolhida
 
     def somaVetor(self,vetores):
+        """Soma os vetores para o cálculo da nova orientação do lugar.
+
+        Args:
+            vetores (list): Lista contendo 2 tuplas representando os vetores a ser somados.
+
+        Returns:
+            list: Retorna uma lista com a soma dos vetores.
+        """
+
     #ve a quantidade de vetores
         qtdVetores = (len(vetores))
         #verifica se todos tem a mesma dimencao
@@ -119,7 +136,12 @@ class LugarV2Fast:
             else: 
                 return 180
 
-    def contaminacao_lugar(self,pesosContaminacaoLugar, mudar_cor=True, grid=None):
+    def contaminacao_lugar(self,pesosContaminacaoLugar):
+        """Calcula a contaminação que o lugar terá apartir da orientação dos agentes que estão presentes nele.
+
+        Args:
+            pesosContaminacaoLugar (tuple): Pesos que a orientação do lugar e dos agentes, respectivamente, terão no cálculo da nova orientação.
+        """
         
         peso_lugar = pesosContaminacaoLugar[0]
         peso_agentes = pesosContaminacaoLugar[1]
@@ -135,24 +157,46 @@ class LugarV2Fast:
             #self.cor = fst.update_orientacao_cor(grid.dict_orientacoes_cores, self.orientacao, 1000)
 
     def resgatar_estado_inicial(self):
+        """Restaura a condição inicial do lugar ao resgatar sua orientação inicial.
+        """
+
         self.orientacao = self.orientacao_inicial
 
     def tornar_lugar_andavel(self):
+        """Torna o lugar andável.
+        """
+
         for celula in self.array_celulas_grid:
             celula.andavel = True
 
     def tornar_lugar_n_andavel(self):
+        """Torna o lugar não andável.
+        """
+
         for celula in self.array_celulas_grid:
             celula.andavel = False
 
     def resetar_coordenada_principal(self):
+        """Reseta a coordenada principal.
+        """
+
         self.coordenada_principal = None
 
     def restaurar_mudancas_a_star(self):
+        """Após o cálculo do algoritmo A*, restaura o objeto ao seu estado inicial.
+        """
+
         self.tornar_lugar_n_andavel()
         self.resetar_coordenada_principal()
 
     def add_caminho_lugar_v2(self, lugar_destino, possui_caminho, caminho=None):
+        """Adiciona o caminho entre dois lugares a lista de caminhos.
+
+        Args:
+            lugar_destino (ClasseLugarV2Fast): Lugar de destino.
+            possui_caminho (bool): indica se esses dois lugares já possuem um caminho previamente salvo.
+            caminho ([type], optional): [description]. Defaults to None.
+        """
 
         if possui_caminho is True:
             novo_dicionario = {'destino': lugar_destino, "possui_caminho": True, 'caminho': caminho}

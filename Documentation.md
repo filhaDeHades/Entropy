@@ -271,74 +271,6 @@ Modelo de simulação 2D com resultados rápidos, sem representação gráfica.
 
 ### Classes Modelo Fast
 
-#### Classe Agente Modelo Fast
--> `ClasseAgenteV2Fast.py`
-
-1. **Classe AgenteV2Fast:**
-    Representa os agentes da simulação 2D Fast.
-    Importa:
-
-        - Modelo_fast.funcoes_fast as fst
-        - numpy as np
-        - math
-        - random
-
-    **qnt_agentes**: Quantidade de agentes criados para a simulação - _int_.
-
-    - `escolher_lugar_v4(self, grid):`
-        Versão 4. Escolhe um lugar para onde o agente deve se movimentar.
-
-        **self**: Presente em todas as classes, representa a si mesmo.
-
-        **grid**: Instância da Classe GridV2Fast onde a simulação ocorre. - _GridV2Fast_.
-
-    - `escolher_lugar_v5(self, lista_lugares, lista_pesos=(0.1, 0.1), modelo_fabiano=False):`
-        Versão 5. Escolhe um lugar para onde o agente deve se movimentar.
-
-        **self**: Presente em todas as classes, representa a si mesmo.
-
-        **lista_lugares**: Lista contendo todos os lugares a possíveis de escolhas. - _list_.
-
-        **lista_pesos**: Lista contendo os pesos que a diferença de orientação e a distância terão durante o sorteio. Valor padrão: (0.1, 0.1). - _tupla_.
-
-        **modelo_fabiano**: Define se a orientação a ser utilizada é a orientação latente (True) ou a atual (False). Valor padrão: False. - _bool_.
-
-#### Classe Celula Grid Modelo Fast
--> `ClasseCelulaGridV2Fast.py`
-
-1. **Classe CelulaGridV2Fast:** 
-    Representa os as células do grid.
-    Importa:
-
-        - Modelo_fast.funcoes_fast as fst
-
-    - `__init__(self, grid_x, grid_y, andavel=True, parente=None):`
-        Inicializa a célula do grid, informa se a célula é andável ou não (importante para o algoritmo A*).
-
-        **self**: Presente em todas as classes, representa a si mesmo.
-
-        **grid_x**: Posição X da célula no grid. - _int_.
-
-        **grid_y**: Posição Y da célula no grid. - _int_.
-
-        **andavel**: Determina se a célula é andável ou não. Valor padrão: True. - _bool_.
-
-        **parente**: Valor padrão: None.
-
-    - `atualizar_g(self):` Faz o calculo de 'g', um dos fatores utilizados para o calculo do método A* (A-estrela ou A-star). O 'g' representa a distancia entre a célula atual e o início do caminho.
-
-        **self**: Presente em todas as classes, representa a si mesmo.
-
-    - `atualizar_h(self, pos_grid_final):` Faz o calculo de 'h', um dos fatores utilizados para o calculo do método A* (A-estrela ou A-star). O 'h' representa a distancia entre a célula atual e o destino final.
-
-        **self**: Presente em todas as classes, representa a si mesmo.
-
-        **pos_grid_final**: Representa a posição no grid ao qual se deseja descobrir um caminho.
-
-    - `atualizar_f(self):` Faz o calculo de 'f', um dos fatores utilizados para o calculo do método A* (A-estrela ou A-star). O 'f' representa a soma de 'g' e 'h', sendo assim o valor total da célula para o algoritmo.
-
-        **self**: Presente em todas as classes, representa a si mesmo.
-
 #### Classe Grid Modelo Fast
 -> `ClasseGridV2Fast.py`
 
@@ -528,19 +460,6 @@ Modelo de simulação 2D com resultados rápidos, sem representação gráfica.
     - `salvar_lugares_arquivo(self, nome_arquivo):`
         **self**: Presente em todas as classes, representa a si mesmo.
 
-        **nome_arquivo**:
-
-    - `salvar_agentes_arquivo(self, nome_arquivo):`
-        **self**: Presente em todas as classes, representa a si mesmo.
-
-        **nome_arquivo**:
-
-    - `resgatar_agentes_arquivo(self, nome_arquivo_agentes_staticos):`
-        **self**: Presente em todas as classes, representa a si mesmo.
-
-        **nome_arquivo_agentes_staticos**:
-
-
 #### Classe Lugar Modelo Fast
 -> `ClasseLugarV2Fast.py`
 
@@ -575,58 +494,6 @@ Modelo de simulação 2D com resultados rápidos, sem representação gráfica.
 
 
         **grid**: Instância da Classe GridV2Fast onde a simulação ocorre. - _GridV2Fast_.
-
-    - `achar_coordenada_principal(self, ponto_referencia):`
-        Encontra a coordenada principal apartir da menor distância. Retorna a coordenada principal.
-
-        **self**: Presente em todas as classes, representa a si mesmo.
-
-        **ponto_referencia**:
-
-    - `contaminacao_lugar(self, pesos_contaminacao=(1, 1), mudar_cor=False, grid=None):`
-        Calcula a contaminação que o lugar terá apartir da orientação dos agentes que estão presentes nele.
-
-        **self**: Presente em todas as classes, representa a si mesmo.
-
-        **pesos_contaminacao**: Pesos que a orientação do lugar e dos agentes terão, respectivamente. Valor padrão: (1, 1). - _tupla_.
-
-        **mudar_cor**: Define se a cor atual do lugar mudará para acompanhar a mudança de orientação. Valor padrão: False. - _bool_.
-
-        **grid**: Instância da Classe GridV2Fast onde a simulação ocorre. - _GridV2Fast_. Valor padrão: None.
-
-    - `resgatar_estado_inicial(self):`
-        Restaura a condição inicial do lugar ao resgatar sua orientação inicial.
-
-        **self**: Presente em todas as classes, representa a si mesmo.
-
-    - `tornar_lugar_andavel(self):`
-        Torna o lugar andável.
-
-        **self**: Presente em todas as classes, representa a si mesmo.
-
-    - `tornar_lugar_n_andavel(self):`
-        Torna o lugar não andável.
-        **self**: Presente em todas as classes, representa a si mesmo.
-
-    - `resetar_coordenada_principal(self):`
-        Reseta a coordenada principal.
-
-        **self**: Presente em todas as classes, representa a si mesmo.
-
-    - `restaurar_mudancas_a_star(self):`
-        
-        **self**: Presente em todas as classes, representa a si mesmo.
-
-    - `add_caminho_lugar_v2(self, lugar_destino, possui_caminho, caminho=None):`
-        Adiciona o caminho do lugar a lista de caminhos.
-
-        **self**: Presente em todas as classes, representa a si mesmo.
-
-        **lugar_destino**:
-
-        **possui_caminho**: Indica se há caminho para o lugar de destino. _bool_.
-
-        **caminho**: Valor padrão: None.
 
 ### Funções do Modelo Fast
 -> `funcoes_fast.py`

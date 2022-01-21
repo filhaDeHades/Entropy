@@ -73,7 +73,7 @@ def simulacao_fast3(grid, pesos=(1, 1, 1), numero_da_simulacao=0, qnt_time_steps
                                                        modelo_fabiano=modelo_fabiano)
 
             lugar_escolhido.lista_agentes_presentes.append(agente)
-            agente.contaminacao_agente(lugar_escolhido.orientacao, pesos, modelo_fabiano=modelo_fabiano)
+            agente.contaminacao_agente(lugar_escolhido.orientacao, pesos_escolha_lugar, modelo_fabiano=modelo_fabiano)
 
             dict_agentes["agente_{}".format(agente.id)] = round(agente.orientacao_latente)
 
@@ -88,7 +88,7 @@ def simulacao_fast3(grid, pesos=(1, 1, 1), numero_da_simulacao=0, qnt_time_steps
         for lugar in grid.array_lugares:
 
             if len(lugar.lista_agentes_presentes) > 0:
-                lugar.contaminacao_lugar(mudar_cor=True, grid=grid)
+                lugar.contaminacao_lugar(pesos_escolha_lugar)
                 lugar.lista_agentes_presentes.clear()
 
             dict_lugares["lugar_{}".format(lugar.id)] = round(lugar.orientacao)

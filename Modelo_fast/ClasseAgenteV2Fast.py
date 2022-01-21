@@ -73,13 +73,13 @@ class AgenteV2Fast:
         self.atualizar_celula_grid(grid, self.grid_x, self.grid_y)
 
     def somaVetor(self,vetores):
-        """[summary]
+        """Soma os vetores para o cálculo da nova orientação do agente.
 
         Args:
-            vetores ([type]): [description]
+            vetores (list): Lista contendo 2 tuplas representando os vetores a ser somados.
 
         Returns:
-            [type]: [description]
+            list: Retorna uma lista com a soma dos vetores.
         """
 
     #ve a quantidade de vetores
@@ -101,6 +101,7 @@ class AgenteV2Fast:
         return s
 
     def anguloVX(self,vetor):
+
         x = vetor[0]
         y = vetor[1]
         tam = max(sqrt(x * x + y * y), np.nextafter(np.float32(0), np.float32(1)))
@@ -128,6 +129,7 @@ class AgenteV2Fast:
             else: 
                 return 180
 
+
     def contaminacao_agente(self, grid, orientacao_do_lugar, pesoContaminacaoAgente, atualizar_cor=True):
         """Calcula a contaminação do agente pela orientação do lugar.
 
@@ -148,6 +150,7 @@ class AgenteV2Fast:
         #     # print("cor agora: ", self.cor)
         #     grid.dict_orientacoes_cores[str(self.orientacao_atual)] = self.cor
 
+
     def sortear_nova_orientacao(self):
         """Sorteia uma nova orientação para o agente, sem levar
             em consideração possíveis contaminações.
@@ -156,7 +159,7 @@ class AgenteV2Fast:
         possiveis_orientacoes = list(range(0, 1100, 100))
         nova_orientacao = random.choice(possiveis_orientacoes)
         self.orientacao_atual = nova_orientacao
-        # print("(SORTEIO) o agente agr possui orientacao latente de: ", self.orientacao_latente)
+    
 
     def escolher_lugar_v4(self, grid):
 
@@ -294,6 +297,7 @@ class AgenteV2Fast:
         listaElementosSorteados = random.choices(listaPossibilidades, weights=listaPesos, k=qntElementosSorteados)
         return listaElementosSorteados
 
+
     # funcao importada do modelo 1D, so esta sendo adaptada para o model 2D
     def escolher_lugar(self, listaLugares, pesos):
         """É atribuido os pesos que cada lugar terá no sorteio do próximo destino
@@ -338,6 +342,7 @@ class AgenteV2Fast:
 
         lugarEscolhido = self.sorteioComPesos(listaLugares, listaPesosFinal)[0]
         return lugarEscolhido
+
 
     def resgatar_estado_inicial(self):
         """Resgata o estado inicial da célula, ou seja, o estado
