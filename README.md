@@ -38,7 +38,10 @@ Para conseguir utilizar o programa no seu computador será necessário fazer alg
 4. **...**
 
 ## **Documentação**
-Para ver a documentação do projeto basta clicar [nesse link](Documentation.md).
+A documentação do projeto está sendo acrescentada ao código através de docstrings, porém a uma documentação provisória do projeto que pode ser observada [nesse link](Documentation.md) (Essa documentação pode estar obsoleta).
+
+## **Códigos satélites**
+O projeto conta com alguns outros scripts para a conclusão de tarefas ocasionais. Para ver quais são esses scripts basta [clicar aqui](https://github.com/filhaDeHades/satellite-code-entropy)
 
 ## **Utilizando o programa**
 Aqui estão alguns exemplos de uso que podem ser úteis.
