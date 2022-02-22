@@ -46,13 +46,8 @@ def simulacao_com_arquivo(nome_arquivo_base, pesos=(1, 1, 1), pesos_escolha_luga
         resultados = simulacao_fast4(grid, pesosContaminacaoAgente=peso_cont_agente, pesosContaminacaoLugar=peso_cont_lugar,
                                     pesosEscolhaLugar=pesos_escolha_lugar, qntTimeSteps=qnt_time_steps)
         
-        # resultados = simulacao_fast2(grid, pesos=pesos, numero_da_simulacao=num_sim_atual,
-        #                             qnt_time_steps=qnt_time_steps, pesos_escolha_lugar=pesos_escolha_lugar,
-        #                              salvar_caminhos_arquivo=False, nome_arquivo_base=nome_arquivo_base,
-        #                              distancia_importa=distancia_importa, retornar_info_lugares=True, retornar_info_agentes=True)
 
     resultados_staticos = resultados["resultados_staticos"]
-    #resultados_ts = resultados["resultados_ts"]
 
     if salvar_resultados is True:
 
@@ -60,23 +55,6 @@ def simulacao_com_arquivo(nome_arquivo_base, pesos=(1, 1, 1), pesos_escolha_luga
         path_resultados_staticos = path_base_projeto + "Arquivos_resultados"
         fst.criar_ou_atualizar_arquivo_resultados(path_resultados_staticos, nome_arq_resultados_staticos,
                                                   resultados_staticos)
-
-        # nome_arq_resultados_ts = func_arq.gerar_nome_arquivo_resultados_ts(nome_arquivo_base, num_sim=num_sim_atual)
-        # path_resultados_ts = path_base_projeto + "Arquivos_resultados_ts"
-        # fst.criar_ou_atualizar_arquivo_resultados(path_resultados_ts, nome_arq_resultados_ts, resultados_ts)
-
-    # if mostrar_grafico_entropia is True:
-
-    #     df = pd.DataFrame(resultados_ts)
-    #     lista_entropia = gg.obter_lista_entropias(df)
-    #     lista_entropia_media = gg.obter_lista_entropias_media(lista_entropia)
-    #     eixo_x = list(range(0, qnt_time_steps+1))
-    #     gg.obter_grafico_evolucao_entropia_media(lista_entropia_media, eixo_x)
-
-    # if retornar_resultados_ts is True:
-    #     df = pd.DataFrame(resultados_ts)
-    #     print("RETORNA TS")
-    #     return df
 
     if salvar_lugares_modificados is True:
         path_arquivos_lugares = path_base_projeto + "Arquivos_lugares"

@@ -1364,8 +1364,8 @@ def salvar_graficos_resultados_v2(resultados, nome_destino, nome_dir_origem):
     # ------------------------------------------------------------------------------------------------------------------
     # HISTOGRAMA NÚMERO DE AGENTES EM CADA ORIENTAÇÃO
 
-    lista_orientacoes_inicial = []
-    lista_orientacoes_final = []
+    lista_orientacoes_inicial_agente = []
+    lista_orientacoes_final_agente = []
 
     qnt_linhas, qnt_colunas = info_agentes.shape
     ultima_linha = qnt_linhas - 1
@@ -1376,14 +1376,14 @@ def salvar_graficos_resultados_v2(resultados, nome_destino, nome_dir_origem):
     for agente in lista_agentes:
 
         orientacao_agente_inicial = info_agentes.loc[0, agente]
-        lista_orientacoes_inicial.append(orientacao_agente_inicial)
+        lista_orientacoes_inicial_agente.append(orientacao_agente_inicial)
 
         orientacao_agente_final = info_agentes.loc[ultima_linha, agente]
-        lista_orientacoes_final.append(orientacao_agente_final)
+        lista_orientacoes_final_agente.append(orientacao_agente_final)
 
     # ---------- Histograma Início ----------
     
-    plt.hist(lista_orientacoes_inicial, bins=200)
+    plt.hist(lista_orientacoes_inicial_agente, bins=200)
     plt.xlabel('Orientações')
     plt.ylabel('Número de Agentes')
     plt.title('Histograma Agentes Início')
@@ -1391,19 +1391,59 @@ def salvar_graficos_resultados_v2(resultados, nome_destino, nome_dir_origem):
 
     nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["histograma_agentes_inicio"])
     plt.savefig(nome_grafico)
-    #plt.show()
     plt.close()
 
     # ---------- Histograma Final ----------
     
-    plt.hist(lista_orientacoes_final, bins=200)
+    plt.hist(lista_orientacoes_final_agente, bins=200)
     plt.xlabel('Orientações')
     plt.ylabel('Número de Agentes')
     plt.title('Histograma Agentes Final')
 
     nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["histograma_agentes_final"])
     plt.savefig(nome_grafico)
-    #plt.show()
+    plt.close()
+
+    # ------------------------------------------------------------------------------------------------------------------
+    # HISTOGRAMA NÚMERO DE LUGARES EM CADA ORIENTAÇÃO
+
+    lista_orientacoes_inicial_lugar = []
+    lista_orientacoes_final_lugar = []
+
+    qnt_linhas, qnt_colunas = info_lugares.shape
+    ultima_linha = qnt_linhas - 1
+
+    lista_lugares = list(info_lugares.columns)
+
+    for lugar in lista_lugares:
+
+        orientacao_lugar_inicial = info_lugares.loc[0, lugar]
+        lista_orientacoes_inicial_lugar.append(orientacao_lugar_inicial)
+
+        orientacao_lugar_final = info_lugares.loc[ultima_linha, lugar]
+        lista_orientacoes_final_lugar.append(orientacao_lugar_final)
+
+    # ---------- Histograma Início ----------
+    
+    plt.hist(lista_orientacoes_inicial_lugar, bins=200)
+    plt.xlabel('Orientações')
+    plt.ylabel('Número de Lugares')
+    plt.title('Histograma Lugares Início')
+    
+
+    nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["histograma_lugares_inicio"])
+    plt.savefig(nome_grafico)
+    plt.close()
+
+    # ---------- Histograma Final ----------
+    
+    plt.hist(lista_orientacoes_final_lugar, bins=200)
+    plt.xlabel('Orientações')
+    plt.ylabel('Número de Lugares')
+    plt.title('Histograma Lugares Final')
+
+    nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["histograma_lugares_final"])
+    plt.savefig(nome_grafico)
     plt.close()
 
     # ----------------------------------------------------------------------------------
