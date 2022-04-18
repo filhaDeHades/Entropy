@@ -42,10 +42,10 @@ class GridV2:
                     andavel = False
 
                 if andavel is True:
-                    novo_nodulo = CelulaGridV2(x, y, cell_size, andavel)
+                    novo_nodulo = CelulaGridV2(x, y, cell_size, andavel=andavel)
                     self.array_agentes.append(novo_nodulo)
                 else:
-                    novo_nodulo = CelulaGridV2(x, y, cell_size, andavel, cor=cores.preto)
+                    novo_nodulo = CelulaGridV2(x, y, cell_size, andavel=andavel, cor=cores.preto)
 
                 linha.append(novo_nodulo)
 
