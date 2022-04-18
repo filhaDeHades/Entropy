@@ -1,4 +1,3 @@
-import Modelo_fast.funcoes_fast as fst
 import Testes.src.funcoes_geracao_nomes as fgn
 import pandas as pd
 

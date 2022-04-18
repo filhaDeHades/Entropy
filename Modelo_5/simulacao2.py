@@ -1,7 +1,6 @@
 import Modelo_5.funcoes_arquivos as func_arq
 from Modelo_5.ClasseGridV2 import GridV2
 from Modelo_5.simulacao import simulacao
-import Modelo_5.apresentacoes as apr
 import pygame as pg
 import cores
 import time

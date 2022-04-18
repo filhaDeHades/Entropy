@@ -3,8 +3,6 @@ from Modelo_fast.simulacao_fast4 import simulacao_fast4
 from Modelo_fast.ClasseGridV2Fast import GridV2Fast
 import Modelo_5.funcoes_arquivos as func_arq
 import Modelo_fast.funcoes_fast as fst
-import Modelo_fast.gerar_graficos as gg
-import pandas as pd
 import time
 
 path_base_projeto = "Arquivos\\"

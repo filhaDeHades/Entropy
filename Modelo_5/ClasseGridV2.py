@@ -3,7 +3,6 @@ from Modelo_5.ClasseLugarV2 import LugarV2
 from Modelo_5.ClasseAgenteV2 import AgenteV2
 from Modelo_5.ClasseHeapCelulasGrid import HeapCelulasGrid
 import Testes.src.funcoes_geracao_nomes as fgn
-import Modelo_5.funcoes_arquivos as func_arq
 import pygame as pg
 import cores
 import funcoes

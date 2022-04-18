@@ -1,9 +1,8 @@
 from Modelo_fast.apresentacoes_fast2 import simulacao_com_arquivo
 import Modelo_fast.funcoes_fast as fst
 import matplotlib.pyplot as plt
-#import mplcursors
-import Modelo_fast.graficos_matplotly as gm
 import numpy as np
+#import mplcursors
 
 lista_arquivos_base = ["modelo1(42x42)[tipo_1].txt",    # 0
                        "modelo2-inv(42x42)[tipo_1].txt",    # 1

@@ -1,5 +1,4 @@
 from Modelo_fast.ClasseGridV2Fast import GridV2Fast
-from Modelo_fast.ClasseCelulaGridV2Fast import CelulaGridV2Fast
 from Modelo_fast.ClasseLugarV2Fast import LugarV2Fast
 import Modelo_fast.funcoes_fast as fst
 import numpy as np

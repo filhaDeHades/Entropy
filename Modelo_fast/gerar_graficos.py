@@ -1,8 +1,5 @@
-#import plotly.express as px
-#import plotly.graph_objects as go
 import Modelo_fast.funcoes_fast as fst
 import pandas as pd
-import numpy as np
 import random
 
 nome_arq_res_ts = "modelo2(42x42)[tipo_1]_resultados_ts_1.txt"
