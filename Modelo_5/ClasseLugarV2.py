@@ -202,14 +202,14 @@ class LugarV2:
         
         peso_lugar = pesosContaminacaoLugar[0]
         peso_agentes = pesosContaminacaoLugar[1]
+        soma_pesos = sum(pesosContaminacaoLugar)
+        lista_orientacao_agentes = [i.orientacao_atual for i in self.lista_agentes_presentes]
         
-        lista_orientacao_agentes = [(cos(radians(i.orientacao_atual)), sin(radians(i.orientacao_atual))) for i in self.lista_agentes_presentes]
-
-        media_orientacao_agentes=self.anguloVX(self.somaVetor(lista_orientacao_agentes))
-        aux=[ ( peso_agentes*cos(radians(media_orientacao_agentes)) ,peso_agentes*sin(radians(media_orientacao_agentes)) ),( peso_lugar*cos(radians(self.orientacao)), peso_lugar*sin(radians(self.orientacao)) ) ]
-        nova_orientacao = round(self.anguloVX(self.somaVetor(aux)))
+        qtd_agentes=len(lista_orientacao_agentes)
+        media_orientacao_agentes = soma_orientacoes_agentes // qtd_agentes
+        nova_orientacao = (peso_lugar*self.orientacao + peso_agentes*media_orientacao_agentes)//soma_pesos
         self.orientacao = nova_orientacao
-
+        
         if mudar_cor is True:
             self.cor = funcoes.update_orientacao_cor(grid.dict_orientacoes_cores, self.orientacao, 1000)
 
