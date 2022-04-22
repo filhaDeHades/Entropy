@@ -325,10 +325,10 @@ class AgenteV2:
             orientacao_do_lugar (int): Orientação atual do lugar.
             pesos (tuple): Pesos C e D do agente.
         """
-
+        
         a, b = pesoContaminacaoAgente[0],pesoContaminacaoAgente[1]
-        aux1=[ ( a*cos(radians(self.orientacao_latente)) , a*sin(radians(self.orientacao_latente)) ) , ( b*cos(radians(orientacao_do_lugar)), b*sin(radians(orientacao_do_lugar)) ) ]
-        contaminacao= int(self.anguloVX(self.somaVetor(aux1)))
+        soma_pesos = a + b
+        contaminacao = int((a*self.orientacao_latente + b*orientacao_do_lugar) / soma_pesos)
         
         self.orientacao_atual=contaminacao
 
