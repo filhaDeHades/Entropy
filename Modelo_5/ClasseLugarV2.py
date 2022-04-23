@@ -204,7 +204,7 @@ class LugarV2:
         peso_agentes = pesosContaminacaoLugar[1]
         soma_pesos = sum(pesosContaminacaoLugar)
         lista_orientacao_agentes = [i.orientacao_atual for i in self.lista_agentes_presentes]
-        
+        soma_orientacoes_agentes=sum(lista_orientacao_agentes)
         qtd_agentes=len(lista_orientacao_agentes)
         media_orientacao_agentes = soma_orientacoes_agentes // qtd_agentes
         nova_orientacao = (peso_lugar*self.orientacao + peso_agentes*media_orientacao_agentes)//soma_pesos
