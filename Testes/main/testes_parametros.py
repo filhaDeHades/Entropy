@@ -1,3 +1,4 @@
+from cProfile import label
 from Modelo1D.Grid1D import Grid1D
 from Modelo1D.simulacao1D import simulacao1D
 import matplotlib.pyplot as plt
@@ -1220,6 +1221,7 @@ def salvar_graficos_resultados_v2(resultados, nome_destino, nome_dir_origem):
     os.mkdir(nome_novo_folder)
 
     nomes_graficos = {
+        "entropia_agrupada": "grafico_entropia_media_agrupada",
         "entropia_agentes": "grafico_entropia_media_agentes.png",
         "entropia_lugares": "grafico_entropia_media_lugares.png",    
         "entropia_geral": "grafico_entropia_media_geral.png",
@@ -1237,59 +1239,93 @@ def salvar_graficos_resultados_v2(resultados, nome_destino, nome_dir_origem):
     #Esses gráficos são salvos e são mostrados
 
     # ------------------------------------------------------------------------------------------------------------------
-    # GRAFICO ENTROPIA AGENTES
-
-    valores_entropia_agentes = list(info_entropia["entropia_agentes"])
-    valores_entropia_agentes_media = fst.obter_lista_media(valores_entropia_agentes)
+    # GRAFICO ENTROPIA AGRUPADO
 
     qnt_linhas, qnt_colunas = info_agentes.shape
     eixo_x = list(range(1, qnt_linhas + 1))
 
+    valores_entropia_agentes = list(info_entropia["entropia_agentes"])
+    valores_entropia_agentes_media = fst.obter_lista_media(valores_entropia_agentes)
+
+    valores_entropia_lugares = list(info_entropia["entropia_lugares"])
+    valores_entropia_lugares_media = fst.obter_lista_media(valores_entropia_lugares)
+
+    valores_entropia_geral = list(info_entropia["entropia_geral"])
+    valores_entropia_geral_media = fst.obter_lista_media(valores_entropia_geral)
+
     plt.plot(eixo_x, valores_entropia_agentes_media, color=(1, 0, 0))
+    plt.plot(eixo_x, valores_entropia_lugares_media, color=(0, 0, 1))
+    plt.plot(eixo_x, valores_entropia_geral_media, color=(0, 1, 0))
+
+    legenda = [Line2D([0], [0], color="r", label="agentes"),
+            Line2D([0], [0], color="b", label="lugares"),
+            Line2D([0], [0], color="g", label="geral")]
+
     plt.xlabel("time steps")
     plt.ylabel("entropia")
     plt.title("entropia média agentes x time steps")
     plt.grid()
+    plt.legend(handles=legenda)
     
-    nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["entropia_agentes"])
+    nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["entropia_agrupada"])
     plt.savefig(nome_grafico)
     plt.show()
     plt.close()
+
+    # ------------------------------------------------------------------------------------------------------------------
+    # GRAFICO ENTROPIA AGENTES
+
+    # valores_entropia_agentes = list(info_entropia["entropia_agentes"])
+    # valores_entropia_agentes_media = fst.obter_lista_media(valores_entropia_agentes)
+
+    # qnt_linhas, qnt_colunas = info_agentes.shape
+    # eixo_x = list(range(1, qnt_linhas + 1))
+
+    # plt.plot(eixo_x, valores_entropia_agentes_media, color=(1, 0, 0))
+    # plt.xlabel("time steps")
+    # plt.ylabel("entropia")
+    # plt.title("entropia média agentes x time steps")
+    # plt.grid()
+    
+    # nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["entropia_agentes"])
+    # plt.savefig(nome_grafico)
+    # #plt.show()
+    # plt.close()
 
     # ------------------------------------------------------------------------------------------------------------------
     # GRAFICO ENTROPIA LUGARES
 
-    qnt_linhas, qnt_colunas = info_entropia.shape
-    eixo_x = list(range(1, qnt_linhas + 1))
+    # qnt_linhas, qnt_colunas = info_entropia.shape
+    # eixo_x = list(range(1, qnt_linhas + 1))
 
-    valores_entropia_lugares = list(info_entropia["entropia_lugares"])
-    valores_entropia_lugares_media = fst.obter_lista_media(valores_entropia_lugares)
-    plt.plot(eixo_x, valores_entropia_lugares_media, color=(1, 0, 0))
-    plt.xlabel("time steps")
-    plt.ylabel("entropia media lugares")
-    plt.title("entropia média lugares x time steps")
-    plt.grid()
+    # valores_entropia_lugares = list(info_entropia["entropia_lugares"])
+    # valores_entropia_lugares_media = fst.obter_lista_media(valores_entropia_lugares)
+    # plt.plot(eixo_x, valores_entropia_lugares_media, color=(1, 0, 0))
+    # plt.xlabel("time steps")
+    # plt.ylabel("entropia media lugares")
+    # plt.title("entropia média lugares x time steps")
+    # plt.grid()
     
-    nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["entropia_lugares"])
-    plt.savefig(nome_grafico)
-    plt.show()
-    plt.close()
+    # nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["entropia_lugares"])
+    # plt.savefig(nome_grafico)
+    # #plt.show()
+    # plt.close()
     
     # ------------------------------------------------------------------------------------------------------------------
     # GRAFICO ENTROPIA GERAL
 
-    valores_entropia_geral = list(info_entropia["entropia_geral"])
-    valores_entropia_geral_media = fst.obter_lista_media(valores_entropia_geral)
-    plt.plot(eixo_x, valores_entropia_geral_media, color=(1, 0, 0))
-    plt.xlabel("time steps")
-    plt.ylabel("entropia media geral")
-    plt.title("entropia media geral x time steps")
-    plt.grid()
+    # valores_entropia_geral = list(info_entropia["entropia_geral"])
+    # valores_entropia_geral_media = fst.obter_lista_media(valores_entropia_geral)
+    # plt.plot(eixo_x, valores_entropia_geral_media, color=(1, 0, 0))
+    # plt.xlabel("time steps")
+    # plt.ylabel("entropia media geral")
+    # plt.title("entropia media geral x time steps")
+    # plt.grid()
 
-    nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["entropia_geral"])
-    plt.savefig(nome_grafico)
-    plt.show()
-    plt.close()
+    # nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["entropia_geral"])
+    # plt.savefig(nome_grafico)
+    # #plt.show()
+    # plt.close()
 
     # ------------------------------------------------------------------------------------------------------------------
     # COLORMAP AGENTES
@@ -1310,7 +1346,7 @@ def salvar_graficos_resultados_v2(resultados, nome_destino, nome_dir_origem):
     
     nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["colormap_agentes"])
     plt.savefig(nome_grafico)
-    plt.show()
+    #plt.show()
     plt.close()
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -1333,7 +1369,7 @@ def salvar_graficos_resultados_v2(resultados, nome_destino, nome_dir_origem):
 
     nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["colormap_lugares"])
     plt.savefig(nome_grafico)
-    plt.show()
+    #plt.show()
     plt.close()
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -1355,7 +1391,7 @@ def salvar_graficos_resultados_v2(resultados, nome_destino, nome_dir_origem):
     
     nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["ort_azul_ver"])
     plt.savefig(nome_grafico)
-    plt.show()
+    #plt.show()
     plt.close()
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -1388,7 +1424,7 @@ def salvar_graficos_resultados_v2(resultados, nome_destino, nome_dir_origem):
 
     nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["histograma_agentes_inicio"])
     plt.savefig(nome_grafico)
-    plt.show()
+    #plt.show()
     plt.close()
 
     # ---------- Histograma Final ----------
@@ -1400,7 +1436,7 @@ def salvar_graficos_resultados_v2(resultados, nome_destino, nome_dir_origem):
 
     nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["histograma_agentes_final"])
     plt.savefig(nome_grafico)
-    plt.show()
+    #plt.show()
     plt.close()
 
     # ----------------------------------------------------------------------------------

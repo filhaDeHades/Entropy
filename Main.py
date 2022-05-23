@@ -1,14 +1,14 @@
-import Testes.main.testes_parametros as tp
+#import Testes.main.testes_parametros as tp
 import Testes.src.funcoes_geracao_nomes as fgn
 import Testes.main.testes_modelo2D as t2d
 #import Testes.main.teste1 as t1
-import numpy as np
+#import numpy as np
 import shutil
 import os
 import Modelo_5.apresentacoes as m5ap
 #import Modelo_fast.testes_novos_pesos as tnp
 import Testes.main.visualizacao as v5
-#import Testes.main.recebe_arquivo_original as rao
+import Testes.main.recebe_arquivo_original as rao
 import Scripts.inverte_e_cria_arquivo as ica
 
 #ica.cria_Invertido()
@@ -123,27 +123,27 @@ import Scripts.inverte_e_cria_arquivo as ica
 # ---------------------------------------------------------------------------
 # testes no modelo 2D
 
-for arquetipo in range(6):
+# for arquetipo in range(6):
 
-    #lista_arquivos_base = ["Sao_Paulo(1000x1000)[tipo_1].txt"]
-    lista_arquivos_base = ["modelo1(42x42)[tipo_1].txt",    # 0
-                        "modelo2-inv(42x42)[tipo_1].txt",    # 1
-                        "modelo3-inv(42x42)[tipo_1].txt",   # 2
-                        "modelo4(42x42)[tipo_1].txt",    # 3
-                        "modelo5(42x42)[tipo_1].txt",    # 4
-                        "modelo6(42x42)[tipo_1].txt"]    # 5'''
+#     #lista_arquivos_base = ["Sao_Paulo(1000x1000)[tipo_1].txt"]
+#     lista_arquivos_base = ["modelo1(42x42)[tipo_1].txt",    # 0
+#                         "modelo2-inv(42x42)[tipo_1].txt",    # 1
+#                         "modelo3-inv(42x42)[tipo_1].txt",   # 2
+#                         "modelo4(42x42)[tipo_1].txt",    # 3
+#                         "modelo5(42x42)[tipo_1].txt",    # 4
+#                         "modelo6(42x42)[tipo_1].txt"]    # 5'''
 
-    # -- fazendo as simulacoes 2d (demorou quase um dia) --
-    pesos_escolha_lugar = (0.1, 0.5) #alfa e beta
-    pesos_contaminacao_agentes = (0.5, 0.5) #C e D dos agentes
-    pesos_contaminacao_lugares = (0.5, 0.5) #C e D dos lugares
-    resultados = t2d.teste_modelo_2d_com_arquivo(lista_arquivos_base[arquetipo], 2000, pesos_escolha_lugar, pesos_contaminacao_agentes, pesos_contaminacao_lugares)
+#     # -- fazendo as simulacoes 2d (demorou quase um dia) --
+#     pesos_escolha_lugar = (0.1, 0.5) #alfa e beta
+#     pesos_contaminacao_agentes = (0.5, 0.5) #C e D dos agentes
+#     pesos_contaminacao_lugares = (0.5, 0.5) #C e D dos lugares
+#     resultados = t2d.teste_modelo_2d_com_arquivo(lista_arquivos_base[arquetipo], 2000, pesos_escolha_lugar, pesos_contaminacao_agentes, pesos_contaminacao_lugares)
 
-    # -- plotando os graficos dos resultados das simulacoes 2D--
+#     # -- plotando os graficos dos resultados das simulacoes 2D--
     
-    nome_dir_origem = "Testes\\2d_resultados\\arquetipos\\time_steps_2000\\agentes_atualizados\\(0-1)(0-5)" #devem ser pastas já existentes
-    nome_dir_destino = f"modelo{arquetipo+1}" #deve ser o nome de uma nova pasta
-    tp.salvar_graficos_resultados_v2(resultados, nome_dir_destino, nome_dir_origem)
+#     nome_dir_origem = "Testes\\2d_resultados\\arquetipos\\time_steps_2000\\agentes_atualizados\\(0-1)(0-5)" #devem ser pastas já existentes
+#     nome_dir_destino = f"modelo{arquetipo+1}" #deve ser o nome de uma nova pasta
+#     tp.salvar_graficos_resultados_v2(resultados, nome_dir_destino, nome_dir_origem)
 
 # ---------------------------------------------------------------------------
 # testes no modelo 1D - analisando os padroes gerados pela mudancas nos pesos de contaminacao
