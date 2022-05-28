@@ -28,53 +28,36 @@ def simulacao_fast4(grid, pesosContaminacaoAgente=(1, 0.1), pesosContaminacaoLug
 
     for timeStep in range(qntTimeSteps):
 
-        # print("\n-------------------------------------------------------\n")
         print("TIME STEP ", timeStep)
-        # print("\n-------------------------------------------------------\n")
 
         dict_agentes = {}
 
         for agente in grid.array_agentes:
 
-            # print("AGENTE {}:".format(agente.id))
-            # print("pos: ", agente.pos_grid)
-            # print("orientacao: ", agente.orientacao_latente)
-
             lugarEscolhido = agente.escolher_lugar(grid.array_lugares, pesosEscolhaLugar)
-            # print("o agente {} de orientacao {} escolheu o lugar {} de orientacao {}".format(agente.id, agente.orientacao_latente, lugarEscolhido.id, lugarEscolhido.orientacao))
 
             lugarEscolhido.lista_agentes_presentes.append(agente)
             lista_agentes_presentes_id = [i.id for i in lugarEscolhido.lista_agentes_presentes]
-            # print("o Lugar {} agr tem os agentes: {}".format(lugarEscolhido.id, lista_agentes_presentes_id))
 
             agente.contaminacao_agente(lugarEscolhido.orientacao, pesosContaminacaoAgente)
-            # print("o agente agr tem orientacao: {}".format(agente.orientacao_latente))
 
             dict_agentes["agente_{}".format(agente.id)] = round(agente.orientacao_latente)
 
-            # print("-------------------------------------------------------")
-
-        df_agentes = df_agentes.append(dict_agentes, ignore_index=True)
+        df_dict_agentes = pd.DataFrame([dict_agentes])
+        df_agentes = pd.concat([df_agentes, df_dict_agentes], ignore_index=True)
 
         dict_lugares = {}
 
         for lugar in grid.array_lugares:
 
-            # print("LUGAR {}:".format(lugar.id))
-            # print("pos: ", lugar.array_coordenadas)
-            # print("orientacao: ", lugar.orientacao)
-
             if len(lugar.lista_agentes_presentes) > 0:
-                # print("qnt agentes no lugar: ", len(lugar.lista_agentes_presentes))
                 lugar.contaminacao_lugar(pesos_contaminacao=pesosContaminacaoLugar)
-                # print("orientacao pos contaminacao: ", lugar.orientacao)
                 lugar.lista_agentes_presentes.clear()
 
             dict_lugares["lugar_{}".format(lugar.id)] = round(lugar.orientacao)
 
-            # print("-------------------------------------------------------")
-
-        df_lugares = df_lugares.append(dict_lugares, ignore_index=True)
+        df_dict_lugares = pd.DataFrame([dict_lugares])
+        df_lugares = pd.concat([df_lugares, df_dict_lugares], ignore_index=True)
 
         entropia_agentes = grid.calcular_entropia_agentes()
         resultados_entropia["entropia_agentes"].append(entropia_agentes)
