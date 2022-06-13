@@ -1437,7 +1437,6 @@ def salvar_graficos_resultados_v2(resultados, nome_destino, nome_dir_origem):
 
     nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["histograma_agentes_inicio"])
     plt.savefig(nome_grafico)
-    plt.show()
     plt.close()
 
     # ---------- Histograma Final ----------
@@ -1453,7 +1452,6 @@ def salvar_graficos_resultados_v2(resultados, nome_destino, nome_dir_origem):
 
     nome_grafico = os.path.join(nome_novo_folder, nomes_graficos["histograma_agentes_final"])
     plt.savefig(nome_grafico)
-    plt.show()
     plt.close()
 
     # ----------------------------------------------------------------------------------

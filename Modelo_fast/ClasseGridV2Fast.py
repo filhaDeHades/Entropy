@@ -101,14 +101,14 @@ class GridV2Fast:
         qnt_cel_livres = len(lista_celulas_livres)
 
         for agente in range(qnt_agentes):
-            pos_aleatoria = random.randint(0, qnt_cel_livres - 1)
+            pos_aleatoria = np.random.randint(0, qnt_cel_livres - 1)
             celula_inicial = lista_celulas_livres.pop(pos_aleatoria)
             qnt_cel_livres -= 1
 
             x_inicial = celula_inicial.grid_x
             y_inicial = celula_inicial.grid_y
 
-            orientacao_escolhida = random.randint(self.range_possiveis_orientacoes[0], self.range_possiveis_orientacoes[1])
+            orientacao_escolhida = np.random.randint(self.range_possiveis_orientacoes[0], self.range_possiveis_orientacoes[1])
 
             novo_agente = AgenteV2Fast(self, x_inicial, y_inicial, orientacao_latente=orientacao_escolhida,
                                        orientacao_atual=orientacao_escolhida)
@@ -128,7 +128,7 @@ class GridV2Fast:
 
         for celula in lista_celulas_ocupadas:
             lista_coordenadas = [celula.pos_grid]
-            orientacao = random.randint(self.range_possiveis_orientacoes[0], self.range_possiveis_orientacoes[1])
+            orientacao = np.random.randint(self.range_possiveis_orientacoes[0], self.range_possiveis_orientacoes[1])
             novo_lugar = LugarV2Fast(self, lista_coordenadas=lista_coordenadas, orientacao=orientacao)
             lista_lugares.append(novo_lugar)
         
@@ -157,7 +157,7 @@ class GridV2Fast:
 
         for lugar in range(qnt_lugares):
 
-            pos_aleatoria = random.randint(0, len(lista_celulas_livres))
+            pos_aleatoria = np.random.randint(0, len(lista_celulas_livres))
             celula_inicial = lista_celulas_livres.pop(pos_aleatoria)
 
             lista_celulas_escolhidas = [celula_inicial]
@@ -194,7 +194,7 @@ class GridV2Fast:
             lista_coordenadas = [celula.pos_grid for celula in lista_celulas_escolhidas]
 
             # obtendo orientacao do lugar
-            orientacao = random.randint(self.range_possiveis_orientacoes[0], self.range_possiveis_orientacoes[1])
+            orientacao = np.random.randint(self.range_possiveis_orientacoes[0], self.range_possiveis_orientacoes[1])
 
             novo_lugar = LugarV2Fast(self, lista_coordenadas=lista_coordenadas, orientacao=orientacao)
             lista_lugares.append(novo_lugar)
@@ -216,8 +216,8 @@ class GridV2Fast:
             celula_escolhida = None
 
             while celula_aceitavel is False:
-                x = random.randint(0, self.qnt_colunas - 1)
-                y = random.randint(0, self.qnt_linhas - 1)
+                x = np.random.randint(0, self.qnt_colunas - 1)
+                y = np.random.randint(0, self.qnt_linhas - 1)
                 pos_array = y * self.qnt_colunas + x
                 celula_escolhida_temp = self.array_celulas_grid[pos_array]
 
