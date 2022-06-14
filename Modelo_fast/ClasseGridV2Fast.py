@@ -44,16 +44,18 @@ class GridV2Fast:
         self.qnt_caminhos_resgatados_arquivo = 0
     
     def atualizaQuantAgentes(self):
-        totalLugares = len([celula for celula in self.array_celulas_grid if celula.andavel is False])
-        totalAgentes = int(totalLugares *1.2)
+        #totalLugares = len([celula for celula in self.array_celulas_grid if celula.andavel is False])
+        totalLugares = self.qnt_lugares
+        totalAgentes = int(totalLugares *2.5)
         print(f'TOTAL LUGARES: {totalLugares}\nTOTAL AGENTES: {totalAgentes}')
         self.qnt_agentes = totalAgentes
         self.gerar_agentes_aleatorios_v3(self.qnt_agentes)
         time.sleep(3)
 
     def get_qnt_agentes(self):
-        totalLugares = len([celula for celula in self.array_celulas_grid if celula.andavel is False])
-        totalAgentes = int(totalLugares *1.2)
+        #totalLugares = len([celula for celula in self.array_celulas_grid if celula.andavel is False])
+        totalLugares = self.qnt_lugares
+        totalAgentes = int(totalLugares *2.5)
         return totalAgentes
 
     def obter_dict_orientacoes_cores(self):
@@ -102,8 +104,9 @@ class GridV2Fast:
 
         for agente in range(qnt_agentes):
             pos_aleatoria = random.randint(0, qnt_cel_livres - 1)
-            celula_inicial = lista_celulas_livres.pop(pos_aleatoria)
-            qnt_cel_livres -= 1
+            #celula_inicial = lista_celulas_livres.pop(pos_aleatoria)
+            celula_inicial = lista_celulas_livres[pos_aleatoria]
+            #qnt_cel_livres -= 1
 
             x_inicial = celula_inicial.grid_x
             y_inicial = celula_inicial.grid_y
@@ -301,12 +304,15 @@ class GridV2Fast:
     def resgatar_lugares_arquivo(self, nome_arquivo_lugares):
         lista_lugares = fst.arquivo_csv_para_lista(nome_arquivo_lugares)
         print(lista_lugares)
+        self.qnt_lugares = len(lista_lugares)
+
         for lugar in lista_lugares:
             lugar_novo = LugarV2Fast(self, veio_de_arquivo=True, lista_arquivo=lugar)
             self.array_lugares = np.append(self.array_lugares, lugar_novo)
         
         #self.gerar_lugares_aleatorios_Vmodelo5(self.qnt_lugares, 5)
-        self.gerar_lugares_aleatorios_v3()
+        #self.gerar_lugares_aleatorios_v3()
+        self.atualizaQuantAgentes()
 
     def resgatar_caminhos_arquivo(self, nome_arquivo_caminhos):
 

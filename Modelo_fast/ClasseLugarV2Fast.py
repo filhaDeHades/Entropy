@@ -83,9 +83,9 @@ class LugarV2Fast:
         soma_orientacoes_agentes = sum(lista_orientacao_agentes)
         qnt_agentes = len(lista_orientacao_agentes)
 
-        media_orientacao_agentes = soma_orientacoes_agentes // qnt_agentes
+        media_orientacao_agentes = soma_orientacoes_agentes / qnt_agentes
 
-        nova_orientacao = (peso_lugar*self.orientacao + peso_agentes*media_orientacao_agentes) // soma_pesos
+        nova_orientacao = (peso_lugar*self.orientacao + peso_agentes*media_orientacao_agentes) / soma_pesos
         self.orientacao = nova_orientacao
 
         if mudar_cor is True:

@@ -884,7 +884,7 @@ class GridV2:
         lista_cores = cores.lista_cores_random
         lista_orientacoes = list(range(0, 1100, 100))
 
-        qnt_agentes = int(len(self.lista_lugares) * 1.2)
+        qnt_agentes = int(len(self.lista_lugares) * 2.5)
 
         for agente in range(qnt_agentes):
 

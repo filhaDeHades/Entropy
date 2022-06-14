@@ -116,8 +116,13 @@ def criar_arquivo_lugares_tipo_1(nome_arquivo_base, qnt_linhas, qnt_colunas, pat
 
     cont = 0
 
+    tamanho_max_lugar = 10
+
     for celula in grid.array_celulas_grid:
         cont += 1
+
+        tamanho_atual_lugar = 0
+
         if celula.andavel == False: # É LUGAR
             if celula.ja_foi_visitado == False: #Não foi visitado
                 
@@ -139,9 +144,11 @@ def criar_arquivo_lugares_tipo_1(nome_arquivo_base, qnt_linhas, qnt_colunas, pat
                                 continue
                             else:
                                 if vizinho.ja_foi_visitado is False:
-                                    vizinho.ja_foi_visitado = True
-                                    lista_coordenadas_novo_lugar.append(vizinho.pos_grid)
-                                    lista_celulas_para_testar.append(vizinho)
+                                    if tamanho_atual_lugar < tamanho_max_lugar:
+                                        tamanho_atual_lugar = tamanho_atual_lugar + 1 
+                                        vizinho.ja_foi_visitado = True
+                                        lista_coordenadas_novo_lugar.append(vizinho.pos_grid)
+                                        lista_celulas_para_testar.append(vizinho)
 
 
                 possiveis_cores = cores.lista_cores_random
