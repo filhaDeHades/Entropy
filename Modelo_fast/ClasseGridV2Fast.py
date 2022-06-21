@@ -304,7 +304,7 @@ class GridV2Fast:
         lista_lugares = fst.arquivo_csv_para_lista(nome_arquivo_lugares)
         print(lista_lugares)
         self.qnt_lugares = len(lista_lugares)
-
+        
         for lugar in lista_lugares:
             lugar_novo = LugarV2Fast(self, veio_de_arquivo=True, lista_arquivo=lugar)
             self.array_lugares = np.append(self.array_lugares, lugar_novo)

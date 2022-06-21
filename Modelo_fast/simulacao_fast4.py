@@ -41,7 +41,7 @@ def simulacao_fast4(grid, pesosContaminacaoAgente=(1, 0.1), pesosContaminacaoLug
 
             agente.contaminacao_agente(lugarEscolhido.orientacao, pesosContaminacaoAgente)
 
-            dict_agentes["agente_{}".format(agente.id)] = round(agente.orientacao_latente)
+            dict_agentes["agente_{}".format(agente.id)] = agente.orientacao_latente
 
         df_dict_agentes = pd.DataFrame([dict_agentes])
         df_agentes = pd.concat([df_agentes, df_dict_agentes], ignore_index=True)
@@ -54,7 +54,7 @@ def simulacao_fast4(grid, pesosContaminacaoAgente=(1, 0.1), pesosContaminacaoLug
                 lugar.contaminacao_lugar(pesos_contaminacao=pesosContaminacaoLugar)
                 lugar.lista_agentes_presentes.clear()
 
-            dict_lugares["lugar_{}".format(lugar.id)] = round(lugar.orientacao)
+            dict_lugares["lugar_{}".format(lugar.id)] = lugar.orientacao
 
         df_dict_lugares = pd.DataFrame([dict_lugares])
         df_lugares = pd.concat([df_lugares, df_dict_lugares], ignore_index=True)
