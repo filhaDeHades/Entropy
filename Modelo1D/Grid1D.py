@@ -7,7 +7,7 @@ import math
 
 class Grid1D:
 
-    def __init__(self, tamGrid, qntAgentes, qntLugares, rangePossiveisOrientacoes=(0, 1100, 100),
+    def __init__(self, tamGrid, qntAgentes, qntLugares, rangePossiveisOrientacoes=(0, 1000),
                  agentes_aleatorios=False, lugares_aleatorios=False):
         self.qntAgentes = qntAgentes
         self.qntLugares = qntLugares

@@ -211,7 +211,7 @@ class GridV2Fast:
         
         lista_lugares = []
         lista_cores = cores.lista_cores_random[:]
-        lista_orientacoes = list(range(0, 1100, 100))
+        lista_orientacoes = list(range(0, 1000))
 
         for lugar in range(qnt_lugares):
             celula_aceitavel = False
@@ -386,7 +386,7 @@ class GridV2Fast:
     def obter_dict_ocorrencia_orientacoes(self):
 
         lista_orientacoes_agentes = [math.ceil(agente.orientacao_atual / 100) * 100 for agente in self.array_agentes]
-        lista_orientacoes_possiveis = list(range(0, 1100, 100))
+        lista_orientacoes_possiveis = list(range(0, 1000))
         dict_ocorrencia_orientacoes = fst.contagem_ocorrencia_elementos_com_referencial(lista_orientacoes_agentes,
                                                                                         lista_orientacoes_possiveis)
         return dict_ocorrencia_orientacoes
