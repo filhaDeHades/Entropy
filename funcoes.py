@@ -1161,7 +1161,7 @@ def obter_arquivo_final_2(nome_arquivo_lugares_base, nome_arquivo_cores, nome_ar
     lista_chaves_lugares = ["x", "y", "uso", "id"]
     lista_lugares_temp_2 = matriz_para_lista_dicionarios(lista_chaves_lugares, lista_lugares_temp)
 
-    lista_orientacoes = list(range(0, 1100, 100))
+    lista_orientacoes = list(range(0, 1000))
     lista_ids = []
     lista_lugares_final = []
 
@@ -1472,7 +1472,7 @@ def gerar_arquivo_lugares_com_id(nome_arquivo_original, nome_arquivo_lugares):
 
     lista_dicts_orientacoes_cores = converter_orientacao_para_cor_v3(11)
 
-    lista_orientacoes = list(range(0, 1100, 100))
+    lista_orientacoes = list(range(0, 1000))
     lista_ids = []
     lista_lugares_final = []
 

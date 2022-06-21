@@ -780,7 +780,7 @@ class GridV2:
 
         lista_lugares = []
         lista_cores = cores.lista_cores_random[:]
-        lista_orientacoes = list(range(0, 1100, 100))
+        lista_orientacoes = list(range(0, 1000))
 
         for lugar in range(qnt_lugares):
             celula_aceitavel = False
@@ -839,7 +839,7 @@ class GridV2:
     def gerar_agentes_aleatorios(self, qnt_agentes, sem_cor_repetida=False, sem_orientacao_repetida=False):
 
         lista_cores = cores.lista_cores_random
-        lista_orientacoes = list(range(0, 1100, 100))
+        lista_orientacoes = list(range(0, 1000))
 
         for agente in range(qnt_agentes):
 
@@ -882,7 +882,7 @@ class GridV2:
                     lista_celulas_livres.append(celula)
 
         lista_cores = cores.lista_cores_random
-        lista_orientacoes = list(range(0, 1100, 100))
+        lista_orientacoes = list(range(0, 1000))
 
         qnt_agentes = int(len(self.lista_lugares) * 2.5)
 
@@ -914,7 +914,7 @@ class GridV2:
         lista_coordenadas_finais = [celula.pos_grid for celula in self.lista_coordenadas_lugar_temp]
         lista_coordendas_finais_usaveis = lista_coordenadas_finais[:]
 
-        possiveis_orientacoes = list(range(0, 1100, 100))
+        possiveis_orientacoes = list(range(0, 1000))
         orientacao_escolhida = random.choice(possiveis_orientacoes)
 
         novo_lugar_manual = LugarV2(self, lista_coordenadas=lista_coordendas_finais_usaveis,

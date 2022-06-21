@@ -212,7 +212,7 @@ def criar_arquivo_lugares_tipo_1_v2(nome_arquivo_base, qnt_linhas, qnt_colunas):
             possiveis_cores = cores.lista_cores_random
             cor_escolhida = random.choice(possiveis_cores)
 
-            possiveis_orientacoes = list(range(0, 1100, 100))
+            possiveis_orientacoes = list(range(0, 1000))
             orientacao_escolhida = random.choice(possiveis_orientacoes)
 
             novo_lugar = LugarV2Fast(grid, veio_de_arquivo=False, lista_coordenadas=lista_coordenadas_novo_lugar,
@@ -247,7 +247,7 @@ def criar_arquivo_lugares_tipo_2(nome_arquivo_base, path_arquivos_base=None, pat
 
     dict_orientacoes_cores = fst.converter_orientacao_para_cor_v3(11)
 
-    lista_orientacoes = list(range(0, 1100, 100))
+    lista_orientacoes = list(range(0, 1000))
     lista_ids = []
     lista_lugares_final = []
 

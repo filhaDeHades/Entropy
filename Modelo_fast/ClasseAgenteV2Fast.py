@@ -82,7 +82,7 @@ class AgenteV2Fast:
         a, b = pesos[0], pesos[1]
         soma_pesos = a + b
 
-        contaminacao = int((a*self.orientacao_latente + b*orientacao_do_lugar) / soma_pesos)
+        contaminacao = (a*self.orientacao_latente + b*orientacao_do_lugar) / soma_pesos
         self.orientacao_latente = contaminacao
 
     def sortear_nova_orientacao(self):
@@ -90,7 +90,7 @@ class AgenteV2Fast:
             em consideração possíveis contaminações.
         """
 
-        possiveis_orientacoes = list(range(0, 1100, 100))
+        possiveis_orientacoes = list(range(0, 1000))
         nova_orientacao = random.choice(possiveis_orientacoes)
         self.orientacao_atual = nova_orientacao
         # print("(SORTEIO) o agente agr possui orientacao latente de: ", self.orientacao_latente)

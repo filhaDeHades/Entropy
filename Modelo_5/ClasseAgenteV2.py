@@ -280,7 +280,7 @@ class AgenteV2:
         a, b = pesos[0], pesos[1]
         soma_pesos = a + b
 
-        contaminacao = int((a*self.orientacao_latente + b*orientacao_do_lugar) / soma_pesos)
+        contaminacao = (a*self.orientacao_latente + b*orientacao_do_lugar) / soma_pesos
         self.orientacao_latente = contaminacao
         if atualizar_cor is True:
             # print("cor antes: ", self.cor)
@@ -289,7 +289,7 @@ class AgenteV2:
             grid.dict_orientacoes_cores[str(self.orientacao_atual)] = self.cor
 
     def sortear_nova_orientacao(self):
-        possiveis_orientacoes = list(range(0, 1100, 100))
+        possiveis_orientacoes = list(range(0, 1000))
         nova_orientacao = random.choice(possiveis_orientacoes)
         self.orientacao_latente = nova_orientacao
 
