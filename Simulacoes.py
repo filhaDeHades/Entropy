@@ -26,6 +26,7 @@ dAgentes = 0.5
 cLugares = 0.5
 dLugares = 0.5
 timeStep = 2000
+fatorQntAgentes = 2.5
 caminho = ''
 nome = ''
 arquivos = []
@@ -46,7 +47,9 @@ for linha in range(len(linhas)):
         cLugares = float(cEd[0])
         cLugares = float(cEd[1])
     elif linha == 4:
-        timeStep = int(linhas[linha])
+        timeStepEfQA = linhas[linha].split()
+        timeStep = int(timeStepEfQA[0])
+        fatorQntAgentes = float(timeStepEfQA[1])
     elif linha == 5:
         caminho = linhas[linha].strip('\n')
     elif linha == 6:
@@ -57,9 +60,9 @@ for linha in range(len(linhas)):
 for arquetipo in range(len(arquivos)):
  
     if(fast):
-        resultados = t2d.teste_modelo_2d_com_arquivo(arquivos[arquetipo], timeStep, (alfa, beta), (cAgentes, dAgentes), (cLugares, dLugares))
+        resultados = t2d.teste_modelo_2d_com_arquivo(arquivos[arquetipo], timeStep, fatorQntAgentes, (alfa, beta), (cAgentes, dAgentes), (cLugares, dLugares))
     else:
-        resultados = t2d.teste_modelo_2d_visual(arquivos[arquetipo], timeStep, (alfaEBeta), (cAgentes, dAgentes), (cLugares, dLugares))
+        resultados = t2d.teste_modelo_2d_visual(arquivos[arquetipo], timeStep, fatorQntAgentes, (alfaEBeta), (cAgentes, dAgentes), (cLugares, dLugares))
 
     # -- plotando os graficos dos resultados das simulacoes 2D--
     

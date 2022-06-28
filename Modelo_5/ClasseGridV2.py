@@ -14,12 +14,13 @@ import pandas as pd
 
 class GridV2:
 
-    def __init__(self, qnt_linhas, qnt_colunas, cell_size, matriz_layout, qnt_orientacoes=11, display_agentes=True):
+    def __init__(self, qnt_linhas, qnt_colunas, cell_size, matriz_layout, fQA=2.5, qnt_orientacoes=11, display_agentes=True):
 
         self.qnt_linhas = qnt_linhas
         self.qnt_colunas = qnt_colunas
         self.qnt_agentes = 0
         self.cell_size = cell_size
+        self.fQA = fQA
         self.largura = qnt_colunas * cell_size
         self.altura = qnt_linhas * cell_size
         self.tamanho_tela = (self.largura, self.altura)
@@ -884,7 +885,7 @@ class GridV2:
         lista_cores = cores.lista_cores_random
         lista_orientacoes = list(range(0, 1000))
 
-        qnt_agentes = int(len(self.lista_lugares) * 2.5)
+        qnt_agentes = int(len(self.lista_lugares) * self.fQA)
 
         for agente in range(qnt_agentes):
 

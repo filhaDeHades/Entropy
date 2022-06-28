@@ -11,12 +11,12 @@ path_base_projeto = "Arquivos\\"
 lugares = 100
 
 def simulacao_com_arquivo(nome_arquivo_base, pesos=(1, 1, 1), pesos_escolha_lugar=(0.1, 0.1), peso_cont_agente=(1, 1), peso_cont_lugar=(1, 1),
-                          qnt_time_steps=30, usar_e_salvar_caminhos=False, salvar_resultados=False, num_sim_atual=0,
+                          qnt_time_steps=30,fQA=2.5, usar_e_salvar_caminhos=False, salvar_resultados=False, num_sim_atual=0,
                           distancia_importa=True, mostrar_grafico_entropia=False, retornar_resultados_ts=False,
                           salvar_lugares_modificados=False, nome_arquivo_lugares_modificado=None):
 
     qnt_linhas, qnt_colunas = func_arq.obter_tam_grid_pelo_nome_arquivo(nome_arquivo_base)
-    grid = GridV2Fast(qnt_linhas, qnt_colunas, lugares)
+    grid = GridV2Fast(qnt_linhas, qnt_colunas, lugares, fatorQntAgentes=fQA)
 
     nome_arquivo_lugares = func_arq.gerar_nome_arquivo_lugares(nome_arquivo_base)
     path_arquivos_lugares = path_base_projeto + "Arquivos_lugares"

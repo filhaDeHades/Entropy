@@ -13,12 +13,13 @@ import time
 
 class GridV2Fast:
 
-    def __init__(self, qnt_linhas, qnt_colunas, qnt_lugares, qnt_agentes = 100, matriz_layout=None, 
+    def __init__(self, qnt_linhas, qnt_colunas, qnt_lugares, qnt_agentes = 100,fatorQntAgentes = 2.5, matriz_layout=None, 
                 qnt_orientacoes=11, range_possiveis_orientacoes=(0, 1001, 1)):
         self.qnt_linhas = qnt_linhas
         self.qnt_colunas = qnt_colunas
         self.qnt_agentes = qnt_agentes
         self.qnt_lugares = qnt_lugares
+        self.fQA = fatorQntAgentes
         self.range_possiveis_orientacoes = range_possiveis_orientacoes
 
         self.array_celulas_grid = []
@@ -43,10 +44,10 @@ class GridV2Fast:
 
         self.qnt_caminhos_resgatados_arquivo = 0
     
-    def atualizaQuantAgentes(self):
+    def atualizaQuantAgentes(self, ):
         #totalLugares = len([celula for celula in self.array_celulas_grid if celula.andavel is False])
         totalLugares = self.qnt_lugares
-        totalAgentes = int(totalLugares *2.5)
+        totalAgentes = int(totalLugares *self.fQA)
         print(f'TOTAL LUGARES: {totalLugares}\nTOTAL AGENTES: {totalAgentes}')
         self.qnt_agentes = totalAgentes
         self.gerar_agentes_aleatorios_v3(self.qnt_agentes)
@@ -55,7 +56,7 @@ class GridV2Fast:
     def get_qnt_agentes(self):
         #totalLugares = len([celula for celula in self.array_celulas_grid if celula.andavel is False])
         totalLugares = self.qnt_lugares
-        totalAgentes = int(totalLugares *2.5)
+        totalAgentes = int(totalLugares *self.fQA)
         return totalAgentes
 
     def obter_dict_orientacoes_cores(self):

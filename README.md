@@ -88,7 +88,7 @@ Esse script roda automaticamente quando o arquivo que recebeu sua importação
     0.1 0.1                                                 -> alfa e beta
     0.5 0.5                                                 -> C e D agentes
     0.5 0.5                                                 -> C e D lugares
-    2000                                                    -> quantidade de timesteps
+    2000 2.5                                                -> quantidade de timesteps e FQA
     caminho\\onde\\voce\\quer\\guardar\\os\\resultados      -> caminho para a pasta-mãe
     nome-da-pasta-que-sera-criada                           -> nome da pasta
     arquivo-de-layout(12x12)[tipo_1].txt                    -> a partir daqui arquivos utilizados
@@ -112,9 +112,10 @@ Esse script roda automaticamente quando o arquivo que recebeu sua importação
 
     C e D definem, respectivamente, o peso que a orientação atual do lugar e as orientações dos agentes que se encontram nele terão no cálculo da próxima orientação do lugar.
 
-    * **Quantidade de TimeSteps**
+    * **Quantidade de TimeSteps e Fator Quantitativo dos Agentes**
 
     A quantidade de timesteps indica quantos ciclos a simulação deve ter.
+    O Fator Quantitativo dos Agentes indica o número pelo qual a quantidade de lugares deve ser multiplicada para a descoberta do número total de agentes.
 
     * **Caminho para a Pasta-mãe**
 

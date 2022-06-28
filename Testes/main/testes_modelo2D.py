@@ -384,7 +384,7 @@ def teste_modelo_2d():
     # plt.show()
 
 
-def teste_modelo_2d_com_arquivo(nomeArquivo, qnt_time_step=2000, peso_escolha_lugar=(0.1, 0.1), peso_cont_agente=(1,1), peso_cont_lugar=(1,1)):
+def teste_modelo_2d_com_arquivo(nomeArquivo, qnt_time_step=2000,fQA=2.5, peso_escolha_lugar=(0.1, 0.1), peso_cont_agente=(1,1), peso_cont_lugar=(1,1)):
     """Essa função faz a simulação 2D a partir de um arquivo e retorna seus resultados.
 
     Args:
@@ -404,7 +404,7 @@ def teste_modelo_2d_com_arquivo(nomeArquivo, qnt_time_step=2000, peso_escolha_lu
     peso_contaminacao_lugar = peso_cont_lugar
 
     resultados = simulacao_com_arquivo(nomeArquivo, pesos_escolha_lugar=pesos_escolha_lugar, peso_cont_agente=peso_contaminacao_agente,
-                                        peso_cont_lugar=peso_contaminacao_lugar,qnt_time_steps=qnt_time_steps,
+                                        peso_cont_lugar=peso_contaminacao_lugar,qnt_time_steps=qnt_time_steps, fQA=fQA,
                                         salvar_resultados=True, mostrar_grafico_entropia=True, retornar_resultados_ts=False)
     
     info_agentes = resultados["resultados_agentes"]
@@ -413,13 +413,13 @@ def teste_modelo_2d_com_arquivo(nomeArquivo, qnt_time_step=2000, peso_escolha_lu
 
     return resultados
 
-def teste_modelo_2d_visual(nomeArquivo, qnt_time_step=2000, peso_escolha_lugar=(0.1, 0.1), peso_cont_agente=(1,1), peso_cont_lugar=(1,1)):
+def teste_modelo_2d_visual(nomeArquivo, qnt_time_step=2000, fQA=2.5, peso_escolha_lugar=(0.1, 0.1), peso_cont_agente=(1,1), peso_cont_lugar=(1,1)):
     qnt_time_steps = qnt_time_step
     pesos_escolha_lugar = peso_escolha_lugar
     peso_contaminacao_agente = peso_cont_agente
     peso_contaminacao_lugar = peso_cont_lugar
 
-    resultados = apr.simulacao_com_arquivo_V(nomeArquivo, qnt_time_steps, pesos_escolha_lugar, peso_contaminacao_agente, peso_contaminacao_lugar)
+    resultados = apr.simulacao_com_arquivo_V(nomeArquivo, qnt_time_steps, pesos_escolha_lugar, peso_contaminacao_agente, peso_contaminacao_lugar, fQA=fQA)
 
     # resultados = simulacao_com_arquivo(nomeArquivo, pesos_escolha_lugar=pesos_escolha_lugar, peso_cont_agente=peso_contaminacao_agente,
     #                                     peso_cont_lugar=peso_contaminacao_lugar,qnt_time_steps=qnt_time_steps,

@@ -156,7 +156,7 @@ def simulacao_com_arquivo_2():
     s2.simulacao2(peso_teste, grid, qnt_time_steps_teste)
 
 
-def simulacao_com_arquivo_V(arquivo, timesteps=2000,  peso_escolha_lugar=(0.1, 0.1), peso_cont_agente=(1,1), peso_cont_lugar=(1,1)):
+def simulacao_com_arquivo_V(arquivo, timesteps=2000, fQA=2.5, peso_escolha_lugar=(0.1, 0.1), peso_cont_agente=(1,1), peso_cont_lugar=(1,1)):
 
     qnt_time_steps = timesteps
     pesos_escolha_lugar = peso_escolha_lugar
@@ -164,7 +164,7 @@ def simulacao_com_arquivo_V(arquivo, timesteps=2000,  peso_escolha_lugar=(0.1, 0
     pesos_lugar = peso_cont_lugar
 
     resultados = s2.simulacao_utiliza_arquivo(arquivo, pesos_escolha_lugar=pesos_escolha_lugar, peso_cont_agente=pesos_agente,
-                                        peso_cont_lugar=pesos_lugar, qnt_time_steps=qnt_time_steps,
+                                        peso_cont_lugar=pesos_lugar, qnt_time_steps=qnt_time_steps, fQA= fQA,
                                         salvar_resultados=True, mostrar_grafico_entropia=True, retornar_resultados_ts=False)
     
     # info_agentes = resultados["resultados_agentes"]
