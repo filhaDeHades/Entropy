@@ -38,6 +38,8 @@ for linha in range(len(linhas)):
         alfaEBeta = linhas[linha].split()
         alfa = float(alfaEBeta[0])
         beta = float(alfaEBeta[0])
+        alfa = 1 - alfa
+        beta = 1 - beta
     elif linha == 2:
         cEd = linhas[linha].split()
         cAgentes = float(cEd[0])
