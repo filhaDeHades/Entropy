@@ -1,7 +1,14 @@
 arquivos
-Testes/arquivos
+inputSimulacao.txt
+Modelo1D/__pycache__/
+Modelo_5/__pycache__/
+Modelo_fast/__pycache__/
+progDocumen.md
+Scripts/__pycache__/
 Testes/2d_resultados
+Testes/arquivos
+Testes/main/__pycache__/
+Testes/src/__pycache__/
 Testes/main/teste1.py
 venv/
-progDocumen.md
-inputSimulacao.txt
+__pycache__/
