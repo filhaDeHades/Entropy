@@ -47,7 +47,7 @@ for linha in range(len(linhas)):
     elif linha == 3:
         cEd = linhas[linha].split()
         cLugares = float(cEd[0])
-        cLugares = float(cEd[1])
+        dLugares = float(cEd[1])
     elif linha == 4:
         timeStepEfQA = linhas[linha].split()
         timeStep = int(timeStepEfQA[0])
