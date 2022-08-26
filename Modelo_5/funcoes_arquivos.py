@@ -118,48 +118,61 @@ def criar_arquivo_lugares_tipo_1(nome_arquivo_base, qnt_linhas, qnt_colunas, pat
 
     tamanho_max_lugar = 10
 
+    Dimensao_maxima = 10
+
+    qtd_max_lugares = 10000000 # quantidade maxima de lugares para equiparar os cenarios
+
     for celula in grid.array_celulas_grid:
         cont += 1
 
         tamanho_atual_lugar = 0
 
-        if celula.andavel == False: # É LUGAR
-            if celula.ja_foi_visitado == False: #Não foi visitado
-                
-                celula.ja_foi_visitado = True #Marca como visitado
-                lista_coordenadas_novo_lugar = [celula.pos_grid]
-                
-                lista_celulas_para_testar = [celula]
+        if len(lista_lugares_temp) < qtd_max_lugares:
 
-                while len(lista_celulas_para_testar) > 0:
+            if celula.andavel == False: # É LUGAR
+                if celula.ja_foi_visitado == False: #Não foi visitado
+                    
+                    celula.ja_foi_visitado = True #Marca como visitado
+                    lista_coordenadas_novo_lugar = [celula.pos_grid]
+                    
+                    lista_celulas_para_testar = [celula]
 
-                    celula_atual = lista_celulas_para_testar.pop(0)
-                    celula_atual.ja_foi_analisado = True
-                    lista_vizinhos = grid.obter_nodulos_vizinhos(celula_atual, excluir_obstaculos=False,
-                                                                 excluir_diagonais=True)
+                    while len(lista_celulas_para_testar) > 0:
 
-                    for vizinho in lista_vizinhos:
-                        if vizinho.andavel is False:
-                            if vizinho.ja_foi_analisado is True:
-                                continue
-                            else:
-                                if vizinho.ja_foi_visitado is False:
-                                    if tamanho_atual_lugar < tamanho_max_lugar:
-                                        tamanho_atual_lugar = tamanho_atual_lugar + 1 
-                                        vizinho.ja_foi_visitado = True
-                                        lista_coordenadas_novo_lugar.append(vizinho.pos_grid)
-                                        lista_celulas_para_testar.append(vizinho)
+                        celula_atual = lista_celulas_para_testar.pop(0)
+                        celula_atual.ja_foi_analisado = True
+                        lista_vizinhos = grid.obter_nodulos_vizinhos(celula_atual, excluir_obstaculos=False,
+                                                                    excluir_diagonais=True)
 
 
-                possiveis_cores = cores.lista_cores_random
-                cor_escolhida = random.choice(possiveis_cores)
+                        for vizinho in lista_vizinhos:
+                            lista_coordenadas_vizinho = [vizinho.pos_grid]
+                            if (lista_coordenadas_vizinho [0][0] < (lista_coordenadas_novo_lugar [0][0]) + Dimensao_maxima
+                            and lista_coordenadas_vizinho [0][0] > (lista_coordenadas_novo_lugar [0][0]) - Dimensao_maxima
+                            and lista_coordenadas_vizinho [0][1] < (lista_coordenadas_novo_lugar [0][1]) + Dimensao_maxima
+                            and lista_coordenadas_vizinho [0][1] > (lista_coordenadas_novo_lugar [0][1]) - Dimensao_maxima):
+                                if vizinho.andavel is False:
+                                    if vizinho.ja_foi_analisado is True:
+                                        continue
+                                    else:
+                                        if vizinho.ja_foi_visitado is False:
+                                            if tamanho_atual_lugar < tamanho_max_lugar:
+                                                tamanho_atual_lugar = tamanho_atual_lugar + 1 
+                                                vizinho.ja_foi_visitado = True
+                                                lista_coordenadas_novo_lugar.append(vizinho.pos_grid)
+                                                lista_celulas_para_testar.append(vizinho)
 
-                possiveis_orientacoes = list(range(0, 1000))
-                orientacao_escolhida = random.choice(possiveis_orientacoes)
 
-                novo_lugar = LugarV2Fast(grid, veio_de_arquivo=False, lista_coordenadas=lista_coordenadas_novo_lugar,
-                                         orientacao=orientacao_escolhida, cor=cor_escolhida)
-                lista_lugares_temp.append(novo_lugar)
+                    possiveis_cores = cores.lista_cores_random
+                    cor_escolhida = random.choice(possiveis_cores)
+
+                    possiveis_orientacoes = list(range(0, 1000))
+                    orientacao_escolhida = random.choice(possiveis_orientacoes)
+
+                    novo_lugar = LugarV2Fast(grid, veio_de_arquivo=False, lista_coordenadas=lista_coordenadas_novo_lugar,
+                                            orientacao=orientacao_escolhida, cor=cor_escolhida)
+                    lista_lugares_temp.append(novo_lugar)
+
 
     grid.array_lugares = lista_lugares_temp
 
