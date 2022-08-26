@@ -34,14 +34,18 @@ def simulacao_fast4(grid, pesosContaminacaoAgente=(1, 0.1), pesosContaminacaoLug
 
         for agente in grid.array_agentes:
 
-            lugarEscolhido = agente.escolher_lugar(grid.array_lugares, pesosEscolhaLugar)
+            if timeStep == 0:
+                dict_agentes["agente_{}".format(agente.id)] = agente.orientacao_latente
+            else:
 
-            lugarEscolhido.lista_agentes_presentes.append(agente)
-            lista_agentes_presentes_id = [i.id for i in lugarEscolhido.lista_agentes_presentes]
+                lugarEscolhido = agente.escolher_lugar(grid.array_lugares, pesosEscolhaLugar)
 
-            agente.contaminacao_agente(lugarEscolhido.orientacao, pesosContaminacaoAgente)
+                lugarEscolhido.lista_agentes_presentes.append(agente)
+                lista_agentes_presentes_id = [i.id for i in lugarEscolhido.lista_agentes_presentes]
 
-            dict_agentes["agente_{}".format(agente.id)] = agente.orientacao_latente
+                agente.contaminacao_agente(lugarEscolhido.orientacao, pesosContaminacaoAgente)
+
+                dict_agentes["agente_{}".format(agente.id)] = agente.orientacao_latente
 
         df_dict_agentes = pd.DataFrame([dict_agentes])
         df_agentes = pd.concat([df_agentes, df_dict_agentes], ignore_index=True)
@@ -50,11 +54,15 @@ def simulacao_fast4(grid, pesosContaminacaoAgente=(1, 0.1), pesosContaminacaoLug
 
         for lugar in grid.array_lugares:
 
-            if len(lugar.lista_agentes_presentes) > 0:
-                lugar.contaminacao_lugar(pesos_contaminacao=pesosContaminacaoLugar)
-                lugar.lista_agentes_presentes.clear()
+            if timeStep == 0:
+                dict_lugares["lugar_{}".format(lugar.id)] = lugar.orientacao
+            else:
 
-            dict_lugares["lugar_{}".format(lugar.id)] = lugar.orientacao
+                if len(lugar.lista_agentes_presentes) > 0:
+                    lugar.contaminacao_lugar(pesos_contaminacao=pesosContaminacaoLugar)
+                    lugar.lista_agentes_presentes.clear()
+
+                dict_lugares["lugar_{}".format(lugar.id)] = lugar.orientacao
 
         df_dict_lugares = pd.DataFrame([dict_lugares])
         df_lugares = pd.concat([df_lugares, df_dict_lugares], ignore_index=True)
