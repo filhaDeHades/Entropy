@@ -31,6 +31,11 @@ def simulacao_fast4(grid, pesosContaminacaoAgente=(1, 0.1), pesosContaminacaoLug
         print("TIME STEP ", timeStep)
 
         dict_agentes = {}
+        dict_lugares = {}
+
+        if timeStep == 0:
+            for lugar in grid.array_lugares:
+                dict_lugares["lugar_{}".format(lugar.id)] = lugar.orientacao
 
         for agente in grid.array_agentes:
 
@@ -50,14 +55,10 @@ def simulacao_fast4(grid, pesosContaminacaoAgente=(1, 0.1), pesosContaminacaoLug
         df_dict_agentes = pd.DataFrame([dict_agentes])
         df_agentes = pd.concat([df_agentes, df_dict_agentes], ignore_index=True)
 
-        dict_lugares = {}
-
         for lugar in grid.array_lugares:
 
-            if timeStep == 0:
-                dict_lugares["lugar_{}".format(lugar.id)] = lugar.orientacao
-            else:
-
+            if timeStep != 0:
+            
                 if len(lugar.lista_agentes_presentes) > 0:
                     lugar.contaminacao_lugar(pesos_contaminacao=pesosContaminacaoLugar)
                     lugar.lista_agentes_presentes.clear()
