@@ -70,4 +70,8 @@ for arquetipo in range(len(arquivos)):
     
     nome_dir_origem = caminho #devem ser pastas já existentes
     nome_dir_destino = f"{nome}{arquetipo+1}" #deve ser o nome de uma nova pasta
+    
     tp.salvar_graficos_resultados_v2(resultados, nome_dir_destino, nome_dir_origem)
+    csvPath = nome_dir_origem + '/' + nome_dir_destino
+    
+    tp.salvar_info_resultados(resultados, csvPath)

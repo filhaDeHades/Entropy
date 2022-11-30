@@ -1206,7 +1206,7 @@ def salvar_graficos_resultados_v2(resultados, nome_destino, nome_dir_origem):
 
     dir_principal = os.path.abspath(nome_dir_origem)
     dir_destino = os.path.abspath(nome_dir_origem)
-    print(f'DIRETORIO PRINCIPAL:\n{dir_principal}\nDIR DESTINO:\n{dir_destino}')
+    #print(f'DIRETORIO PRINCIPAL:\n{dir_principal}\nDIR DESTINO:\n{dir_destino}')
 
     df_agentes = resultados["resultados_agentes"]
     df_entropia = resultados["resultados_entropia"]
@@ -1218,6 +1218,7 @@ def salvar_graficos_resultados_v2(resultados, nome_destino, nome_dir_origem):
     info_entropia = df_entropia
 
     nome_novo_folder = os.path.join(dir_destino, nome_destino)
+    print(nome_novo_folder)
     os.mkdir(nome_novo_folder)
 
     nomes_graficos = {
@@ -1454,8 +1455,12 @@ def salvar_graficos_resultados_v2(resultados, nome_destino, nome_dir_origem):
     plt.savefig(nome_grafico)
     plt.close()
 
-    # ----------------------------------------------------------------------------------
-    # heatmap de entropias
+
+def salvar_info_resultados(resultados, output):
+    dir_output = os.path.abspath(output)
+    for i in resultados: 
+        resultados[i].to_csv(dir_output + '/dataframe_id_'+str(i)+'.csv')
+
 
 def heatmap_entropia_agentes(nome_dir_origem, qnt_linhas, qnt_colunas, nome_dir_destino):
     
